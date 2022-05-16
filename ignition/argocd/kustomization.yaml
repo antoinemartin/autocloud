@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+  - namespace.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+configMapGenerator:
+  - name: argocd-cm
+    behavior: merge
+    literals:
+      - "timeout.reconciliation=15s"
+      - |
+        configManagementPlugins=- name: helmfile
+          generate:
+            command: ["/bin/sh", "-c"]
+            args: ["helmfile --namespace $ARGOCD_APP_NAMESPACE template | sed -e '1,/---/d' | sed -e 's|apiregistration.k8s.io/v1beta1|apiregistration.k8s.io/v1|g'"]
+      - "kustomize.buildOptions=--enable-alpha-plugins --enable-exec"
+
+generators:
+  - sops-generator.yaml
+
+patches:
+  - patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/command/-
+        value: --insecure
+    target:
+      kind: Deployment
+      name: argocd-server
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: "chatwork/argocd-helmfile:latest"
+      - op: add
+        path: /spec/template/spec/containers/0/securityContext/runAsUser
+        value: 999
+    target:
+      kind: Deployment
+      name: argocd-repo-server

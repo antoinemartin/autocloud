@@ -1,0 +1,14 @@
+# TODO: Find some usefulness in this (maybe different behaviour)
+apiVersion: iknite.krm.kaweezle.com/v1beta1
+kind: SopsGenerator
+metadata:
+  name: secrets
+  annotations:
+    # https://kubectl.docs.kubernetes.io/guides/extending_kustomize/#required-alpha-flags
+    # path is relative to kustomization.yaml
+    config.kubernetes.io/function: |
+      exec:
+        path: /sbin/krmsops
+spec:
+  files:
+  - ./secrets.yaml
