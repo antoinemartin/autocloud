@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./repo-server
-          push: trueargs
+          push: true
           tags: "${{ env.DOCKER_ORGANISATION }}/${{ env.DOCKER_IMAGE_NAME }}:latest,${{ env.DOCKER_ORGANISATION }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.event.inputs.tag }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
