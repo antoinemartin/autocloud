@@ -7,8 +7,8 @@
 # export SOPS_AGE_KEY=AGE-SECRET-KEY-...#
 #
 # Examples:
-#
-# export SOPS_AGE_KEY=$(gopass.exe cat github.com/kaweezle/iknite/age_key)
+# 
+# export SOPS_AGE_KEY=$(gopass.exe show github.com/kaweezle/iknite/age_key | tail -1 | openssl base64 -d -A)
 #
 # or
 # 
@@ -22,7 +22,7 @@
 set -ueo pipefail
 
 # Add the Kaweezle APK repository
-(cd /etc/apk/keys && wget -q "https://github.com/kaweezle/iknite/releases/download/v0.1.18/kaweezle-devel@kaweezle.com-c9d89864.rsa.pub" ; )
+wget -qO - "https://github.com/kaweezle/iknite/releases/download/v0.1.18/kaweezle-devel@kaweezle.com-c9d89864.rsa.pub" > /etc/apk/keys/kaweezle-devel@kaweezle.com-c9d89864.rsa.pub
 grep -q kaweezle $@/etc/apk/repositories || echo https://kaweezle.com/repo/ >> $@/etc/apk/repositories 
 
 # Add some minimal dependencies
