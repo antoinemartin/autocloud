@@ -29,7 +29,7 @@ patches:
   - patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: "chatwork/argocd-helmfile:latest"
+        value: "antoinemartin/argocd-helmfile:latest"
       - op: add
         path: /spec/template/spec/containers/0/securityContext/runAsUser
         value: 999
