@@ -8,7 +8,7 @@ metadata:
     # path is relative to kustomization.yaml
     config.kubernetes.io/function: |
       exec:
-        path: /sbin/krmsops
+        path: krmfnsops
 spec:
   files:
   - ./secrets.yaml
