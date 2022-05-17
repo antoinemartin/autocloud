@@ -1,0 +1,103 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apisix
+  namespace: argocd
+spec:
+  destination:
+    namespace: apisix
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: apisix
+    helm:
+      parameters:
+        - name: apisix.timezone
+          value: Europe/Paris
+        - name: dashboard.enabled
+          value: "true"
+        - name: gateway.tls.enabled
+          value: "true"
+        - name: gateway.type
+          value: LoadBalancer
+        - name: ingress-controller.enabled
+          value: "true"
+      values: |-
+        etcd:
+          livenessProbe:
+            initialDelaySeconds: 15
+          readinessProbe:
+            initialDelaySeconds: 15
+          replicaCount: 1
+
+        ingress-controller:
+          enabled: true
+          config:
+            ingressPublishService: apisix/apisix-gateway
+            apisix:
+              serviceNamespace: apisix
+              adminKey: edd1c9f034335f136f87ad84b625c8f1
+
+        gateway:
+          type: LoadBalancer
+          tls:
+            enabled: true
+          # stream:
+          #   enabled: true
+
+        admin:
+          credentials:
+            admin: edd1c9f034335f136f87ad84b625c8f1
+
+        dashboard:
+          enabled: true
+          ingress:
+            enabled: false # It doesn't have the right apiVersion
+            annotations:
+              kubernetes.io/ingress.class: apisix
+            hosts:
+              - host: citest.openance.dev
+                paths:
+                  - apisix/
+            tls:
+              - secretName: citest-openance-dev-tls
+                hosts:
+                  - citest.openance.dev
+
+          config:
+            authentication:
+              users:
+                - username: admin
+                  password: Empre1ntes
+
+    repoURL: https://charts.apiseven.com
+    targetRevision: 0.9.2
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+  # Ignore priority inserted by K8S
+  - group: '*'
+    kind: CustomResourceDefinition
+    name: apisixroutes.apisix.apache.org
+    jqPathExpressions:
+      - '.spec.versions[]?.additionalPrinterColumns[].priority'
+  - group: '*'
+    kind: CustomResourceDefinition
+    name: apisixpluginconfigs.apisix.apache.org
+    jqPathExpressions:
+      - '.spec.versions[]?.additionalPrinterColumns[].priority'
+  # This might be changed by APISIX itself
+  - group: "*"
+    kind: Secret
+    name: apisix-etcd-jwt-token
+    jsonPointers:
+    - /data/jwt-token.pem
+  # May have something to do with the preceding one
+  - group: "*"
+    kind: StatefulSet
+    jqPathExpressions:
+    - '.spec.template.metadata.annotations."checksum/token-secret"'
