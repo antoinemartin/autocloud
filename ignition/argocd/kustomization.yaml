@@ -17,18 +17,15 @@ configMapGenerator:
             command: ["/bin/sh", "-c"]
             args: ["helmfile --namespace $ARGOCD_APP_NAMESPACE template | sed -e '1,/---/d' | sed -e 's|apiregistration.k8s.io/v1beta1|apiregistration.k8s.io/v1|g'"]
       - "kustomize.buildOptions=--enable-alpha-plugins --enable-exec"
+  - name: argocd-cmd-params-cm
+    behavior: merge
+    literals:
+      - server.insecure=true
 
 generators:
   - sops-generator.yaml
 
 patches:
-  - patch: |-
-      - op: add
-        path: /spec/template/spec/containers/0/command/-
-        value: --insecure
-    target:
-      kind: Deployment
-      name: argocd-server
   - patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/image
