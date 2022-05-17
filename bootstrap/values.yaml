@@ -1,0 +1,16 @@
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/antoinemartin/autocloud
+    targetRevision: main
+
+
+traefik:
+  chartVersion: "10.19.5"
+  tlsOnly: true
+  dashboard:
+    expose: false
+    insecure: false
+
+uninode: false
