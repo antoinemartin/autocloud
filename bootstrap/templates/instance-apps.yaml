@@ -1,11 +1,11 @@
-{{- if .Values.uninode }}
+{{- if .Values.instance_apps.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   labels:
-    app.kubernetes.io/name: uninode
+    app.kubernetes.io/name: instance-apps
     {{- include "bootstrap.labels" . | nindent 4 }}
-  name: uninode
+  name: instance-apps
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,11 +20,12 @@ spec:
     kind: Application
   project: default
   source:
-    path: ignition/uninode
-    repoURL: {{ .Values.spec.source.repoURL }}
-    targetRevision: {{ .Values.spec.source.targetRevision }}
+    path: {{ .Values.instance_apps.source.path }}
+    repoURL: {{ .Values.instance_apps.source.repoURL }}
+    targetRevision: {{ .Values.instance_apps.source.targetRevision }}
   syncPolicy:
     automated:
+      allowEmpty: true
       prune: true
       selfHeal: true
 {{- end }}

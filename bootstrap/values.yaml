@@ -14,3 +14,10 @@ traefik:
     insecure: false
 
 uninode: false
+
+instance_apps:
+  enabled: false
+  source:
+    path: apps/default
+    repoURL: https://github.com/antoinemartin/autocloud
+    targetRevision: main
