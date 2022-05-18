@@ -36,6 +36,8 @@ iknite -v debug -w 120 start
 # Now deploy the app of apps. ArgoCD will take care of the rest
 kubectl apply -f https://raw.githubusercontent.com/antoinemartin/autocloud/main/apps-app-uninode.yaml
 
+iknite status -w
+
 # Open access to the ArgoCD UI (soon to be superseded by real URL)
 pwd=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | openssl base64 -d -A)
 echo
