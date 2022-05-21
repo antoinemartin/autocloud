@@ -7,18 +7,7 @@ kind: Kustomization
 resources:
   - ./cert-manager.yaml
   - ./letsencrypt-issuer.yaml
-  - ./testdns-certificate.yaml
-
-images:
-  - name: quay.io/jetstack/cert-manager-cainjector
-    newName: ghcr.io/antoinemartin/cert-manager-cainjector-amd64
-    newTag: dev
-  - name: quay.io/jetstack/cert-manager-controller
-    newName: ghcr.io/antoinemartin/cert-manager-controller-amd64
-    newTag: dev
-  - name: quay.io/jetstack/cert-manager-webhook
-    newName: ghcr.io/antoinemartin/cert-manager-webhook-amd64
-    newTag: dev
+#  - ./testdns-certificate.yaml
 
 generators:
   - sops-generator.yaml

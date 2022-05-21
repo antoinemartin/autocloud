@@ -1,4 +1,5 @@
 # yaml-language-server: $schema=./schemas/certificate.yaml
+# This file is not included in the Kustomization and is left here for reference.
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
