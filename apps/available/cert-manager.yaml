@@ -13,7 +13,7 @@ spec:
   source:
     path: packages/cert-manager
     repoURL: https://github.com/antoinemartin/autocloud.git
-    targetRevision: feature/cert-manager-merging
+    targetRevision: main
   syncPolicy:
     automated:
       prune: true
