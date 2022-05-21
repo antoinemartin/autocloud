@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=./schemas/certificate.yaml
+# This file is not included in the Kustomization and is left here for reference.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: testdns
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  issuerRef:
+    name: letsencrypt-issuer
+  secretName: testdns-srv-cx-tls
+  dnsNames:
+    - "testdns.srv.cx"

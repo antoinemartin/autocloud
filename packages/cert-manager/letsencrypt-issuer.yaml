@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=./schemas/issuer.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-issuer
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    email: antoine@mrtn.fr
+    server: https://acme-v02.api.letsencrypt.org/directory
+    preferredChain: "ISRG Root X1"
+    privateKeySecretRef:
+      name: letsencrypt-issuer-account-key
+    solvers:
+      - dns01:
+          ovh:
+            endpoint: ovh-eu
+            applicationKey: 4KyIjUiRpDo4lpqY
+            applicationSecretSecretRef:
+              name: ovh-api-credentials
+              key: application_secret
+            consumerKeySecretRef:
+              name: ovh-api-credentials
+              key: consumer_key

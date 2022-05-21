@@ -1,0 +1,11 @@
+apiVersion: iknite.krm.kaweezle.com/v1beta1
+kind: SopsGenerator
+metadata:
+  name: secrets
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnsops
+spec:
+  files:
+  - ./secrets.yaml
