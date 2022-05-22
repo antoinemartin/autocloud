@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ./chisel-client.yaml
+  - ./argocd-ingress.yaml
 
 generators:
   - ./sops-generator.yaml
