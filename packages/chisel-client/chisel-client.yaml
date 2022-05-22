@@ -1,0 +1,73 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chisel-client
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: "chisel-client"
+    app.kubernetes.io/component: edge
+    app.kubernetes.io/part-of: autocloud
+data:
+  chisel.server: https://gitlab.openance.dev/chisel
+  chisel.tunnel: R:30443:traefik.traefik.svc:80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chisel-client
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: "chisel-client"
+    app.kubernetes.io/component: edge
+    app.kubernetes.io/part-of: autocloud
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "chisel-client"
+      app.kubernetes.io/component: edge
+      app.kubernetes.io/part-of: autocloud
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "chisel-client"
+        app.kubernetes.io/component: edge
+        app.kubernetes.io/part-of: autocloud
+    spec:
+      containers:
+        - name: chisel-client
+          image: jpillora/chisel:1.7.7
+          imagePullPolicy: Always
+          command:
+            - /app/chisel
+          args:
+            - client
+            - "-v"
+            - "$(CHISEL_SERVER)"
+            - "$(CHISEL_TUNNEL)"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 20Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          env:
+            - name: CHISEL_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  key: chisel.server
+                  name: chisel-client
+            - name: CHISEL_TUNNEL
+              valueFrom:
+                configMapKeyRef:
+                  key: chisel.tunnel
+                  name: chisel-client
+            - name: AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: chisel-client-auth
+                  key: AUTH

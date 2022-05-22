@@ -49,8 +49,8 @@ spec:
           traefik:
             expose: true
           {{- end }}
-          web:
           {{- if .Values.traefik.tlsOnly }}
+          web:
             redirectTo: websecure
           {{- end }}
           websecure:
