@@ -30,6 +30,8 @@ spec:
             allowExternalNameServices: true
           kubernetesIngress:
             allowExternalNameServices: true
+            publishedService:
+              enabled: true
         logs:
           general:
             level: ERROR

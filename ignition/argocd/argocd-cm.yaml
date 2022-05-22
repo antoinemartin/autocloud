@@ -11,7 +11,16 @@ data:
   timeout.reconciliation: "15s"
   kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
   helm.valuesFileSchemes: >-
-      secrets+gpg-import, secrets+gpg-import-kubernetes,
-      secrets+age-import, secrets+age-import-kubernetes,
-      secrets,
-      https,http
+    secrets+gpg-import, secrets+gpg-import-kubernetes,
+    secrets+age-import, secrets+age-import-kubernetes,
+    secrets,
+    https,http
+  # resource.exclusions: |
+  #   - apiGroups:
+  #       - "cert-manager.io"
+  #       - "acme.cert-manager.io"
+  #     kinds:
+  #       - "CertificateRequest"
+  #       - "Order"
+  #     clusters:
+  #       - https://kubernetes.default.svc
