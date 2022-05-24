@@ -1,0 +1,12 @@
+1. Get the application endpoint by running these commands:
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "sish.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "sish.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  export SERVICE_PORT={{ .Values.service.ports.ssh }}
+  echo $SERVICE_IP:$SERVICE_PORT
+
+2. Change the DNS {{ .Values.sish.config.domain }} and *.{{ .Values.sish.config.domain }} to point to $SERVICE_IP
+
+3. The service should be available on the main domain name {{ .Values.sish.config.domain }}:
+
+  ssh -p {{ .Values.service.ports.ssh }} -R myhost.{{ .Values.sish.config.domain }}:443:localhost:443  {{ .Values.sish.config.domain }} sni-proxy=true

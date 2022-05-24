@@ -1,0 +1,208 @@
+# Default values for sish.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: antoniomika/sish
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: LoadBalancer
+  ports:
+    http: 80
+    https: 443
+    ssh: 2222
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# sish configuration
+sish:
+  config:
+    # Ports
+    # TODO: Use these ports in in the service service
+    ssh-address: ":2222"
+    http-address: ":80"
+    https-address: ":443"
+
+    # Domains
+    domain: holepunch.in
+
+    # Other domains binding
+    bind-hosts: insinde.link,develop.cx
+    bind-any-host: true
+    verify-dns: false
+
+    # Authentication
+    # This configuration activates only ssh key auth
+    authentication: true
+    authentication-password: ""
+
+    # Port binding
+    # Fail if requested ports and domains are already used
+    bind-random-subdomains: false
+    bind-random-aliases: false
+    bind-random-ports: false
+    force-requested-ports: true
+
+    # Console
+    service-console: false
+    admin-console: false
+    admin-console-token: ""
+
+    ###
+    # SNI
+    ###
+    https: false
+    sni-proxy: true
+    # Needed to bind port 443
+    port-bind-range: 0-65535
+    verify-ssl: false
+    # IMPORTANT: SNI wouldn't work without that (yes, the first one too)
+    tcp-load-balancer: true
+    sni-load-balancer: true
+
+    # Proxy protocol
+    proxy-protocol: true
+    proxy-protocol-use-timeout: true
+    proxy-protocol-listener: true
+    proxy-protocol-version: userdefined
+    proxy-protocol-policy: use
+    proxy-protocol-timeout: 200ms
+
+    https-ondemand-certificate: false
+    https-ondemand-certificate-accept-terms: true
+    https-ondemand-certificate-email: antoine@mrtn.fr
+
+    # These keys should be left unmodified
+
+    # Directories
+    authentication-keys-directory: /pubkeys
+    private-keys-directory: /keys
+    https-certificate-directory: /ssl
+
+    # Logging
+    log-to-stdout: true
+    log-to-client: true
+    debug: false
+
+    # As keys and certificates are set up at start, don't watch directories
+    # too often
+    authentication-keys-directory-watch-interval: 60s
+    https-certificate-directory-watch-interval: 60s
+
+    ## Left over keys
+    ## see https://github.com/antoniomika/sish/blob/main/config.example.yml
+    # alias-load-balancer: false
+    # append-user-to-subdomain: false
+    # append-user-to-subdomain-separator: '-'
+    # banned-aliases: ""
+    # banned-countries: ""
+    # banned-ips: ""
+    # banned-subdomains: localhost
+    # bind-http-auth: true
+    # bind-http-path: true
+    # bind-random-aliases-length: 3
+    # bind-random-subdomains-length: 3
+    # bind-root-domain: false
+    # cleanup-unauthed: true
+    # cleanup-unauthed-timeout: 5s
+    # cleanup-unbound: false
+    # cleanup-unbound-timeout: 5s
+    # force-requested-aliases: false
+    # force-requested-subdomains: false
+    # force-tcp-address: false
+    # geodb: false
+    # http-load-balancer: false
+    # http-port-override: 0
+    # https-port-override: 0
+    # idle-connection: true
+    # idle-connection-timeout: 5s
+    # load-templates: true
+    # load-templates-directory: templates/*
+    # localhost-as-all: true
+    # log-to-file: false
+    # log-to-file-compress: false
+    # log-to-file-max-age: 28
+    # log-to-file-max-backups: 3
+    # log-to-file-max-size: 500
+    # log-to-file-path: /tmp/sish.log
+    # ping-client: true
+    # ping-client-interval: 5s
+    # ping-client-timeout: 5s
+    # private-key-passphrase: S3Cr3tP4$$phrAsE
+    # redirect-root: true
+    # redirect-root-location: https://github.com/antoniomika/sish
+    # rewrite-host-header: true
+    # service-console-token: ""
+    # sni-proxy-https: false
+    # strip-http-path: true
+    # tcp-address: ""
+    # tcp-aliases: false
+    # time-format: 2006/01/02 - 15:04:05
+    # whitelisted-countries: ""
+    # whitelisted-ips: ""
+
+  server_keys:
+    {}
+    ## Use helm secrets and a specific value file if possible
+    # ssh_key: |
+    #   -----BEGIN OPENSSH PRIVATE KEY-----
+    #   ...
+    #   -----END OPENSSH PRIVATE KEY-----
+  auth:
+    {}
+    ## Github account which public keys to add
+    # github_accounts: |
+    #   antoinemartin
+    ## Insert the authorized keys here
+    # authorized_keys: |
+    #   ecdsa-sha2-nistp256 AAA...

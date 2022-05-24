@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sish
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: sish
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://helm.traefik.io/traefik
+    targetRevision: main
+    path: packages/sish
+    helm:
+      releaseName: sish
+      valueFiles:
+        - secrets://../../values/sish.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
