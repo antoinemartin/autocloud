@@ -8,8 +8,6 @@ spec:
         elements:
           - package: cert-manager
             namespace: cert-manager
-          - package: chisel-client
-            namespace: traefik
           - package: sish-client
             namespace: traefik
   template:
