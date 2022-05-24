@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "sish.fullname" . }}-test-connection"
+  labels:
+    {{- include "sish.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: ssh
+      image: alpine:latest
+      command: [/bin/sh, -c]
+      args: 
+        - |
+          echo "dummy" | nc {{ include "sish.fullname" . }} {{ .Values.service.ports.ssh }} | grep -q "SSH-2.0-Go"
+  restartPolicy: Never

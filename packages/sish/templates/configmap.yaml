@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sish.fullname" . }}-config
+  labels:
+    {{- include "sish.labels" . | nindent 4 }}
+data:
+    config.yaml: |
+{{- toYaml .Values.sish.config | nindent 6 }}
+    {{- with .Values.sish.auth.authorized_keys }}
+    authorized_keys: |
+        {{- . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.sish.auth.github_accounts }}
+    github_accounts: |
+        {{- . | nindent 8 }}
+    {{- end }}

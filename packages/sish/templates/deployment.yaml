@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sish.fullname" . }}
+  labels:
+    {{- include "sish.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "sish.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "sish.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sish.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "sish.fullname" . }}-config
+      - name: public-keys
+        emptyDir: {}
+      - name: private-keys
+        secret: 
+          secretName: {{ include "sish.fullname" . }}-server-keys
+      - name: certificates
+        emptyDir: {}
+      initContainers:
+        - name: {{ .Chart.Name }}-test
+          image: alpine:latest
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [/bin/sh, -c]
+          args:
+          - |
+            set -uoe pipefail
+            trap '' EXIT TERM INT
+            if [ -f /config/github_accounts ]; then
+              cd /pubkeys
+              for account in $(cat /config/github_accounts); do
+                wget "https://github.com/${account}.keys"
+              done
+            fi
+            [ -f /config/authorized_keys ] && cp /config/authorized_keys /pubkeys || /bin/true
+            # sleep infinity & wait
+          volumeMounts:
+            - name: public-keys
+              mountPath: /pubkeys
+            - name: private-keys
+              mountPath: /keys
+            - name: certificates
+              mountPath: /ssl
+            - name: config
+              mountPath: /config
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          args:
+            - --config
+            - /app/config/config.yaml
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range $name, $port := .Values.service.ports }}
+            - name: {{ $name }}
+              containerPort: {{ $port }}
+              protocol: TCP
+            {{- end }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.service.ports.ssh }}
+            initialDelaySeconds: 5
+            failureThreshold: 3
+            periodSeconds: 30
+            timeoutSeconds: 3
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.service.ports.ssh }}
+            initialDelaySeconds: 5
+            failureThreshold: 3
+            periodSeconds: 30
+            timeoutSeconds: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+            - name: public-keys
+              mountPath: {{ index .Values.sish.config "authentication-keys-directory" }}
+            - name: private-keys
+              mountPath: {{ index .Values.sish.config "private-keys-directory" }}
+            - name: certificates
+              mountPath: {{ index .Values.sish.config "https-certificate-directory" }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

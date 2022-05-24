@@ -1,0 +1,9 @@
+apiVersion: v2
+name: sish
+description: An open source serveo/ngrok alternative. HTTP(S)/WS(S)/TCP Tunnels to localhost using only SSH.
+
+type: application
+
+version: 0.1.0
+
+appVersion: "2.2.1"
