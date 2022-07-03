@@ -9,8 +9,21 @@ metadata:
     app.kubernetes.io/component: edge
     app.kubernetes.io/part-of: autocloud
 data:
-  sish.server: holepunch.in
-  sish.tunnel: citest.holepunch.in:443:traefik.traefik.svc:443
+  config: |
+    PubkeyAcceptedKeyTypes +ssh-rsa
+    Host sishserver
+      HostName holepunch.in
+      Port 2222
+      BatchMode yes
+      IdentityFile ~/.ssh_keys/id_rsa
+      IdentitiesOnly yes
+      LogLevel ERROR
+      ServerAliveInterval 10
+      ServerAliveCountMax 2
+      RemoteCommand sni-proxy=true
+      RemoteForward citest.holepunch.in:443 traefik.traefik.svc:443
+  known_hosts: |
+    [holepunch.in]:2222 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3abW2y3T5dodnI5O1Z/2KlIdH3bwnbGDvCFf13zlh
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,7 +51,11 @@ spec:
         app.kubernetes.io/part-of: autocloud
     spec:
       volumes:
-        - name: ssh-credentials
+        - name: ssh-config
+          configMap:
+            name: sish-client
+            defaultMode: 0600
+        - name: ssh-keys
           secret:
             secretName: sish-ssh-credentials
             defaultMode: 0600
@@ -46,13 +63,7 @@ spec:
         - name: sish-client
           image: kroniak/ssh-client:3.15
           imagePullPolicy: IfNotPresent
-          command:
-            - /usr/bin/ssh
-          args:
-            - -R
-            - "$(SISH_TUNNEL)"
-            - "$(SISH_SERVER)"
-            - sni-proxy=true
+          command: [/usr/bin/ssh, sishserver]
           resources:
             requests:
               cpu: 50m
@@ -60,17 +71,8 @@ spec:
             limits:
               cpu: 100m
               memory: 100Mi
-          env:
-            - name: SISH_SERVER
-              valueFrom:
-                configMapKeyRef:
-                  key: sish.server
-                  name: sish-client
-            - name: SISH_TUNNEL
-              valueFrom:
-                configMapKeyRef:
-                  key: sish.tunnel
-                  name: sish-client
           volumeMounts:
-            - name: ssh-credentials
+            - name: ssh-config
               mountPath: /root/.ssh
+            - name: ssh-keys
+              mountPath: /root/.ssh_keys
