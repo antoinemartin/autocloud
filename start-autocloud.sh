@@ -12,7 +12,7 @@
 #
 # or
 # 
-# export SOPS_AGE_KEY_FILE=/mnt/Users/.../age.txt
+# export SOPS_AGE_KEY_FILE=/mnt/wsl/age.txt
 #
 # To use you own secrets, clone this repo and personalize the 
 # ignition/argocd/secrets.yaml file
@@ -20,6 +20,8 @@
 # Hopefully this will be integrated soon in kaweezle: https://kaweezle.com
 
 set -ueo pipefail
+
+CONFIG_REF="deploy/citest"
 
 # Add the Kaweezle APK repository
 wget -qO - "https://github.com/kaweezle/iknite/releases/download/v0.1.18/kaweezle-devel@kaweezle.com-c9d89864.rsa.pub" > /etc/apk/keys/kaweezle-devel@kaweezle.com-c9d89864.rsa.pub
@@ -29,12 +31,12 @@ grep -q kaweezle /etc/apk/repositories || echo https://kaweezle.com/repo/ >> /et
 apk --update add krmfnsops k9s openssl iknite
 
 # Start the cluster and deploy ArgoCD...
-export IKNITE_KUSTOMIZE_DIRECTORY="https://github.com/antoinemartin/autocloud//ignition/argocd/?ref=main"
+export IKNITE_KUSTOMIZE_DIRECTORY="https://github.com/antoinemartin/autocloud//ignition/argocd/?ref=${CONFIG_REF}"
 # If the cluster is already started (kaweezle), use configure instead of start
 iknite -v debug -w 120 start
 
 # Now deploy the app of apps. ArgoCD will take care of the rest
-kubectl apply -f https://raw.githubusercontent.com/antoinemartin/autocloud/main/apps-app-uninode.yaml
+kubectl apply -f https://raw.githubusercontent.com/antoinemartin/autocloud/${CONFIG_REF}/apps-app-uninode.yaml
 
 iknite status -w
 

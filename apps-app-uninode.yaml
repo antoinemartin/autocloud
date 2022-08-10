@@ -24,10 +24,14 @@ spec:
           tlsOnly: false
         spec:
           source:
-            targetRevision: main
+            targetRevision: deploy/citest
+        instance_apps:
+          enabled: true
+          source:
+            targetRevision: deploy/citest
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
