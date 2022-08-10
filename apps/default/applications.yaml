@@ -8,6 +8,8 @@ spec:
         elements:
           - package: cert-manager
             namespace: cert-manager
+          - package: sish-client
+            namespace: traefik
   template:
     metadata:
       name: "{{ package }}"

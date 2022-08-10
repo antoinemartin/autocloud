@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ./sish-client.yaml
+  - ./argocd-ingress.yaml
 
 generators:
   - ./sops-generator.yaml
