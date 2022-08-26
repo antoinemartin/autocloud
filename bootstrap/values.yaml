@@ -5,7 +5,6 @@ spec:
     repoURL: https://github.com/antoinemartin/autocloud
     targetRevision: main
 
-
 traefik:
   chartVersion: "10.19.5"
   tlsOnly: true
@@ -15,7 +14,7 @@ traefik:
 
 uninode: false
 
-instance_apps:
+apps:
   enabled: false
   source:
     path: apps/default

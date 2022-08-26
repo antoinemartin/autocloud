@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps-app-uninode
+  name: bootstrap
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -13,7 +13,7 @@ spec:
   source:
     path: bootstrap
     repoURL: https://github.com/antoinemartin/autocloud
-    targetRevision: main
+    targetRevision: deploy/citest
     helm:
       # This is for secrets
       valueFiles: []
@@ -25,7 +25,7 @@ spec:
         spec:
           source:
             targetRevision: deploy/citest
-        instance_apps:
+        apps:
           enabled: true
           source:
             targetRevision: deploy/citest

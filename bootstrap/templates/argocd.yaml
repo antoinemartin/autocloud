@@ -18,7 +18,7 @@ spec:
     kind: Application
   project: default
   source:
-    path: ignition/argocd
+    path: packages/argocd
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}
   syncPolicy:

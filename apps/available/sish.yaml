@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://helm.traefik.io/traefik
+    repoURL: https://github.com/antoinemartin/autocloud.git
     targetRevision: main
     path: packages/sish
     helm:

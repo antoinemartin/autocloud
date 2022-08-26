@@ -31,12 +31,13 @@ grep -q kaweezle /etc/apk/repositories || echo https://kaweezle.com/repo/ >> /et
 apk --update add krmfnsops k9s openssl iknite
 
 # Start the cluster and deploy ArgoCD...
-export IKNITE_KUSTOMIZE_DIRECTORY="https://github.com/antoinemartin/autocloud//ignition/argocd/?ref=${CONFIG_REF}"
+export IKNITE_KUSTOMIZE_DIRECTORY="https://github.com/antoinemartin/autocloud//packages/argocd/?ref=${CONFIG_REF}"
 # If the cluster is already started (kaweezle), use configure instead of start
+openrc -n default
 iknite -v debug -w 120 start
 
-# Now deploy the app of apps. ArgoCD will take care of the rest
-kubectl apply -f https://raw.githubusercontent.com/antoinemartin/autocloud/${CONFIG_REF}/apps-app-uninode.yaml
+# Now deploy the root app of apps. ArgoCD will take care of the rest
+kubectl apply -f https://raw.githubusercontent.com/antoinemartin/autocloud/${CONFIG_REF}/bootstrap-uninode.yaml
 
 iknite status -w
 

@@ -8,13 +8,13 @@ spec:
     namespace: argocd
     server: https://kubernetes.default.svc
   ignoreDifferences:
-  - group: argoproj.io
-    jsonPointers:
-    - /status
-    kind: Application
+    - group: argoproj.io
+      jsonPointers:
+        - /status
+      kind: Application
   project: default
   source:
-    path: ignition/argocd
+    path: packages/argocd
     repoURL: https://github.com/antoinemartin/autocloud.git
     targetRevision: main
   syncPolicy:
@@ -23,4 +23,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
