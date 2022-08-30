@@ -24,3 +24,13 @@ data:
   #       - "Order"
   #     clusters:
   #       - https://kubernetes.default.svc
+  url: https://citest.holepunch.in
+  dex.config: |
+    connectors:
+      # GitHub example
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: a98a3e6e82b3732c1bf2
+          clientSecret: $dex.github.clientSecret

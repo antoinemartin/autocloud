@@ -21,3 +21,13 @@ patches:
       kind: Deployment
       name: argocd-repo-server
   - path: argocd-cm.yaml
+  - patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-rbac-cm
+      data:
+        policy.default: role:admin
+    target:
+      kind: ConfigMap
+      name: argocd-rbac-cm
