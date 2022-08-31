@@ -19,16 +19,10 @@ spec:
       valueFiles: []
       values: |
         uninode: true
-        traefik:
-          # This is for punch hole termination
-          tlsOnly: false
-        spec:
-          source:
-            targetRevision: deploy/citest
+        common:
+          targetRevision: deploy/citest
         apps:
           enabled: true
-          source:
-            targetRevision: deploy/citest
   syncPolicy:
     automated:
       prune: true
