@@ -1,0 +1,14 @@
+# For this to work, you need the following configuration in your .git/config:
+#
+# [diff "sopsdiffer"]
+#   textconv = sopsfilter diff
+# [filter "sopsfilter"]
+#   clean = sopsfilter clean %f
+#   smudge = sopsfilter smudge %f
+#   required = true
+# 
+# You also need to install the support/scripts/sopsfilter into your path:
+#
+#   cp support/scripts/sopsfilter /usr/local/bin
+#
+secrets.yaml diff=sopsdiffer filter=sopsfilter
