@@ -21,8 +21,8 @@ spec:
   project: default
   source:
     path: {{ .Values.apps.source.path }}
-    repoURL: {{ .Values.apps.source.repoURL }}
-    targetRevision: {{ .Values.apps.source.targetRevision }}
+    repoURL: {{ .Values.apps.source.repoURL | default .Values.common.repoURL }}
+    targetRevision: {{ .Values.apps.source.targetRevision | default .Values.common.targetRevision }}
   syncPolicy:
     automated:
       allowEmpty: true

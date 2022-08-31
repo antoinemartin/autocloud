@@ -1,9 +1,14 @@
+common:
+  repoURL: https://github.com/antoinemartin/autocloud
+  targetRevision: main
+
 spec:
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/antoinemartin/autocloud
-    targetRevision: main
+    {}
+    # repoURL: "{{ .Values.common.repoUrl }}"
+    # targetRevision: "{{ .Values.common.targetRevision }}"
 
 traefik:
   chartVersion: "10.19.5"
@@ -18,5 +23,5 @@ apps:
   enabled: false
   source:
     path: apps/default
-    repoURL: https://github.com/antoinemartin/autocloud
-    targetRevision: main
+    # repoURL: "{{ .Values.common.repoUrl }}"
+    # targetRevision: "{{ .Values.common.targetRevision }}"

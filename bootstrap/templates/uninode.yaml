@@ -21,8 +21,8 @@ spec:
   project: default
   source:
     path: packages/uninode
-    repoURL: {{ .Values.spec.source.repoURL }}
-    targetRevision: {{ .Values.spec.source.targetRevision }}
+    repoURL: {{ .Values.spec.source.repoURL | default .Values.common.repoURL }}
+    targetRevision: {{ .Values.spec.source.targetRevision | default .Values.common.targetRevision }}
   syncPolicy:
     automated:
       prune: true
