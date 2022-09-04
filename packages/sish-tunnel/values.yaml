@@ -1,0 +1,62 @@
+# Default values for sish-tunnel.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: kroniak/ssh-client
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 20Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# SISH configuration
+sish:
+  ssh_host: holepunch.in
+  ssh_port: 2222
+  tunnel_domains:
+    - citest.holepunch.in
+  tunnel_port: 443
+  local_service: traefik.traefik.svc
+  local_port: 443
+  server_alive_interval: 10
+  server_alive_count_max: 2
+  sni_enabled: true
+  server_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3abW2y3T5dodnI5O1Z/2KlIdH3bwnbGDvCFf13zlh
+  # this should go into an encrypted values file
+  local_ssh_key: |-
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    ...
+    -----END OPENSSH PRIVATE KEY-----

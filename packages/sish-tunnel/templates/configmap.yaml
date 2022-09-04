@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sish-tunnel.fullname" . }}
+  labels:
+    {{- include "sish-tunnel.labels" . | nindent 4 }}
+data:
+  config: |
+    PubkeyAcceptedKeyTypes +ssh-rsa
+    Host sishserver
+      HostName {{ .Values.sish.ssh_host }}
+      Port {{ .Values.sish.ssh_port }}
+      BatchMode yes
+      IdentityFile ~/.ssh_keys/id_rsa
+      IdentitiesOnly yes
+      LogLevel ERROR
+      ServerAliveInterval {{ .Values.sish.server_alive_interval }}
+      ServerAliveCountMax {{ .Values.sish.server_alive_count_max }}
+      {{- if .Values.sish.sni_enabled }}
+      RemoteCommand sni-proxy=true
+      {{- end }}
+      {{- range $index, $domain := .Values.sish.tunnel_domains }}
+      RemoteForward {{ $domain }}:{{ $.Values.sish.tunnel_port }} {{ $.Values.sish.local_service }}:{{ $.Values.sish.local_port }}
+      {{- end }}
+  known_hosts: |
+    [{{ .Values.sish.ssh_host }}]:{{ .Values.sish.ssh_port }} {{ .Values.sish.server_ssh_key }}
