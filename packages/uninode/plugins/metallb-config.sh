@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -z "$HOST_IP" ]; then
-  ip=$(kubectl cluster-info | head -1 | sed -E '1 s#.*https://(.*):.*#\1#g')
+  ip=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}')
 else
   ip="$HOST_IP"
 fi

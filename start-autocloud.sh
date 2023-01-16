@@ -37,7 +37,7 @@ openrc -n default
 iknite -v debug -w 120 start
 
 # Now deploy the root app of apps. ArgoCD will take care of the rest
-kubectl apply -f https://raw.githubusercontent.com/antoinemartin/autocloud/${CONFIG_REF}/bootstrap-uninode.yaml
+kubectl apply -f "https://raw.githubusercontent.com/antoinemartin/autocloud/${CONFIG_REF}/bootstrap-uninode.yaml"
 
 iknite status -w
 
