@@ -5,6 +5,7 @@ namespace: argocd
 resources:
   - namespace.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - bootstrap-application.yaml
 
 configMapGenerator:
   - name: argocd-cmd-params-cm
