@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: bootstrap
+    path: packages/bootstrap
     repoURL: https://github.com/antoinemartin/autocloud
     targetRevision: deploy/citest
     helm:

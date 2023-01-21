@@ -73,6 +73,9 @@ spec:
         - name: create-address-pools
           image: boxboat/kubectl:1.26.0
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: autocloud
           env:
             - name: ROLLOUT_INITIAL_DELAY
               value: "5"
@@ -86,36 +89,4 @@ spec:
               sleep $ROLLOUT_INITIAL_DELAY
               ns=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
               kubectl -n "$ns" rollout status deployments,statefulsets,daemonsets --timeout=$ROLLOUT_TIMEOUT
-              cat - <<EOF | kubectl apply -f -
-              apiVersion: argoproj.io/v1alpha1
-              kind: Application
-              metadata:
-                name: bootstrap
-                namespace: $ns
-                finalizers:
-                  - resources-finalizer.argocd.argoproj.io
-              spec:
-                destination:
-                  namespace: $ns
-                  server: https://kubernetes.default.svc
-                project: default
-                source:
-                  path: bootstrap
-                  repoURL: https://github.com/antoinemartin/autocloud
-                  targetRevision: deploy/citest
-                  helm:
-                    # This is for secrets
-                    valueFiles: []
-                    values: |
-                      uninode: true
-                      common:
-                        targetRevision: deploy/citest
-                      apps:
-                        enabled: true
-                syncPolicy:
-                  automated:
-                    prune: true
-                    selfHeal: true
-                  syncOptions:
-                    - CreateNamespace=true
-              EOF
+              kubectl apply -f "https://raw.githubusercontent.com/${autocloud_repo}/${autocloud_targetRevision}/apps/available/bootstrap.yaml"
