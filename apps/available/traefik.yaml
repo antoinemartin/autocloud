@@ -49,7 +49,6 @@ spec:
           websecure:
             tls:
               enabled: true
-
     repoURL: https://helm.traefik.io/traefik
     targetRevision: "10.19.5"
   syncPolicy:
