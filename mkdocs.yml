@@ -1,0 +1,44 @@
+site_name: "Autocloud: GitOps Kubernetes Bootstrapper"
+repo_name: "antoinemartin/autocloud"
+repo_url: "https://github.com/antoinemartin/autocloud"
+edit_uri: "edit/main/docs/"
+docs_dir: "docs"
+# cSpell: disable
+theme:
+  name: material
+  features:
+    - tabs
+    - content.action.view
+    - content.action.edit
+    - toc.follow
+    - navigation.top
+    - navigation.footer
+    - content.code.annotate
+    - content.code.copy
+markdown_extensions:
+  - def_list
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+  - search
+  - awesome-pages
+  - include-markdown
+extra:
+  version:
+    provider: mike

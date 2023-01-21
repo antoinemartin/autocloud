@@ -1,0 +1,7 @@
+title: Getting Started
+nav:
+  - "1. Pre-requisites": 1-pre-requisites.md
+  - "2. Gitops setup": 2-gitops-setup.md
+  - "3. Change the encryption key": 3-change-encryption-key.md
+  - "4. Adapt the environment": 4-environment-adaptation.md
+  - "5. Deploy the cluster": 5-cluster-deployment.md

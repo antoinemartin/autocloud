@@ -10,7 +10,17 @@
       "files": "*.yaml",
       "options": {
         "singleQuote": false,
-        "bracketSpacing": false
+        "bracketSpacing": false,
+        "proseWrap": "always",
+        "printWidth": 80
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "always",
+        "tabWidth": 4,
+        "printWidth": 80
       }
     },
     {

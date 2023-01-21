@@ -1,0 +1,6 @@
+nav:
+  - Overview: index.md
+  - Architecture: architecture.md
+  - Getting Started: getting-started
+  - Bootstrapping: bootstrapping.md
+  - Components: components
