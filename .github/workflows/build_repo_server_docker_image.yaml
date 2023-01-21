@@ -5,7 +5,7 @@ on:
       tag:
         description: Docker image tag
         required: true
-        default: "2.3.3-0.144.0"
+        default: "2.5.4-0.144.0"
 
 env:
   DOCKER_ORGANIZATION: antoinemartin
