@@ -2,6 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: autocloud
+# Dot (.) cannot be used here as this is going to be used as environment
+# variables
 data:
   autocloud_repo: antoinemartin/autocloud
   autocloud_repoURL: https://github.com/antoinemartin/autocloud
