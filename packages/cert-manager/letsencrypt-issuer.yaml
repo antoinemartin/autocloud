@@ -23,3 +23,15 @@ spec:
             consumerKeySecretRef:
               name: ovh-api-credentials
               key: consumer_key
+        selector:
+          dnsZones:
+            - holepunch.in
+      - dns01:
+          cloudflare:
+            email: antoine@openance.com
+            apiKeySecretRef:
+              name: cloudflare-apikey-secret
+              key: apiKey
+        selector:
+          dnsZones:
+            - autokube.net

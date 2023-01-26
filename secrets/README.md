@@ -114,7 +114,6 @@ kind: PlatformSecrets
 
 <!-- prettier-ignore-start -->
 
-
 [sops]: https://github.com/mozilla/sops
 [age]: https://github.com/FiloSottile/age
 [krmfnsops]: https://github.com/kaweezle/krmfnsops

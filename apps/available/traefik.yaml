@@ -44,8 +44,8 @@ spec:
           # BEWARE: use only for debugging
           # traefik:
           #   expose: true
-          web:
-            redirectTo: websecure
+          # web:
+          #   redirectTo: websecure
           websecure:
             tls:
               enabled: true

@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared
+  labels:
+    app.kubernetes.io/name: "cloudflared"
+    app.kubernetes.io/component: edge
+    app.kubernetes.io/part-of: autocloud
+data:
+  config.yaml: |
+    tunnel: 84857ed2-8b07-461a-a4eb-486409328bce
+    credentials-file: /credentials/credentials.json
+
+    ingress:
+    - hostname: "*.autokube.net"
+      service: http://traefik.traefik.svc:80
+    - service: http_status:404
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflared
+  labels:
+    app.kubernetes.io/name: "cloudflared"
+    app.kubernetes.io/component: edge
+    app.kubernetes.io/part-of: autocloud
+type: Opaque
+stringData:
+  credentials.json: |
+    {"AccountTag":"","TunnelSecret":"","TunnelID":"84857ed2-8b07-461a-a4eb-486409328bce"}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: "cloudflared"
+    app.kubernetes.io/component: edge
+    app.kubernetes.io/part-of: autocloud
+  name: cloudflared
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      pod: cloudflared
+  template:
+    metadata:
+      labels:
+        pod: cloudflared
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: cloudflared
+        - name: credentials
+          secret:
+            secretName: cloudflared
+      containers:
+        - command:
+            - cloudflared
+            - tunnel
+            # In a k8s environment, the metrics server needs to listen outside the pod it runs on.
+            # The address 0.0.0.0:2000 allows any pod in the namespace.
+            - --metrics
+            - 0.0.0.0:2000
+            - --config
+            - /etc/cloudflared/config.yaml
+            - run
+          image: cloudflare/cloudflared:latest
+          imagePullPolicy: IfNotPresent
+          name: cloudflared
+          livenessProbe:
+            httpGet:
+              # Cloudflared has a /ready endpoint which returns 200 if and only if
+              # it has an active connection to the edge.
+              path: /ready
+              port: 2000
+            failureThreshold: 1
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 20Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/cloudflared
+            - name: credentials
+              mountPath: /credentials

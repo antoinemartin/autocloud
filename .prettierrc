@@ -12,6 +12,14 @@
         "singleQuote": false,
         "bracketSpacing": false
       }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "always",
+        "tabWidth": 4,
+        "printWidth": 80
+      }
     }
   ]
 }

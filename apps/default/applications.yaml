@@ -10,6 +10,8 @@ spec:
             namespace: cert-manager
           - package: sish-client
             namespace: traefik
+          - package: cloudflare-client
+            namespace: traefik
   template:
     metadata:
       name: "{{ package }}"
