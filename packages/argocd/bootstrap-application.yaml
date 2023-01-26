@@ -61,6 +61,8 @@ metadata:
     app: argocd
   name: create-bootstrap-application
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: Skip
 spec:
   ttlSecondsAfterFinished: 100
   backoffLimit: 3
