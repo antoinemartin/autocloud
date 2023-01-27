@@ -1,5 +1,6 @@
-# Modified version of https://github.com/chatwork/dockerfiles/blob/master/argocd-helmfile/Dockerfile
-# to include last version of kustomize and krmfnsops, a ksops like
+# Modified version of https://github.com/chatwork/dockerfiles/blob/master/argocd-helmfargoile/Dockerfile
+# to include last version of kustomize and krmfnsops, a ksops like.
+# The base image can be seen here: https://github.com/argoproj/argo-cd/blob/v2.5.4/Dockerfile
 FROM argoproj/argocd:v2.5.4
 
 LABEL version="2.5.4-0.144.0"
