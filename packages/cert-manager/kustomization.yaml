@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 # Note: setting the namespace makes the deployment fail as cert-manager creates
-# Roles in kube-systm
+# Roles in kube-system
 # namespace: cert-manager
 
 resources:
@@ -9,8 +9,9 @@ resources:
   - ./letsencrypt-issuer.yaml
 #  - ./testdns-certificate.yaml
 
+# Import decoded platform secrets
 generators:
-  - sops-generator.yaml
+  - ../../secrets
 
 # TODO: Remove that once the images have been settled
 patches:
@@ -20,3 +21,37 @@ patches:
         value: Always
     target:
       kind: Deployment
+
+# Replace secrets in configuration
+replacements:
+  - source:
+      name: autocloud-secrets
+      fieldPath: data.cloudflare.apiKey
+    targets:
+      - select:
+          kind: Secret
+          name: cloudflare-apikey-secret
+        fieldPaths:
+          - stringData.apiKey
+  - source:
+      name: autocloud-secrets
+      fieldPath: data.ovh.application_secret
+    targets:
+      - select:
+          kind: Secret
+          name: ovh-api-credentials
+        fieldPaths:
+          - stringData.application_secret
+  - source:
+      name: autocloud-secrets
+      fieldPath: data.ovh.consumer_key
+    targets:
+      - select:
+          kind: Secret
+          name: ovh-api-credentials
+        fieldPaths:
+          - stringData.consumer_key
+
+# Remove secrets
+transformers:
+  - ../../secrets/remove

@@ -1,3 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ovh-api-credentials
+  namespace: cert-manager
+type: Opaque
+stringData:
+  application_secret: Ug4yOimZdIbDnlYJFtsaNfpbrvNaJpwO
+  consumer_key: 4vzeoro8p4ka02sr650mza9o3hlydmtp
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-apikey-secret
+  namespace: cert-manager
+type: Opaque
+stringData:
+  apiKey: fv71ywv1roof35lgobjdzafs63f2qum205mzr
+---
 # yaml-language-server: $schema=./schemas/issuer.yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
