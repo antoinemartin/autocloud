@@ -27,7 +27,7 @@
   value:
     name: SOPS_AGE_KEY_FILE
     value: /sops-private-keys/age_key.txt
-# Add the host IP (metallb)
+# Add the host IP (for metallb)
 - op: add
   path: /spec/template/spec/containers/0/env/-
   value:
