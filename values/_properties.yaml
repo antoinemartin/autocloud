@@ -1,0 +1,42 @@
+apiVersion: autocloud.config.kaweezle.com/v1alpha1
+kind: PlatformValues
+metadata:
+  name: autocloud-values
+  annotations:
+    config.kaweezle.com/local-config: "true"
+    config.kaweezle.com/inject-local: "true"
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+data:
+  cluster:
+    uninode: true
+    dnsZone: autokube.net
+    argocd:
+      ingresses:
+        - citest.holepunch.in
+        - citest.autokube.net
+  git:
+    repoURL: https://github.com/antoinemartin/autocloud.git
+    targetRevision: deploy/citest
+  github:
+    organization: antoinemartin
+    repository: autocloud
+    repo: antoinemartin/autocloud
+    email: antoine@mrtn.fr
+    clientID: a98a3e6e82b3732c1bf2
+  cloudflare:
+    email: antoine@openance.com
+    dnsZone: autokube.net
+    hostName: "*.autokube.net"
+    tunnel_id: 84857ed2-8b07-461a-a4eb-486409328bce
+  ovh:
+    applicationKey: 4KyIjUiRpDo4lpqY
+    dnsZone: holepunch.in
+  sish:
+    hostname: holepunch.in
+    remote: citest.holepunch.in
+    host_key: AAAAC3NzaC1lZDI1NTE5AAAAID+3abW2y3T5dodnI5O1Z/2KlIdH3bwnbGDvCFf13zlh
+  chisel:
+    server: https://gitlab.openance.dev/chisel
+    reverse_port: 30443

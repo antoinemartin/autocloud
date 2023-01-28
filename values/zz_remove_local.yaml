@@ -1,0 +1,24 @@
+apiVersion: builtin
+kind: RemoveTransformer
+metadata:
+  name: replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+targets:
+  - annotationSelector: config.kaweezle.com/local-config
+---
+apiVersion: builtin
+kind: AnnotationsTransformer
+metadata:
+  name: not-important-to-example
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+annotations:
+  internal.config.kubernetes.io/seqindent: wide
+fieldSpecs:
+  - path: metadata/annotations
+    create: true
