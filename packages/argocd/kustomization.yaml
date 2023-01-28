@@ -23,14 +23,11 @@ generators:
   - ../../secrets
 
 transformers:
+  - argocd-repo-server-patch.yaml
   - argocd-secrets-replacements.yaml
   - ../../secrets/remove
 
 patches:
-  - path: argocd-repo-server-patch.yaml
-    target:
-      kind: Deployment
-      name: argocd-repo-server
   - path: argocd-cm.yaml
   - path: argocd-secret.yaml
   - patch: |-
