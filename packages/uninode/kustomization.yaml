@@ -6,9 +6,7 @@ resources:
   - https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
   - https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
   - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
-generators:
-  - metallb-generator.yaml
+  - ./metallb-addresspool.yaml
 
 patches:
   - patch: |-
