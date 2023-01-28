@@ -13,23 +13,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: packages/bootstrap
+    path: apps/bootstrap
     repoURL: https://github.com/antoinemartin/autocloud.git
     targetRevision: deploy/citest
-    helm:
-      # Setting parameters as variables makes them subject to in place change
-      # with KRM functions
-      parameters:
-        - name: common.targetRevision
-          value: deploy/citest
-        - name: common.repoURL
-          value: https://github.com/antoinemartin/autocloud.git
-      # This is for secrets
-      valueFiles: []
-      values: |
-        uninode: true
-        apps:
-          enabled: true
   syncPolicy:
     automated:
       prune: true

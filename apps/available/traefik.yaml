@@ -9,6 +9,7 @@ spec:
   destination:
     namespace: traefik
     server: https://kubernetes.default.svc
+  ignoreDifferences: []
   project: default
   source:
     chart: traefik
@@ -57,4 +58,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  ignoreDifferences: []
