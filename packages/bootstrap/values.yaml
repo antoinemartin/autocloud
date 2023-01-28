@@ -1,5 +1,5 @@
 common:
-  repoURL: https://github.com/antoinemartin/autocloud
+  repoURL: https://github.com/antoinemartin/autocloud.git
   targetRevision: main
 
 spec:
