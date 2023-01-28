@@ -12,6 +12,16 @@ data:
   chisel.server: https://gitlab.openance.dev/chisel
   chisel.tunnel: R:30443:traefik.traefik.svc:80
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: chisel-client-auth
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: chisel-client-auth
+stringData:
+  AUTH: username:password
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
