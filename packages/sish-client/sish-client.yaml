@@ -1,9 +1,25 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sish-ssh-credentials
+  labels:
+    app.kubernetes.io/name: sish-ssh-credentials
+    app.kubernetes.io/component: edge
+    app.kubernetes.io/part-of: autocloud
+stringData:
+  id_ed25519: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+    QyNTUxOQAAACA4nXPm/isSCn3Jmsj2cqBIRhoZ6ZTegcxgFZhDKJXDTwAAAJgOYygIDmMo
+    CAAAAAtzc2gtZWQyNTUxOQAAACA4nXPm/isSCn3Jmsj2cqBIRhoZ6ZTegcxgFZhDKJXDTw
+    AAAECApDmEpcj6BVxPhdt2ZJB5llYEcGKmapyGXlg/y9Sjejidc+b+KxIKfcmayPZyoEhG
+    GhnplN6BzGAVmEMolcNPAAAAD2FudG9pbmVAbXJ0bi5mcgECAwQFBg==
+    -----END OPENSSH PRIVATE KEY-----
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: sish-client
-  namespace: traefik
   labels:
     app.kubernetes.io/name: "sish-client"
     app.kubernetes.io/component: edge
@@ -15,7 +31,7 @@ data:
       HostName holepunch.in
       Port 2222
       BatchMode yes
-      IdentityFile ~/.ssh_keys/id_rsa
+      IdentityFile ~/.ssh_keys/id_ed25519
       IdentitiesOnly yes
       LogLevel ERROR
       ServerAliveInterval 10
@@ -29,7 +45,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sish-client
-  namespace: traefik
   labels:
     app.kubernetes.io/name: "sish-client"
     app.kubernetes.io/component: edge

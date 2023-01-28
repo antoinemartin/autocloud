@@ -12,6 +12,8 @@ spec:
             namespace: traefik
           - package: cloudflare-client
             namespace: traefik
+          - package: ingresses
+            namespace: argocd
   template:
     metadata:
       name: "{{ package }}"

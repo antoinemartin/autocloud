@@ -14,24 +14,24 @@ working `password1234` like credentials.
 
 The objectives we pursue with this kustomization are the following:
 
-- Have plain _dumb_ secrets in `packages/*` and `applications/*`.
-- Have all the actual secrets located in one place (this kustomization).
-- Provide a way to replace the secrets with the actual values when building the
-  configurations.
+-   Have plain _dumb_ secrets in `packages/*` and `applications/*`.
+-   Have all the actual secrets located in one place (this kustomization).
+-   Provide a way to replace the secrets with the actual values when building
+    the configurations.
 
 The basic workflow with this kustomization when using secrets is the following:
 
-- Decrypt the secrets file.
-- Add the secret to the file.
-- Encrypt the secret file.
-- On the kustomization where the secret is used, import the secrets.
-- Make the replacement of the dumb secret with the actual secret.
+-   Decrypt the secrets file.
+-   Add the secret to the file.
+-   Encrypt the secret file.
+-   On the kustomization where the secret is used, import the secrets.
+-   Make the replacement of the dumb secret with the actual secret.
 
 ## Pre-requisites
 
-- [sops]
-- [age]
-- [krmfnsops]
+-   [sops]
+-   [age]
+-   [krmfnsops]
 
 **TODO** Add some link to the actual setup documentation (mkdocs).
 
@@ -49,18 +49,18 @@ Add the secret to the file. You can use hierarchy:
 apiVersion: autocloud.config.kaweezle.com/v1alpha1
 kind: PlatformSecrets
 metadata:
-  name: autocloud-secrets
-  annotations:
-    config.kubernetes.io/function: |
-      exec:
-        path: krmfnsops
+    name: autocloud-secrets
+    annotations:
+        config.kubernetes.io/function: |
+            exec:
+              path: krmfnsops
 data:
-  cloudflare:
-    credentials.json: |
-      ...
-  ovh:
-    application_secret: ...
-    consumer_key: ...
+    cloudflare:
+        credentials.json: |
+            ...
+    ovh:
+        application_secret: ...
+        consumer_key: ...
 ```
 
 Encrypt the file:
@@ -71,32 +71,32 @@ Encrypt the file:
 
 In the package where the secret is being used, you need to do three additions:
 
-- Import the secrets
-- Make the replacements
-- Remove the secrets
+-   Import the secrets
+-   Make the replacements
+-   Remove the secrets
 
 Example:
 
 ```yaml
 # Import decoded platform secrets
 generators:
-  - ../../secrets
+    - ../../secrets
 
 # Replace secrets in configuration
 replacements:
-  - source:
-      name: autocloud-secrets
-      fieldPath: data.cloudflare.credentials\.json
-    targets:
-      - select:
-          kind: Secret
-          name: cloudflared
-        fieldPaths:
-          - stringData.credentials\.json
+    - source:
+          name: autocloud-secrets
+          fieldPath: data.cloudflare.credentials\.json
+      targets:
+          - select:
+                kind: Secret
+                name: cloudflared
+            fieldPaths:
+                - stringData.credentials\.json
 
 # Remove secrets
 transformers:
-  - ../../secrets/remove
+    - ../../secrets/remove
 ```
 
 **Remark:** If you forget the removal part of the kustomization, your
@@ -110,7 +110,8 @@ kind: PlatformSecrets
 
 ## Possible evolutions
 
-- [ ] Have several secret files, one per concern (OVH, Cloudflare, ...). Would also allow to use different encryption keys.
+-   [ ] Have several secret files, one per concern (OVH, Cloudflare, ...). Would
+        also allow to use different encryption keys.
 
 <!-- prettier-ignore-start -->
 
