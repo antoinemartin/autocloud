@@ -4,14 +4,13 @@ metadata:
   name: replacement-transformer
   namespace: argocd
   annotations:
-    config.kaweezle.com/prune-local: "true"
     config.kubernetes.io/function: |
       exec:
         path: krmfnbuiltin
 replacements:
   - source:
-      kind: ConfigMap
-      fieldPath: data.repoURL
+      name: autocloud-values
+      fieldPath: data.git.repoURL
     targets:
       - select:
           kind: Application
@@ -19,13 +18,21 @@ replacements:
         fieldPaths:
           - spec.source.repoURL
           - spec.source.helm.parameters.[name=common.repoURL].value
+      - select:
+          kind: ApplicationSet
+        fieldPaths:
+          - spec.template.spec.source.repoURL
   - source:
-      kind: ConfigMap
-      fieldPath: data.targetRevision
+      name: autocloud-values
+      fieldPath: data.git.targetRevision
     targets:
       - select:
           kind: Application
-          annotationSelector: "autocloud/local=true"
+          annotationSelector: "autocloud/local-application=true"
         fieldPaths:
           - spec.source.targetRevision
           - spec.source.helm.parameters.[name=common.targetRevision].value
+      - select:
+          kind: ApplicationSet
+        fieldPaths:
+          - spec.template.spec.source.targetRevision
