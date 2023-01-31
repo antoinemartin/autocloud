@@ -17,7 +17,7 @@ type: Opaque
 stringData:
   apiKey: fv71ywv1roof35lgobjdzafs63f2qum205mzr
 ---
-# yaml-language-server: $schema=./schemas/issuer.yaml
+# yaml-language-server: $schema=../../support/schemas/issuer.yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:

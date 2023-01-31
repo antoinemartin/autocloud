@@ -132,7 +132,6 @@ in `apps/.krmignore` or `packages/.krmignore`:
 # packages/.krmignore
 # Don't process kustomization and schema files
 kustomization.yaml
-schemas/*
 # Helm Charts
 sish/
 # Extra
