@@ -10,6 +10,7 @@ metadata:
         path: krmfnbuiltin
 data:
   cluster:
+    id: autocloud
     uninode: true
     dnsZone: autokube.net
     argocd:

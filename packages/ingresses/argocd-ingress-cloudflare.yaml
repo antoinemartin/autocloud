@@ -3,7 +3,9 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-issuer
-    external-dns.alpha.kubernetes.io/ttl: "60"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    # Ask external DNS to create a CNAME that routes to the appropriate tunnel
+    external-dns.alpha.kubernetes.io/target: 84857ed2-8b07-461a-a4eb-486409328bce.cfargotunnel.com
     ingress.kubernetes.io/auth-secret: argo-sso
   labels:
     app.kubernetes.io/name: argocd-cloudflare

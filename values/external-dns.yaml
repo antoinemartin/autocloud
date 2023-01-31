@@ -1,0 +1,57 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.applicationKey
+    targets:
+      - select:
+          kind: Secret
+          name: external-dns
+        fieldPaths:
+          - stringData.OVH_APPLICATION_KEY
+  - source:
+      name: autocloud-values
+      fieldPath: data.cluster.id
+    targets:
+      - select:
+          kind: ConfigMap
+          name: external-dns
+        fieldPaths:
+          - data.EXTERNAL_DNS_ID
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.dnsZone
+    targets:
+      - select:
+          kind: ConfigMap
+          name: external-dns
+          annotationSelector: "config.kaweezle.com/provider=ovh"
+        fieldPaths:
+          - data.EXTERNAL_DNS_DOMAIN_FILTER
+  - source:
+      name: autocloud-values
+      fieldPath: data.cloudflare.dnsZone
+    targets:
+      - select:
+          kind: ConfigMap
+          name: external-dns
+          annotationSelector: "config.kaweezle.com/provider=cloudflare"
+        fieldPaths:
+          - data.EXTERNAL_DNS_DOMAIN_FILTER
+  - source:
+      name: autocloud-values
+      fieldPath: data.cloudflare.email
+    targets:
+      - select:
+          kind: Secret
+          name: external-dns
+          annotationSelector: "config.kaweezle.com/provider=cloudflare"
+        fieldPaths:
+          - stringData.CF_API_EMAIL

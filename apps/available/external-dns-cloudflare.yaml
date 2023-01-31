@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns-cloudflare
+  namespace: argocd
+  annotations:
+    autocloud/local-application: "true"
+spec:
+  destination:
+    namespace: traefik
+    server: https://kubernetes.default.svc
+  ignoreDifferences:
+    - group: argoproj.io
+      jsonPointers:
+        - /status
+      kind: Application
+  project: default
+  source:
+    path: packages/external-dns-cloudflare
+    repoURL: https://github.com/antoinemartin/autocloud.git
+    targetRevision: deploy/citest
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
