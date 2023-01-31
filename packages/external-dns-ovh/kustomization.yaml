@@ -7,9 +7,27 @@ resources:
   - external-dns-configmap.yaml
   - external-dns-secret.yaml
   - external-dns.yaml
+
+patches:
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: external-dns-ovh
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+  - |-
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: external-dns-ovh
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+
 # Import decoded platform secrets
 generators:
   - ../../secrets
+
 # Replace secrets in configuration
 replacements:
   - source:
@@ -18,7 +36,7 @@ replacements:
     targets:
       - select:
           kind: Secret
-          name: external-dns
+          name: external-dns-ovh
         fieldPaths:
           - stringData.OVH_APPLICATION_SECRET
   - source:
@@ -27,9 +45,10 @@ replacements:
     targets:
       - select:
           kind: Secret
-          name: external-dns
+          name: external-dns-ovh
         fieldPaths:
           - stringData.OVH_CONSUMER_KEY
+
 # Remove secrets
 transformers:
   - ../../secrets/remove

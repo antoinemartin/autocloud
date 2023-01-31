@@ -62,9 +62,9 @@ spec:
             - --provider=$(EXTERNAL_DNS_PROVIDER)
           envFrom:
             - secretRef:
-                name: external-dns
+                name: external-dns-ovh
             - configMapRef:
-                name: external-dns
+                name: external-dns-ovh
           resources:
             requests:
               cpu: 50m

@@ -29,7 +29,7 @@ With this, the workflow is the following:
 -   Apply the configuration with the following commands:
 
 ```console
-> kustomize fn run --enable-exec --fn-path values apps/available
+> kustomize fn run --enable-exec --fn-path values apps
 > # Or do it on individual packages (packages/one, ...)
 > kustomize fn run --enable-exec --fn-path values packages
 ```
@@ -113,9 +113,36 @@ The properties are applied to a directory with the following command:
 ```
 
 Kustomize will apply the functions configured in `values/*` to the directory
-`DIR`. It will start with `_properties.yaml`, then go through all the yaml files
-in the directory and then finish with `zz_cleanup.yaml`. `_properties.yaml` is
-prefixed with `_` to keep it first and `zz_cleanup.yaml` to keep it last.
+`DIR` and all its subdirectories. It will start with `_properties.yaml`, then go
+through all the yaml files in the directory and then finish with
+`zz_cleanup.yaml`. `_properties.yaml` is prefixed with `_` to keep it first and
+`zz_cleanup.yaml` with `zz_` to keep it last.
+
+### IMPORTANT: Avoiding directories and files
+
+`kustomize fn run` tries to interpret all files visited as KRM resources. But
+Helm Charts are not compliant, as well as some other files (patches...). It also
+reformats the files. That's something that we don't want, in particular with
+`kustomization.yaml` files.
+
+You can prevent a file or directory from being taken into account by adding it
+in `apps/.krmignore` or `packages/.krmignore`:
+
+```gitignore
+# packages/.krmignore
+# Don't process kustomization and schema files
+kustomization.yaml
+schemas/*
+# Helm Charts
+sish/
+# Extra
+cert-manager/cert-manager.yaml
+```
+
+Also, kustomize loads all resources before processing them. If two files contain
+a resource with the same id, it will complain that the resource has been added
+twice. In that case, first try to change the name of one of the resources. If
+this is not possible, add one of the files to `.krmignore`.
 
 ## Writing package replacements
 
@@ -200,7 +227,7 @@ repository.
 You can apply it with the command:
 
 ```console
-> kustomize fn run --enable-exec --fn-path values apps/available
+> kustomize fn run --enable-exec --fn-path values apps
 ```
 
 ### `argocd.yaml`
