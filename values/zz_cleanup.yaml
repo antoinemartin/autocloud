@@ -12,7 +12,7 @@ targets:
 apiVersion: builtin
 kind: AnnotationsTransformer
 metadata:
-  name: not-important-to-example
+  name: sequence-indent-fix
   annotations:
     config.kubernetes.io/function: |
       exec:
