@@ -1,0 +1,54 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: cert-manager-replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.endpoint
+    targets:
+      - select:
+          kind: ClusterIssuer
+          name: letsencrypt-issuer
+        fieldPaths:
+          - spec.acme.solvers.*.dns01.ovh.endpoint
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.applicationKey
+    targets:
+      - select:
+          kind: ClusterIssuer
+          name: letsencrypt-issuer
+        fieldPaths:
+          - spec.acme.solvers.*.dns01.ovh.applicationKey
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.dnsZone
+    targets:
+      - select:
+          kind: ClusterIssuer
+          name: letsencrypt-issuer
+        fieldPaths:
+          - spec.acme.solvers.0.selector.dnsZones.0
+  - source:
+      name: autocloud-values
+      fieldPath: data.cloudflare.email
+    targets:
+      - select:
+          kind: ClusterIssuer
+          name: letsencrypt-issuer
+        fieldPaths:
+          - spec.acme.solvers.*.dns01.cloudflare.email
+  - source:
+      name: autocloud-values
+      fieldPath: data.cloudflare.dnsZone
+    targets:
+      - select:
+          kind: ClusterIssuer
+          name: letsencrypt-issuer
+        fieldPaths:
+          - spec.acme.solvers.1.selector.dnsZones.0

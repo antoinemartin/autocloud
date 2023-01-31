@@ -32,6 +32,7 @@ data:
     hostName: "*.autokube.net"
     tunnel_id: 84857ed2-8b07-461a-a4eb-486409328bce
   ovh:
+    endpoint: ovh-eu
     applicationKey: 4KyIjUiRpDo4lpqY
     dnsZone: holepunch.in
   sish:
