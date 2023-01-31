@@ -1,7 +1,7 @@
 apiVersion: builtin
 kind: ReplacementTransformer
 metadata:
-  name: replacement-transformer
+  name: argocd-replacement-transformer
   annotations:
     config.kubernetes.io/function: |
       exec:
@@ -16,6 +16,15 @@ replacements:
           name: argocd-cm
         fieldPaths:
           - data.dex\.config.!!yaml.connectors.[id=github].config.clientID
+  - source:
+      name: autocloud-values
+      fieldPath: data.github.organization
+    targets:
+      - select:
+          kind: ConfigMap
+          name: argocd-cm
+        fieldPaths:
+          - data.dex\.config.!!yaml.connectors.[id=github].config.orgs.0.name
   - source:
       name: autocloud-values
       fieldPath: data.github.repo

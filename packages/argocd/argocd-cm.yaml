@@ -10,11 +10,7 @@ data:
         args: ["helmfile --namespace $ARGOCD_APP_NAMESPACE template | sed -e '1,/---/d' | sed -e 's|apiregistration.k8s.io/v1beta1|apiregistration.k8s.io/v1|g'"]
   timeout.reconciliation: "15s"
   kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
-  helm.valuesFileSchemes: >-
-    secrets+gpg-import, secrets+gpg-import-kubernetes,
-    secrets+age-import, secrets+age-import-kubernetes,
-    secrets,
-    https,http
+  helm.valuesFileSchemes: "secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets, https,http"
   # resource.exclusions: |
   #   - apiGroups:
   #       - "cert-manager.io"
@@ -34,3 +30,5 @@ data:
         config:
           clientID: a98a3e6e82b3732c1bf2
           clientSecret: $dex.github.clientSecret
+          orgs:
+            - name: antoinemartin
