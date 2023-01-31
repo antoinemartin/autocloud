@@ -1,0 +1,81 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Run kustomize",
+            "command": "kustomize build --enable-alpha-plugins --enable-exec ${fileDirname} | code -r -",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+        },
+        {
+            "type": "shell",
+            "label": "Run kustomize (Tree)",
+            "command": "kustomize build --enable-alpha-plugins --enable-exec ${fileDirname} | kustomize cfg tree - | code -r -",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+        },
+        {
+            "type": "shell",
+            "label": "Apply properties to pakcages",
+            "command": "kustomize fn run --enable-exec --fn-path values packages",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+        },
+        {
+            "type": "shell",
+            "label": "Apply properties to apps",
+            "command": "kustomize fn run --enable-exec --fn-path values apps",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+        },
+        {
+            "type": "shell",
+            "label": "Run kustomize (Kubeconform)",
+            "command": "kustomize build --enable-alpha-plugins --enable-exec ${fileDirname} | kubeconform -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' -kubernetes-version 1.26.0 -skip CustomResourceDefinition,ClusterIssuer -summary",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+        },
+    ]
+}
