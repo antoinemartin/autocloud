@@ -1,0 +1,27 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: cloudflare-client-replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.cloudflare.tunnel_id
+    targets:
+      - select:
+          kind: ConfigMap
+          name: cloudflared
+        fieldPaths:
+          - data.config\.yaml.!!yaml.tunnel
+  - source:
+      name: autocloud-values
+      fieldPath: data.cloudflare.hostName
+    targets:
+      - select:
+          kind: ConfigMap
+          name: cloudflared
+        fieldPaths:
+          - data.config\.yaml.!!yaml.ingress.0.hostname

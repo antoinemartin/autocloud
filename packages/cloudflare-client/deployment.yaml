@@ -4,13 +4,10 @@ metadata:
   name: cloudflared
   labels:
     app.kubernetes.io/name: "cloudflared"
-    app.kubernetes.io/component: edge
-    app.kubernetes.io/part-of: autocloud
 data:
   config.yaml: |
     tunnel: 84857ed2-8b07-461a-a4eb-486409328bce
     credentials-file: /credentials/credentials.json
-
     ingress:
     - hostname: "*.autokube.net"
       service: http://traefik.traefik.svc:80
@@ -22,8 +19,6 @@ metadata:
   name: cloudflared
   labels:
     app.kubernetes.io/name: "cloudflared"
-    app.kubernetes.io/component: edge
-    app.kubernetes.io/part-of: autocloud
 type: Opaque
 stringData:
   credentials.json: |
@@ -34,8 +29,6 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: "cloudflared"
-    app.kubernetes.io/component: edge
-    app.kubernetes.io/part-of: autocloud
   name: cloudflared
 spec:
   replicas: 2

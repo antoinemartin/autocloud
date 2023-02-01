@@ -31,7 +31,24 @@
         },
         {
             "type": "shell",
-            "label": "Apply properties to pakcages",
+            "label": "Apply properties to current package",
+            "command": "kustomize fn run --enable-exec --fn-path values ${fileDirname}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+        },
+        {
+            "type": "shell",
+            "label": "Apply properties to packages",
             "command": "kustomize fn run --enable-exec --fn-path values packages",
             "options": {
                 "cwd": "${workspaceFolder}"
