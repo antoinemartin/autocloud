@@ -14,9 +14,7 @@ data:
     uninode: true
     dnsZone: autokube.net
     argocd:
-      ingresses:
-        - citest.holepunch.in
-        - citest.autokube.net
+      domainPrefix: citest
   git:
     repoURL: https://github.com/antoinemartin/autocloud.git
     targetRevision: deploy/citest

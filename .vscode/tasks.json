@@ -94,5 +94,19 @@
                 "clear": true
             },
         },
+        {
+            "type": "shell",
+            "label": "Run Kubeconform in directory",
+            "command": "kubeconform -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' -kubernetes-version 1.26.0 -skip CustomResourceDefinition,ClusterIssuer -summary ${fileDirname}",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+        },
     ]
 }
