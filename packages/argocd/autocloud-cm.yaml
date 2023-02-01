@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: autocloud
+# The dot (.) character cannot be used as separator here as names are going to be
+# used as environment variables.
+data:
+  autocloud_repo: antoinemartin/autocloud
+  autocloud_repoURL: https://github.com/antoinemartin/autocloud.git
+  autocloud_targetRevision: main

@@ -1,0 +1,31 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: apisix-replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.cluster.argocd.domainPrefix
+    targets:
+      - select:
+          kind: Application
+          name: apisix
+        fieldPaths:
+          - spec.source.helm.values.!!yaml.dashboard.ingress.hosts.0.host.!!regex.^(\w+)\\..1
+          - spec.source.helm.values.!!yaml.dashboard.ingress.tls.0.hosts.0.!!regex.^(\w+)\\..1
+          - spec.source.helm.values.!!yaml.dashboard.ingress.tls.0.secretName.!!regex.^(\w+)\\..1
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.dnsZone
+    targets:
+      - select:
+          kind: Application
+          name: apisix
+        fieldPaths:
+          - spec.source.helm.values.!!yaml.dashboard.ingress.hosts.0.host.!!regex.^\w+\\.(\.*)$.1
+          - spec.source.helm.values.!!yaml.dashboard.ingress.tls.0.hosts.0.!!regex.^\w+\\.(\.*)$.1
+          - spec.source.helm.values.!!yaml.dashboard.ingress.tls.0.secretName.!!regex.^\w+\\.(\.*)-tls$.1

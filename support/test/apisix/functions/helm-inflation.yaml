@@ -1,0 +1,57 @@
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: apisix-inflation
+  annotations:
+    # Put a name to generate one file
+    config.kaweezle.com/path: ""
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+chartHome: /tmp/charts
+name: apisix
+repo: https://charts.apiseven.com
+version: 0.13.0
+releaseName: apisix
+namespace: apisix
+valuesMerge: merge
+includeCRDs: true
+# Using encrypted values doesn't work as kustomize would not pass the files
+# But instead merge them.
+valuesFile: "../../../secrets/helm/apisix.dec.yaml"
+valuesInline:
+  etcd:
+    livenessProbe:
+      initialDelaySeconds: 15
+    readinessProbe:
+      initialDelaySeconds: 15
+    replicaCount: 1
+
+  ingress-controller:
+    enabled: true
+    config:
+      ingressPublishService: apisix/apisix-gateway
+      apisix:
+        serviceNamespace: apisix
+
+  gateway:
+    type: LoadBalancer
+    tls:
+      enabled: true
+    # stream:
+    #   enabled: true
+
+  dashboard:
+    enabled: true
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: apisix
+      hosts:
+        - host: citest.holepunch.in
+          paths:
+            - apisix/
+      tls:
+        - secretName: citest.holepunch.in-tls
+          hosts:
+            - citest.holepunch.in

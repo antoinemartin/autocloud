@@ -1,0 +1,71 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: external-dns-cloudflare
+namespace: traefik
+resources:
+  - ../external-dns-ovh
+  - external-dns-secret.yaml
+  - external-dns-configmap.yaml
+
+patches:
+  - |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: external-dns
+    spec:
+      template:
+        spec:
+          containers:
+            - name: external-dns
+              envFrom:
+                - secretRef:
+                    name: external-dns-cloudflare
+                - configMapRef:
+                    name: external-dns-cloudflare
+  - |
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: external-dns-ovh
+    $patch: delete
+  - |
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: external-dns-ovh
+    $patch: delete
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: external-dns-cloudflare
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+  - |-
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: external-dns-cloudflare
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+
+# Import decoded platform secrets
+generators:
+  - ../../secrets
+
+# Replace secrets in configuration
+replacements:
+  - source:
+      name: autocloud-secrets
+      fieldPath: data.cloudflare.apiKey
+    targets:
+      - select:
+          kind: Secret
+          name: external-dns-cloudflare
+        fieldPaths:
+          - stringData.CF_API_KEY
+# Remove secrets
+transformers:
+  - ../../secrets/remove

@@ -1,0 +1,54 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: argocd-replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.github.clientID
+    targets:
+      - select:
+          kind: ConfigMap
+          name: argocd-cm
+        fieldPaths:
+          - data.dex\.config.!!yaml.connectors.[id=github].config.clientID
+  - source:
+      name: autocloud-values
+      fieldPath: data.github.organization
+    targets:
+      - select:
+          kind: ConfigMap
+          name: argocd-cm
+        fieldPaths:
+          - data.dex\.config.!!yaml.connectors.[id=github].config.orgs.0.name
+  - source:
+      name: autocloud-values
+      fieldPath: data.github.repo
+    targets:
+      - select:
+          kind: ConfigMap
+          name: autocloud
+        fieldPaths:
+          - data.autocloud_repo
+  - source:
+      name: autocloud-values
+      fieldPath: data.git.repoURL
+    targets:
+      - select:
+          kind: ConfigMap
+          name: autocloud
+        fieldPaths:
+          - data.autocloud_repoURL
+  - source:
+      name: autocloud-values
+      fieldPath: data.git.targetRevision
+    targets:
+      - select:
+          kind: ConfigMap
+          name: autocloud
+        fieldPaths:
+          - data.autocloud_targetRevision

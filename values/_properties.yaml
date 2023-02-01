@@ -1,0 +1,43 @@
+apiVersion: autocloud.config.kaweezle.com/v1alpha1
+kind: PlatformValues
+metadata:
+  name: autocloud-values
+  annotations:
+    config.kaweezle.com/local-config: "true"
+    config.kaweezle.com/inject-local: "true"
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+data:
+  cluster:
+    id: autocloud
+    uninode: true
+    dnsZone: mydomain.net
+    argocd:
+      domainPrefix: argocd
+  git:
+    repoURL: https://github.com/antoinemartin/autocloud.git
+    targetRevision: main
+  github:
+    organization: johndoe
+    repository: autocloud
+    repo: antoinemartin/autocloud
+    email: john@doe.me
+    clientID: a98a3e6e82b3732c1bf2
+  cloudflare:
+    email: john@doe.me
+    dnsZone: mydomain.net
+    hostName: "*.mydomain.net"
+    tunnel_id: ca955c21-2606-4a5d-b217-341a3d12755e
+  ovh:
+    endpoint: ovh-eu
+    applicationKey: iYrnuWulPIzRIYZP
+    dnsZone: mydomain.link
+  sish:
+    hostname: mydomain.link
+    remote: argocd.mydomain.link
+    # This is the public key of the private ed25519 key in ../secrets/helm/sish.yaml
+    host_key: AAAAC3NzaC1lZDI1NTE5AAAAIEAfLUpTj0fn5sJFW6agmLMsvEacMBvXocyzHLW+AOSQ
+  chisel:
+    server: https://bastion.mydomain.link/chisel
+    reverse_port: 30443

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: apps
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: "https://kubernetes.default.svc"
+  ignoreDifferences:
+    - group: argoproj.io
+      jsonPointers:
+        - /status
+      kind: Application
+  project: default
+  source:
+    path: apps/default
+    repoURL: "https://github.com/antoinemartin/autocloud.git"
+    targetRevision: deploy/citest
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true

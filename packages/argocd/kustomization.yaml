@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: kustomization
+namespace: argocd
+resources:
+  # The namespace creation is needed here because this kustomization is applied
+  # once to the cluster out of the context of an Argo CD application.
+  - namespace.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - argocd-secrets.yaml
+  - autocloud-cm.yaml
+  - bootstrap-application.yaml
+# TLS is handled by ingress
+configMapGenerator:
+  - name: argocd-cmd-params-cm
+    behavior: merge
+    literals:
+      - server.insecure=true
+# Secrets injection
+generators:
+  - ../../secrets
+transformers:
+  - argocd-repo-server-patch.yaml
+  - argocd-secrets-replacements.yaml
+  - ../../secrets/remove
+patches:
+  - path: argocd-cm.yaml
+  - path: argocd-secret.yaml
+  - patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-rbac-cm
+      data:
+        policy.default: role:admin
+    target:
+      kind: ConfigMap
+      name: argocd-rbac-cm

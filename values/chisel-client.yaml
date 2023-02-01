@@ -1,0 +1,30 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: chisel-client-replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.chisel.server
+    targets:
+      - select:
+          kind: ConfigMap
+          name: chisel-client
+        fieldPaths:
+          - data.CHISEL_SERVER
+  - source:
+      name: autocloud-values
+      fieldPath: data.chisel.reverse_port
+    targets:
+      - select:
+          kind: ConfigMap
+          name: chisel-client
+        fieldPaths:
+          - data.CHISEL_TUNNEL
+        options:
+          delimiter: ":"
+          index: 1

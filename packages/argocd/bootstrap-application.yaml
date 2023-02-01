@@ -1,0 +1,93 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app: argocd
+  name: argocd-application-admin
+  namespace: argocd
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - statefulsets
+      - daemonsets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - applications
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: argocd
+  name: argocd-application-admin
+  namespace: argocd
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: argocd
+  name: argocd-application-admin
+  namespace: argocd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argocd-application-admin
+subjects:
+  - kind: ServiceAccount
+    name: argocd-application-admin
+    namespace: argocd
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: argocd
+  name: create-bootstrap-application
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: Skip
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: argocd-application-admin
+      automountServiceAccountToken: true
+      restartPolicy: OnFailure
+      containers:
+        - name: create-address-pools
+          image: boxboat/kubectl:1.26.0
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: autocloud
+          env:
+            - name: ROLLOUT_INITIAL_DELAY
+              value: "5"
+            - name: ROLLOUT_TIMEOUT
+              value: "90s"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -xe
+              sleep $ROLLOUT_INITIAL_DELAY
+              ns=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+              kubectl -n "$ns" rollout status deployments,statefulsets,daemonsets --timeout=$ROLLOUT_TIMEOUT
+              kubectl apply -f "https://raw.githubusercontent.com/${autocloud_repo}/${autocloud_targetRevision}/apps/available/bootstrap.yaml"

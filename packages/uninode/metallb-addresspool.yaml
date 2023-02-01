@@ -1,0 +1,140 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: metallb
+  name: metallb:node-lister
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app: metallb
+  name: metallb-address-pool-admin
+  namespace: metallb-system
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - metallb.io
+    resources:
+      - ipaddresspools
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - metallb.io
+    resources:
+      - l2advertisements
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: metallb
+  name: metallb-address-pool-admin
+  namespace: metallb-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: metallb
+  name: metallb-address-pool-admin
+  namespace: metallb-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: metallb-address-pool-admin
+subjects:
+  - kind: ServiceAccount
+    name: metallb-address-pool-admin
+    namespace: metallb-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: metallb
+  name: metallb-address-pool-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: metallb:node-lister
+subjects:
+  - kind: ServiceAccount
+    name: metallb-address-pool-admin
+    namespace: metallb-system
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-address-pools
+  namespace: metallb-system
+  labels:
+    app: metallb
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: metallb-address-pool-admin
+      automountServiceAccountToken: true
+      restartPolicy: OnFailure
+      containers:
+        - name: create-address-pools
+          image: boxboat/kubectl:1.26.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -xe
+              kubectl rollout status deployment/controller -n metallb-system
+              ip=$(kubectl get nodes -o jsonpath='{range .items[*]}{range .status.addresses[*]}{.address}{"\n"}{end}{end}' | head -1)
+              sleep 3
+              cat - <<EOF | kubectl apply -f -
+              apiVersion: metallb.io/v1beta1
+              kind: IPAddressPool
+              metadata:
+                  name: node-ip-pool
+                  namespace: metallb-system
+              spec:
+                  addresses:
+                  - $ip/32
+              ---
+              apiVersion: metallb.io/v1beta1
+              kind: L2Advertisement
+              metadata:
+                  name: advertisement
+                  namespace: metallb-system
+              EOF

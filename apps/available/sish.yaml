@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: sish
   namespace: argocd
+  annotations:
+    autocloud/local-application: "true"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -11,13 +13,13 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://helm.traefik.io/traefik
+    repoURL: https://github.com/antoinemartin/autocloud.git
     targetRevision: main
     path: packages/sish
     helm:
       releaseName: sish
       valueFiles:
-        - secrets://../../values/sish.yaml
+        - secrets://../../secrets/helm/sish.yaml
   syncPolicy:
     automated:
       prune: true

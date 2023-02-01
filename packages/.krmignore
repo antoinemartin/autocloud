@@ -1,0 +1,6 @@
+# Don't process kustomization and schema files
+kustomization.yaml
+# Helm Charts
+sish/
+# Extra
+cert-manager/cert-manager.yaml

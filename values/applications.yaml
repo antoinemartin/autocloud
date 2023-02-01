@@ -1,0 +1,38 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: applications-replacement-transformer
+  namespace: argocd
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.git.repoURL
+    targets:
+      - select:
+          kind: Application
+          annotationSelector: "autocloud/local-application=true"
+        fieldPaths:
+          - spec.source.repoURL
+          - spec.source.helm.parameters.[name=common.repoURL].value
+      - select:
+          kind: ApplicationSet
+        fieldPaths:
+          - spec.template.spec.source.repoURL
+  - source:
+      name: autocloud-values
+      fieldPath: data.git.targetRevision
+    targets:
+      - select:
+          kind: Application
+          annotationSelector: "autocloud/local-application=true"
+        fieldPaths:
+          - spec.source.targetRevision
+          - spec.source.helm.parameters.[name=common.targetRevision].value
+      - select:
+          kind: ApplicationSet
+        fieldPaths:
+          - spec.template.spec.source.targetRevision

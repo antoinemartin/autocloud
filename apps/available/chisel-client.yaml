@@ -1,8 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: chisel-client
   namespace: argocd
+  annotations:
+    autocloud/local-application: "true"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

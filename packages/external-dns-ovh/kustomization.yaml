@@ -1,0 +1,54 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: external-dns-ovh
+namespace: traefik
+resources:
+  - external-dns-configmap.yaml
+  - external-dns-secret.yaml
+  - external-dns.yaml
+
+patches:
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: external-dns-ovh
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+  - |-
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: external-dns-ovh
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+
+# Import decoded platform secrets
+generators:
+  - ../../secrets
+
+# Replace secrets in configuration
+replacements:
+  - source:
+      name: autocloud-secrets
+      fieldPath: data.ovh.application_secret
+    targets:
+      - select:
+          kind: Secret
+          name: external-dns-ovh
+        fieldPaths:
+          - stringData.OVH_APPLICATION_SECRET
+  - source:
+      name: autocloud-secrets
+      fieldPath: data.ovh.consumer_key
+    targets:
+      - select:
+          kind: Secret
+          name: external-dns-ovh
+        fieldPaths:
+          - stringData.OVH_CONSUMER_KEY
+
+# Remove secrets
+transformers:
+  - ../../secrets/remove

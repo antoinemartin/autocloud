@@ -1,26 +1,28 @@
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: chisel-client
-  namespace: traefik
   labels:
     app.kubernetes.io/name: "chisel-client"
-    app.kubernetes.io/component: edge
-    app.kubernetes.io/part-of: autocloud
 data:
-  chisel.server: https://gitlab.openance.dev/chisel
-  chisel.tunnel: R:30443:traefik.traefik.svc:80
+  CHISEL_SERVER: https://bastion.mydomain.link/chisel
+  CHISEL_TUNNEL: R:30443:traefik.traefik.svc:80
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: chisel-client-auth
+  labels:
+    app.kubernetes.io/name: chisel-client-auth
+stringData:
+  AUTH: username:password
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chisel-client
-  namespace: traefik
   labels:
     app.kubernetes.io/name: "chisel-client"
-    app.kubernetes.io/component: edge
-    app.kubernetes.io/part-of: autocloud
 spec:
   replicas: 1
   strategy:
@@ -28,14 +30,10 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: "chisel-client"
-      app.kubernetes.io/component: edge
-      app.kubernetes.io/part-of: autocloud
   template:
     metadata:
       labels:
         app.kubernetes.io/name: "chisel-client"
-        app.kubernetes.io/component: edge
-        app.kubernetes.io/part-of: autocloud
     spec:
       containers:
         - name: chisel-client
@@ -55,19 +53,8 @@ spec:
             limits:
               cpu: 100m
               memory: 100Mi
-          env:
-            - name: CHISEL_SERVER
-              valueFrom:
-                configMapKeyRef:
-                  key: chisel.server
-                  name: chisel-client
-            - name: CHISEL_TUNNEL
-              valueFrom:
-                configMapKeyRef:
-                  key: chisel.tunnel
-                  name: chisel-client
-            - name: AUTH
-              valueFrom:
-                secretKeyRef:
-                  name: chisel-client-auth
-                  key: AUTH
+          envFrom:
+            - configMapRef:
+                name: chisel-client
+            - secretRef:
+                name: chisel-client-auth

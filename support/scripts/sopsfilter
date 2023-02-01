@@ -1,0 +1,92 @@
+#!/bin/sh
+#
+# Command helper for filtering SOPS encrypted YAML files with Git. 
+# It allows you to work locally on plaintext files while keeping encrypted files 
+# in git. This will provide a workflow similar to git-crypt with the advantages
+# of sops (availability in gitops tools, git independence, ...).
+# 
+# CAUTION: Don't use this if you don't want secrets available unencrypted on 
+# your filesystem. The normal sops workflow is to decrypt, modify and encrypt
+# the file right away.
+# 
+# To use it, perform the following steps:
+#
+# 1) Add you AGE private key to ~/.config/sops/age/keys.txt. You can do that
+#    with the command:
+#
+#    mkdir -p ~/.config/sops/age && age-keygen >~/.config/sops/age/keys.txt
+# 
+# 2) Create a .sops.yaml file at the root of your repository with the following
+#    content:
+#
+# #.sops.yaml
+# creation_rules:
+#   - encrypted_regex: "^(data|stringData|.*_keys?)$"
+#     # Your AGE public key (obtain it with cat ~/.config/sops/age/keys.txt | age-keygen -y)
+#     age: age...
+#
+# 3) install this file in /usr/local/bin and make it executable.
+# 4) Add a .gitattributes file to your repository with the following content:
+#
+# secrets.yaml diff=sopsdiffer filter=sopsfilter
+#
+# 5) Add the following to your .git/config file:
+#
+# [diff "sopsdiffer"]
+#   textconv = sopsfilter diff
+# [filter "sopsfilter"]
+#   clean = sopsfilter clean %f
+#   smudge = sopsfilter smudge %f
+#   required = true
+# 
+# With this configuration, all the files named `secrets.yaml` will be 
+# unencrypted on checkout and encrypted on commit.
+
+# For diff, just decode the file or return the contents of the local 
+# unencrypted file
+if [ $1 == "diff" ]; then
+    sops -d $2 2>/dev/null || cat $2
+    exit 0
+fi
+
+# Create a temporary directory for storing input and other files
+TEMPDIR=$( mktemp -d )
+
+# Cleanup method
+cleanup () {
+    rm -rf $TEMPDIR
+}
+
+# Delete temporary directory on exit
+trap "{ CODE=$?; cleanup ; exit $CODE; }" EXIT
+
+# Create a temporary file with the file contents passed on stdin
+cat > $TEMPDIR/new.yaml
+
+case "$1" in
+    # Clean if 
+    clean)
+        # If the file is already encrypted, just return it
+        if grep -q "sops:" $tf; then
+            cat $tf
+        else
+            # Each time a file is encrypted, the resulting file is different.
+            # In order for git to avoid believing the file is modified when it 
+            # is not, we decrypt the committed file and compare it with the 
+            # input. If they are the same, we return the previous encrypted 
+            # version of the file. If not, we encrypt the input and return it
+            git show HEAD:$2 >$TEMPDIR/old_e.yaml 2>/dev/null
+            sops -d $TEMPDIR/old_e.yaml > $TEMPDIR/old_d.yaml 2>/dev/null
+            if diff -q $TEMPDIR/old_d.yaml $TEMPDIR/new.yaml; then
+                cat $TEMPDIR/old_e.yaml
+            else
+                sops -e $TEMPDIR/new.yaml
+            fi
+        fi
+    ;;
+    smudge)
+        # Decrypt the input or return the unencrypted file
+        sops -d $TEMPDIR/new.yaml 2>/dev/null || cat $TEMPDIR/new.yaml
+    ;;
+esac
+
