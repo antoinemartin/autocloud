@@ -52,13 +52,13 @@ spec:
             annotations:
               kubernetes.io/ingress.class: apisix
             hosts:
-              - host: citest.holepunch.in
+              - host: argocd.mydomain.link
                 paths:
                   - apisix/
             tls:
-              - secretName: citest.holepunch.in-tls
+              - secretName: argocd.mydomain.link-tls
                 hosts:
-                  - citest.holepunch.in
+                  - argocd.mydomain.link
   syncPolicy:
     automated:
       prune: true

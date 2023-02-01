@@ -30,7 +30,7 @@ spec:
       source:
         path: "packages/{{ package }}"
         repoURL: https://github.com/antoinemartin/autocloud.git
-        targetRevision: deploy/citest
+        targetRevision: main
       syncPolicy:
         automated:
           prune: true
