@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: "chisel-client"
 data:
-  CHISEL_SERVER: https://gitlab.openance.dev/chisel
+  CHISEL_SERVER: https://bastion.mydomain.link/chisel
   CHISEL_TUNNEL: R:30443:traefik.traefik.svc:80
 ---
 apiVersion: v1

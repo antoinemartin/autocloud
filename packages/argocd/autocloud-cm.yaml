@@ -7,4 +7,4 @@ metadata:
 data:
   autocloud_repo: antoinemartin/autocloud
   autocloud_repoURL: https://github.com/antoinemartin/autocloud.git
-  autocloud_targetRevision: deploy/citest
+  autocloud_targetRevision: main

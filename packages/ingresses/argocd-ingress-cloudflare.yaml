@@ -5,7 +5,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-issuer
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     # Ask external DNS to create a CNAME that routes to the appropriate tunnel
-    external-dns.alpha.kubernetes.io/target: 84857ed2-8b07-461a-a4eb-486409328bce.cfargotunnel.com
+    external-dns.alpha.kubernetes.io/target: ca955c21-2606-4a5d-b217-341a3d12755e.cfargotunnel.com
     ingress.kubernetes.io/auth-secret: argo-sso
   labels:
     app.kubernetes.io/name: argocd-cloudflare
@@ -16,7 +16,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: citest.autokube.net
+    - host: argocd.mydomain.net
       http:
         paths:
           - pathType: Prefix
@@ -28,5 +28,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - citest.autokube.net
-      secretName: citest.autokube.net-tls
+        - argocd.mydomain.net
+      secretName: argocd.mydomain.net-tls

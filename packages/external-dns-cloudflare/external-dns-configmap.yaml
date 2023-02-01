@@ -4,5 +4,5 @@ metadata:
   name: external-dns-cloudflare
 data:
   EXTERNAL_DNS_ID: autocloud
-  EXTERNAL_DNS_DOMAIN_FILTER: autokube.net
+  EXTERNAL_DNS_DOMAIN_FILTER: mydomain.net
   EXTERNAL_DNS_PROVIDER: cloudflare

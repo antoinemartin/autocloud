@@ -21,7 +21,7 @@ data:
   github:
     organization: johndoe
     repository: autocloud
-    repo: johndoe/autocloud
+    repo: antoinemartin/autocloud
     email: john@doe.me
     clientID: a98a3e6e82b3732c1bf2
   cloudflare:

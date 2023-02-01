@@ -33,4 +33,4 @@ data:
           loadAllGroups: true
           teamNameField: slug
           orgs:
-            - name: kaweezle
+            - name: johndoe

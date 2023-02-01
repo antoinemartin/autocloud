@@ -4,5 +4,5 @@ metadata:
   name: external-dns-ovh
 data:
   EXTERNAL_DNS_ID: autocloud
-  EXTERNAL_DNS_DOMAIN_FILTER: holepunch.in
+  EXTERNAL_DNS_DOMAIN_FILTER: mydomain.link
   EXTERNAL_DNS_PROVIDER: ovh
