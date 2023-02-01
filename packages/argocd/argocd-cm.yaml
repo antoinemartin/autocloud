@@ -30,5 +30,7 @@ data:
         config:
           clientID: a98a3e6e82b3732c1bf2
           clientSecret: $dex.github.clientSecret
+          loadAllGroups: true
+          teamNameField: slug
           orgs:
-            - name: antoinemartin
+            - name: kaweezle

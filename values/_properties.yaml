@@ -19,7 +19,7 @@ data:
     repoURL: https://github.com/antoinemartin/autocloud.git
     targetRevision: deploy/citest
   github:
-    organization: antoinemartin
+    organization: kaweezle
     repository: autocloud
     repo: antoinemartin/autocloud
     email: antoine@mrtn.fr
