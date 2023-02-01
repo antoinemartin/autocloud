@@ -1,4 +1,4 @@
 creation_rules:
   - encrypted_regex: "^(data|stringData|.*_keys?|admin|adminKey|password)$"
     # Your AGE public key (obtain it with cat ~/.config/sops/age/keys.txt| age-keygen -y)
-    age: age1fs48f8rw9gj49ss5fapsy8euqln0dtrc5yg35fuq7c930jtkveps2swvt6
+    age: age166k86d56ejs2ydvaxv2x3vl3wajny6l52dlkncf2k58vztnlecjs0g5jqq
