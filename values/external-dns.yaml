@@ -1,7 +1,7 @@
 apiVersion: builtin
 kind: ReplacementTransformer
 metadata:
-  name: replacement-transformer
+  name: external-dns-replacement-transformer
   annotations:
     config.kubernetes.io/function: |
       exec:

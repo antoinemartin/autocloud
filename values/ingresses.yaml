@@ -1,7 +1,7 @@
 apiVersion: builtin
 kind: ReplacementTransformer
 metadata:
-  name: cloudflare-client-replacement-transformer
+  name: ingresses-replacement-transformer
   annotations:
     config.kubernetes.io/function: |
       exec:

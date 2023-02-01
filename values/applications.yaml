@@ -1,7 +1,7 @@
 apiVersion: builtin
 kind: ReplacementTransformer
 metadata:
-  name: replacement-transformer
+  name: applications-replacement-transformer
   namespace: argocd
   annotations:
     config.kubernetes.io/function: |

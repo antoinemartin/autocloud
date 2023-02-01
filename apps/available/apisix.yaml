@@ -9,7 +9,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
+    repoURL: https://charts.apiseven.com
     chart: apisix
+    targetRevision: 0.13.0
     helm:
       parameters:
         - name: apisix.timezone
@@ -22,33 +24,27 @@ spec:
           value: LoadBalancer
         - name: ingress-controller.enabled
           value: "true"
-      values: |-
+      valueFiles:
+        - secrets://../../secrets/helm/apisix.yaml
+      values: |
         etcd:
           livenessProbe:
             initialDelaySeconds: 15
           readinessProbe:
             initialDelaySeconds: 15
           replicaCount: 1
-
         ingress-controller:
           enabled: true
           config:
             ingressPublishService: apisix/apisix-gateway
             apisix:
               serviceNamespace: apisix
-              adminKey: edd1c9f034335f136f87ad84b625c8f1
-
         gateway:
           type: LoadBalancer
           tls:
             enabled: true
-          # stream:
-          #   enabled: true
-
-        admin:
-          credentials:
-            admin: edd1c9f034335f136f87ad84b625c8f1
-
+            # stream:
+            #   enabled: true
         dashboard:
           enabled: true
           ingress:
@@ -56,21 +52,13 @@ spec:
             annotations:
               kubernetes.io/ingress.class: apisix
             hosts:
-              - host: citest.openance.dev
+              - host: citest.holepunch.in
                 paths:
                   - apisix/
             tls:
-              - secretName: citest-openance-dev-tls
+              - secretName: citest.holepunch.in-tls
                 hosts:
-                  - citest.openance.dev
-
-          config:
-            authentication:
-              users:
-                - username: admin
-                  password: Empre1ntes
-    repoURL: https://charts.apiseven.com
-    targetRevision: 0.9.2
+                  - citest.holepunch.in
   syncPolicy:
     automated:
       prune: true
