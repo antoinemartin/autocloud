@@ -1,12 +1,15 @@
 # Change the secrets encryption key
 
-The secrets on the main branch are fake secrets ciphered by a _known key_
-located at the root of the project with the name `sample_age_key.txt`. You may
-want to use it for testing but it's better to change the key **before** playing
-with the secrets file.
+All the platform secrets are located in the `secrets/secrets.yaml` and encrypted
+with [sops :material-open-in-new:]{:target="\_blank"}.
 
-Start by making the _known key_ known to sops by putting it in its well-known
-location:
+On the main branch this file is encrypted by a _sample age key_ located at the
+root of the project (`sample_age_key.txt`) and contains fake secrets. While you
+can use this sample key for testing, it's better to change it **before** doing
+anything with the secrets file.
+
+Start by making the _sample age key_ reachable to sops by putting it in its
+well-known location:
 
 === "Shell"
 
@@ -25,11 +28,11 @@ location:
 !!! note
 
     The following shows a rotation with a new Age key. Note that you can use any
-    other key that SOPS understands. Check the [SOPS documentation]{:target="\_blank"}.
+    other key that sops understands. Check the [sops documentation:material-open-in-new:]{:target="\_blank"}.
     You can also add other type of keys later on. We recommend to continue to
-    use Age at this stage.
+    use age at this stage.
 
-Then you need to create your own key:
+Then create your own key:
 
 === "Shell"
 
@@ -41,36 +44,57 @@ Then you need to create your own key:
 === "PowerShell"
 
     ```powershell
-    ...
     PS> age-keygen >> $env:APPDATA\sops\age\keys.txt
     Public key: age1...
     ```
 
-To replace the secrets encryption, use the public key of your new key with the
-following command:
+Replace the secrets encryption by using the public key of your new key
+(recipient in age parlance) with the following commands:
 
 === "Shell"
 
     ```bash
-    $ find . -name 'secrets.yaml' -exec sops -r -i \
-    > --add-age age1... \
-    > --rm-age age166k86d56ejs2ydvaxv2x3vl3wajny6l52dlkncf2k58vztnlecjs0g5jqq \
-    > {} \;
+    $ OLDKEY=$(age-keygen -y ~/.config/sops/age/keys.txt | head -1)
+    $ NEWKEY=$(age-keygen -y ~/.config/sops/age/keys.txt | tail -1)
+    $ for f in secrets/secrets.yaml secrets/helm/*; do \
+    > sops -r -i \
+    > --add-age $NEWKEY \
+    > --rm-age $OLDKEY \
+    > $f ; done
+    $
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    PS> $OLDKEY=age-keygen.exe -y $env:APPDATA\sops\age\keys.txt | Select-Object -First 1
+    PS> $NEWKEY=age-keygen.exe -y $env:APPDATA\sops\age\keys.txt | Select-Object -Last 1
+    PS> $(ls .\secrets\secrets.yaml;ls .\secrets\helm\*) | `
+    > % { &sops '-r' '-i' '--add-age' $NEWKEY '--rm-age' $OLDKEY $_.FullName }
+    PS>
+    ```
+
+Now change the recipient in the `.sops.yaml` sops configuration file in order to
+use the new key for encryption from now on:
+
+=== "Shell"
+
+    ```bash
+    $ sed -i -e "s/age: .*/age: $NEWKEY/" .sops.yaml
+    $
     ```
 
 === "PowerShell"
 
     ```powershell
     ...
-    PS> Get-ChildItem . -Filter 'secrets.yaml' -Recurse | `
-    > % { &sops '-r' '-i' `
-    > '--add-age' age1... `
-    > '--rm-age' age1fs48f8rw9gj49ss5fapsy8euqln0dtrc5yg35fuq7c930jtkveps2swvt6 `
-    > $_.FullName }
+    PS> $(get-content .\.sops.yaml | % { $_ -replace 'age: .*', "age: $NEWKEY" }) | `
+    > Set-Content .\.sops.yaml
+    PS>
     ```
 
-At this point, you can delete the known key on your branch and commit the
-modifications
+At this point, you can delete the sample key on your branch and commit the
+modifications:
 
 === "Shell"
 
@@ -89,31 +113,55 @@ modifications
     PS> git commit -m "🔐 Secrets encryption key modification"
     ```
 
-!!! warning
+From now on, you should forget the old key and make sure that you keep the new
+key **safe**. A good idea is to save it in some kind of secure password manager
+like [gopass:material-open-in-new:](https://www.gopass.pw/){:target="\_blank"}.
 
-    From now on, you should forget the old key and make sure that you keep the
-    new key safe.
+To remove the old key from the sops well-known location, issue the following
+command:
 
-    To remove the old key from the SOPS configuration:
+=== "Shell"
 
+    ```bash
+    >  sed -i -e '1,3 d' ~/.config/sops/age/keys.txt
+    ```
 
-    === "Shell"
+=== "PowerShell"
 
-        ```bash
-        >  sed -i -e '1,3 d' ~/.config/sops/age/keys.txt
-        ```
+    ```PowerShell
+    PS> Get-Content $env:APPDATA\sops\age\keys.txt | Select-Object -Skip 3 `
+    > | Set-Content $env:APPDATA\sops\age\keys.txt
+    ```
 
-    === "PowerShell"
+Test that your environment is correct by decrypting the secrets file:
 
-        ```PowerShell
-        PS> Get-Content $env:APPDATA\sops\age\keys.txt | Select-Object -Skip 3 `
-        > | Set-Content $env:APPDATA\sops\age\keys.txt
-        ```
+=== "Shell"
 
-    You should consider saving the new key, in something like gopass for instance.
+    ```bash
+    $ sops -d secrets/secrets.yaml > secrets/secrets.dec.yaml
+    $
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    ...
+    PS> sops -d secrets/secrets.yaml > secrets/secrets.dec.yaml
+    PS>
+    ```
+
+!!! tip ".gitignore safe"
+
+    the project `.gitignore` file contains the `*.dec.yaml` pattern. Therefore,
+    there is no risk of committing an unencrypted secrets file as long as you
+    keep it named like that.
+
+Now that you can manage properly secured credentials, move on to the
+[environment adaptation:material-arrow-right:](../4-environment-adaptation)
 
 <!-- prettier-ignore-start -->
 
-<!-- markdownlint-disable-line -->[SOPS documentation]: https://github.com/mozilla/sops
+[SOPS documentation:material-open-in-new:]: https://github.com/mozilla/sops
+[SOPS :material-open-in-new:]: https://github.com/mozilla/sops
 
 <!-- prettier-ignore-end -->

@@ -78,7 +78,7 @@ git add -A && git commit -m "Changed encryption key"
 When a package needs a secret, decrypt the secrets file with the command:
 
 ```console
-> sops -d secrets/secrets.yaml > secrets.dec.yaml
+> sops -d secrets/secrets.yaml > secrets/secrets.dec.yaml
 ```
 
 Add the secret to the `secrets.dec.yaml` file. You can use hierarchy:

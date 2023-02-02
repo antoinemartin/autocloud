@@ -15,6 +15,7 @@ theme:
     - navigation.footer
     - content.code.annotate
     - content.code.copy
+    - content.tabs.link
 markdown_extensions:
   - def_list
   - attr_list
@@ -22,6 +23,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
+      use_pygments: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences

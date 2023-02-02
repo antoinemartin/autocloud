@@ -2,5 +2,6 @@ nav:
   - Overview: index.md
   - Architecture: architecture.md
   - Getting Started: getting-started
-  - Bootstrapping: bootstrapping.md
+  - Bootstrapping stages: bootstrapping.md
+  - User Guide: user-guide
   - Components: components

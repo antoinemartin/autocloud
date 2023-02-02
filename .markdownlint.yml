@@ -9,3 +9,4 @@ MD030:
   ul_multi: 3
   # Spaces for multi-line ordered list items
   ol_multi: 2
+MD046: false # This is disabled because admonitions are interpreted as code
