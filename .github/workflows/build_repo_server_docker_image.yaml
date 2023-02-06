@@ -5,7 +5,7 @@ on:
       tag:
         description: Docker image tag
         required: true
-        default: "2.5.4-0.144.0"
+        default: "2.5.10-0.144.0"
 
 env:
   DOCKER_ORGANIZATION: antoinemartin
@@ -26,7 +26,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./repo-server
+          context: ./support/repo-server
           push: true
           tags: "${{ env.DOCKER_ORGANIZATION }}/${{ env.DOCKER_IMAGE_NAME }}:latest,${{ env.DOCKER_ORGANIZATION }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.event.inputs.tag }}"
           cache-from: type=gha
