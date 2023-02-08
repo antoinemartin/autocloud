@@ -6,31 +6,30 @@ data:
   cluster:
     id: autocloud
     uninode: true
-    dnsZone: mydomain.net
+    dnsZone: autokube.net
     argocd:
-      domainPrefix: argocd
+      domainPrefix: citest
   git:
     repoURL: https://github.com/antoinemartin/autocloud.git
-    targetRevision: main
+    targetRevision: deploy/citest
   github:
-    organization: johndoe
+    organization: kaweezle
     repository: autocloud
-    email: john@doe.me
+    email: antoine@mrtn.fr
     clientID: a98a3e6e82b3732c1bf2
   cloudflare:
-    email: john@doe.me
-    dnsZone: mydomain.net
-    hostName: "*.mydomain.net"
-    tunnel_id: ca955c21-2606-4a5d-b217-341a3d12755e
+    email: antoine@openance.com
+    dnsZone: autokube.net
+    hostName: "*.autokube.net"
+    tunnel_id: 84857ed2-8b07-461a-a4eb-486409328bce
   ovh:
     endpoint: ovh-eu
-    applicationKey: iYrnuWulPIzRIYZP
-    dnsZone: mydomain.link
+    applicationKey: 4KyIjUiRpDo4lpqY
+    dnsZone: holepunch.in
   sish:
-    hostname: mydomain.link
-    remote: argocd.mydomain.link
-    # This is the public key of the private ed25519 key in ../secrets/helm/sish.yaml
-    host_key: AAAAC3NzaC1lZDI1NTE5AAAAIEAfLUpTj0fn5sJFW6agmLMsvEacMBvXocyzHLW+AOSQ
+    hostname: holepunch.in
+    remote: citest.holepunch.in
+    host_key: AAAAC3NzaC1lZDI1NTE5AAAAID+3abW2y3T5dodnI5O1Z/2KlIdH3bwnbGDvCFf13zlh
   chisel:
-    server: https://bastion.mydomain.link/chisel
+    server: https://gitlab.openance.dev/chisel
     reverse_port: 30443
