@@ -1,5 +1,5 @@
 # Modified version of https://github.com/chatwork/dockerfiles/blob/master/argocd-helmfargoile/Dockerfile
-# to include last version of kustomize and krmfnsops, a ksops like.
+# to include last version of kustomize and krmfnbuiltin, a ksops like.
 # The base image can be seen here: https://github.com/argoproj/argo-cd/blob/v2.5.4/Dockerfile
 FROM argoproj/argocd:v2.5.10
 
@@ -18,7 +18,6 @@ ARG SOPS_VERSION=v3.7.3
 ARG HELM_DIFF_VERSION=3.6.0
 ARG HELM_SECRETS_VERSION=4.2.2
 ARG KUSTOMIZE_VERSION=v5.0.0
-ARG KRMFNSOPS_VERSION=v0.1.7
 ARG KRMFNBUILTIN_VERSION=v0.4.1
 ARG AGE_VERSION=v1.1.1
 
@@ -44,8 +43,6 @@ RUN apt-get update && \
     # Kustomize
     curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz | tar zxf - && \ 
     mv kustomize /usr/local/bin && \
-    # krmfnsops
-    curl -sLo /usr/local/bin/krmfnsops https://github.com/kaweezle/krmfnsops/releases/download/${KRMFNSOPS_VERSION}/krmfnsops_${KRMFNSOPS_VERSION}_linux_amd64 && \
     # krmfnbuiltin
     curl -sLo /usr/local/bin/krmfnbuiltin https://github.com/kaweezle/krmfnbuiltin/releases/download/${KRMFNBUILTIN_VERSION}/krmfnbuiltin_${KRMFNBUILTIN_VERSION}_linux_amd64 && \
     # Age
@@ -55,7 +52,6 @@ RUN apt-get update && \
     chmod +x /usr/local/bin/helm && \
     chmod +x /usr/local/bin/helmfile && \
     chmod +x /usr/local/bin/kustomize && \
-    chmod +x /usr/local/bin/krmfnsops && \
     chmod +x /usr/local/bin/krmfnbuiltin && \
     chmod +x /usr/local/bin/sops
 

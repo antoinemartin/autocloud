@@ -28,7 +28,7 @@ wget -qO - "https://github.com/kaweezle/iknite/releases/download/v0.1.18/kaweezl
 grep -q kaweezle /etc/apk/repositories || echo https://kaweezle.com/repo/ >> /etc/apk/repositories 
 
 # Add some minimal dependencies
-apk --update add krmfnsops k9s openssl iknite
+apk --update add krmfnbuiltin k9s openssl iknite
 
 # Start the cluster and deploy ArgoCD...
 export IKNITE_KUSTOMIZE_DIRECTORY="https://github.com/antoinemartin/autocloud//packages/argocd/?ref=${CONFIG_REF}"
