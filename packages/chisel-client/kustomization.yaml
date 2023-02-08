@@ -9,7 +9,7 @@ commonLabels:
 resources:
   - chisel-client.yaml
 
-patches:
+patchesStrategicMerge:
   - |-
     apiVersion: v1
     kind: ConfigMap
