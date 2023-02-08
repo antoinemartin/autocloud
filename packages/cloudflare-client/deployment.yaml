@@ -59,7 +59,7 @@ spec:
             - /etc/cloudflared/config.yaml
             - run
           image: cloudflare/cloudflared:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: cloudflared
           livenessProbe:
             httpGet:
