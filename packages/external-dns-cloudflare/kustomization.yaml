@@ -8,7 +8,7 @@ resources:
   - external-dns-secret.yaml
   - external-dns-configmap.yaml
 
-patches:
+patchesStrategicMerge:
   - |
     apiVersion: apps/v1
     kind: Deployment

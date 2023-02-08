@@ -1,9 +1,9 @@
 # Modified version of https://github.com/chatwork/dockerfiles/blob/master/argocd-helmfargoile/Dockerfile
 # to include last version of kustomize and krmfnsops, a ksops like.
 # The base image can be seen here: https://github.com/argoproj/argo-cd/blob/v2.5.4/Dockerfile
-FROM argoproj/argocd:v2.5.4
+FROM argoproj/argocd:v2.5.10
 
-LABEL version="2.5.4-0.144.0"
+LABEL version="2.5.10-0.144.0"
 LABEL maintainer="antoine@openance.com"
 
 # Switch to root for the ability to perform install
@@ -17,9 +17,9 @@ ARG KUBECTL_VERSION=v1.26.0
 ARG SOPS_VERSION=v3.7.3
 ARG HELM_DIFF_VERSION=3.6.0
 ARG HELM_SECRETS_VERSION=4.2.2
-ARG KUSTOMIZE_VERSION=v4.5.7
-ARG KRMFNSOPS_VERSION=v0.1.6
-ARG KRMFNBUILTIN_VERSION=v0.0.2
+ARG KUSTOMIZE_VERSION=v5.0.0
+ARG KRMFNSOPS_VERSION=v0.1.7
+ARG KRMFNBUILTIN_VERSION=v0.4.1
 ARG AGE_VERSION=v1.1.1
 
 # Install tools needed for your repo-server to retrieve & decrypt secrets, render manifests
