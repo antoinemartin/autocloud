@@ -6,6 +6,7 @@ metadata:
     config.kubernetes.io/function: |
       exec:
         path: krmfnbuiltin
+source: values.yaml
 replacements:
   - source:
       name: autocloud-values

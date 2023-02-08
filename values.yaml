@@ -2,12 +2,6 @@ apiVersion: autocloud.config.kaweezle.com/v1alpha1
 kind: PlatformValues
 metadata:
   name: autocloud-values
-  annotations:
-    config.kaweezle.com/local-config: "true"
-    config.kaweezle.com/inject-local: "true"
-    config.kubernetes.io/function: |
-      exec:
-        path: krmfnbuiltin
 data:
   cluster:
     id: autocloud

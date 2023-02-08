@@ -6,6 +6,9 @@
       "label": "Run kustomize",
       "command": "kustomize build --enable-alpha-plugins --enable-exec ${fileDirname} | code -r -",
       "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "presentation": {
         "echo": true,
         "reveal": "always",

@@ -9,10 +9,6 @@ resources:
   - ./letsencrypt-issuer.yaml
 #  - ./testdns-certificate.yaml
 
-# Import decoded platform secrets
-generators:
-  - ../../secrets
-
 # TODO: Remove that once the images have been settled
 patches:
   - patch: |-
@@ -22,36 +18,5 @@ patches:
     target:
       kind: Deployment
 
-# Replace secrets in configuration
-replacements:
-  - source:
-      name: autocloud-secrets
-      fieldPath: data.cloudflare.apiKey
-    targets:
-      - select:
-          kind: Secret
-          name: cloudflare-apikey-secret
-        fieldPaths:
-          - stringData.apiKey
-  - source:
-      name: autocloud-secrets
-      fieldPath: data.ovh.application_secret
-    targets:
-      - select:
-          kind: Secret
-          name: ovh-api-credentials
-        fieldPaths:
-          - stringData.application_secret
-  - source:
-      name: autocloud-secrets
-      fieldPath: data.ovh.consumer_key
-    targets:
-      - select:
-          kind: Secret
-          name: ovh-api-credentials
-        fieldPaths:
-          - stringData.consumer_key
-
-# Remove secrets
 transformers:
-  - ../../secrets/remove
+  - cert-manager-secrets-replacements.yaml

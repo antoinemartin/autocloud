@@ -5,3 +5,5 @@ kustomization.yaml
 sish/
 # Extra
 cert-manager/cert-manager.yaml
+metallb-addresspool.yaml
+README.md
