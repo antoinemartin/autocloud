@@ -1,0 +1,2 @@
+kustomization.yaml
+argocd-secrets-replacements.yaml

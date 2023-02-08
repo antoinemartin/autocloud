@@ -11,19 +11,18 @@ resources:
   - argocd-secrets.yaml
   - autocloud-cm.yaml
   - bootstrap-application.yaml
+
 # TLS is handled by ingress
 configMapGenerator:
   - name: argocd-cmd-params-cm
     behavior: merge
     literals:
       - server.insecure=true
-# Secrets injection
-generators:
-  - ../../secrets
+
 transformers:
   - argocd-repo-server-patch.yaml
   - argocd-secrets-replacements.yaml
-  - ../../secrets/remove
+
 patches:
   - path: argocd-cm.yaml
   - path: argocd-secret.yaml
