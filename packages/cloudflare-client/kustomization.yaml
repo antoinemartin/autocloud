@@ -8,22 +8,5 @@ commonLabels:
 resources:
   - deployment.yaml
 
-# Import decoded platform secrets
-generators:
-  - ../../secrets
-
-# Replace secrets in configuration
-replacements:
-  - source:
-      name: autocloud-secrets
-      fieldPath: data.cloudflare.credentials\.json
-    targets:
-      - select:
-          kind: Secret
-          name: cloudflared
-        fieldPaths:
-          - stringData.credentials\.json
-
-# Remove secrets
 transformers:
-  - ../../secrets/remove
+  - cloudflare-client-secrets-replacements.yaml

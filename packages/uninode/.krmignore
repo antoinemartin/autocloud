@@ -1,2 +1,3 @@
 kustomization.yaml
 *-secrets-replacements.yaml
+metallb-addresspool.yaml

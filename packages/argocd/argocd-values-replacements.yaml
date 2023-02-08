@@ -1,11 +1,12 @@
-apiVersion: builtin
+apiVersion: krmfnbuiltin.kaweezle.com/v1alpha1
 kind: ReplacementTransformer
 metadata:
-  name: argocd-replacement-transformer
+  name: argocd-values-replacements
   annotations:
     config.kubernetes.io/function: |
       exec:
         path: krmfnbuiltin
+source: values.yaml
 replacements:
   - source:
       name: autocloud-values

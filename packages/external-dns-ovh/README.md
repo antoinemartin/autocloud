@@ -21,8 +21,8 @@ The OVH API requires three elements:
 You create these from an OVH account at the following address:
 https://www.ovh.com/auth/api/createToken
 
-The application key goes into `values/_properties.yaml` in the `ovh` section,
-along with the domain zone to manage:
+The application key goes into `values.yaml` in the `ovh` section, along with the
+domain zone to manage:
 
 ```yaml
 ovh:

@@ -1,0 +1,37 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: external-dns-ovh-replacement-transformer
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+source: values.yaml
+replacements:
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.applicationKey
+    targets:
+      - select:
+          kind: Secret
+          name: external-dns-ovh
+        fieldPaths:
+          - stringData.OVH_APPLICATION_KEY
+  - source:
+      name: autocloud-values
+      fieldPath: data.cluster.id
+    targets:
+      - select:
+          kind: ConfigMap
+          name: external-dns-ovh
+        fieldPaths:
+          - data.EXTERNAL_DNS_ID
+  - source:
+      name: autocloud-values
+      fieldPath: data.ovh.dnsZone
+    targets:
+      - select:
+          kind: ConfigMap
+          name: external-dns-ovh
+        fieldPaths:
+          - data.EXTERNAL_DNS_DOMAIN_FILTER

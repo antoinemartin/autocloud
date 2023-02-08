@@ -1,6 +1,9 @@
 # Don't process kustomization and schema files
 kustomization.yaml
+*-secrets-replacements.yaml
 # Helm Charts
 sish/
 # Extra
 cert-manager/cert-manager.yaml
+metallb-addresspool.yaml
+README.md

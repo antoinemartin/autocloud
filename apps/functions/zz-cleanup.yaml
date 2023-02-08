@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: AnnotationsTransformer
+metadata:
+  name: sequence-indent-fix
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: krmfnbuiltin
+annotations:
+  internal.config.kubernetes.io/seqindent: wide
+fieldSpecs:
+  - path: metadata/annotations
+    create: true

@@ -23,8 +23,8 @@ The API key can be created in you
 You create these from an OVH account at the following address:
 https://www.ovh.com/auth/api/createToken
 
-The account email goes into `values/_properties.yaml` in the `cloudflare`
-section, along with the domain zone to manage:
+The account email goes into `values.yaml` in the `cloudflare` section, along
+with the domain zone to manage:
 
 ```yaml
 cloudflare:

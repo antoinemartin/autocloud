@@ -5,22 +5,5 @@ namespace: traefik
 resources:
   - ./sish-client.yaml
 
-# Import decoded platform secrets
-generators:
-  - ../../secrets
-
-# Replace secrets in configuration
-replacements:
-  - source:
-      name: autocloud-secrets
-      fieldPath: data.github.ssh_key
-    targets:
-      - select:
-          kind: Secret
-          name: sish-ssh-credentials
-        fieldPaths:
-          - stringData.id_ed25519
-
-# Remove secrets
 transformers:
-  - ../../secrets/remove
+  - sish-client-secrets-replacements.yaml

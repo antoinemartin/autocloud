@@ -1,4 +1,4 @@
-apiVersion: builtin
+apiVersion: krmfnbuiltin.kaweezle.com/v1alpha1
 kind: ReplacementTransformer
 metadata:
   name: cert-manager-replacement-transformer
@@ -6,6 +6,7 @@ metadata:
     config.kubernetes.io/function: |
       exec:
         path: krmfnbuiltin
+source: values.yaml
 replacements:
   - source:
       name: autocloud-values
