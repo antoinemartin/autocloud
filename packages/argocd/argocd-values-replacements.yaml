@@ -28,15 +28,6 @@ replacements:
           - data.dex\.config.!!yaml.connectors.[id=github].config.orgs.0.name
   - source:
       name: autocloud-values
-      fieldPath: data.github.repo
-    targets:
-      - select:
-          kind: ConfigMap
-          name: autocloud
-        fieldPaths:
-          - data.autocloud_repo
-  - source:
-      name: autocloud-values
       fieldPath: data.git.repoURL
     targets:
       - select:
