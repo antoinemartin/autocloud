@@ -18,7 +18,7 @@ ARG SOPS_VERSION=v3.7.3
 ARG HELM_DIFF_VERSION=3.6.0
 ARG HELM_SECRETS_VERSION=4.2.2
 ARG KUSTOMIZE_VERSION=v5.0.0
-ARG KRMFNBUILTIN_VERSION=v0.4.1
+ARG KRMFNBUILTIN_VERSION=v0.4.2
 ARG AGE_VERSION=v1.1.1
 
 # Install tools needed for your repo-server to retrieve & decrypt secrets, render manifests
