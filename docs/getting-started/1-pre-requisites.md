@@ -17,7 +17,8 @@
 -   [krmfnbuiltin:material-open-in-new:][krmfnbuiltin]{:target="\_blank"} is a
     swiss army knife KRM function allowing us to perform structural
     modifications to the resources of the environment. Think of it as `sed`, but
-    form Kubernetes resources. Also knows how to decrypt KRM resources.
+    for Kubernetes resources. Also knows how to decrypt sops encrypted KRM
+    resources.
 -   [Kubeconform:material-open-in-new:](https://github.com/yannh/kubeconform){:target="\_blank"}
     performs validation of Kubernetes resources. It is useful to check
     kustomization output.
@@ -41,7 +42,7 @@ Autocloud is hosted on GitHub and currently uses the following features:
 -   [Deployment keys:material-open-in-new:](https://docs.github.com/en/developers/overview/managing-deploy-keys){:target="\_blank"}
     to allow repository read-only restricted access for Argo CD.
 
-Gitlab provides the same features and can be used as a replacement.
+Gitlab provides the same features and can probably be used as well.
 
 !!! info "Gittea support"
 
@@ -76,7 +77,7 @@ If you want to get the most out of Autocloud, You will need at least the
 following:
 
 -   A registered domain name. Make sure that your domain name provider has an
-    API that is known to [External DNS].
+    API that is known to [External DNS] and [Cert-Manager].
     [OVH:material-open-in-new:](https://www.ovhcloud.com/fr/domains/tld/){:target="\_blank"},
     for instance, offers domain names for 1,99€ (without VAT) on its `.ovh` TLD.
     [Cloudflare:material-open-in-new:](https://www.cloudflare.com/products/registrar/){:target="\_blank"}
@@ -93,9 +94,9 @@ following:
     case that you can deploy software somewhere in the cloud.
 -   S3 compatible storage. While you can use
     [Minio:material-open-in-new:]{:target="\_blank"}, external storage is useful
-    for backups and shared storage. Cloudflare as a free tier for starters and
-    doesn't charge for egress traffic. There are too other numerous solutions to
-    list. Everybody is S3 compatible.
+    for backups and shared storage. [Cloudflare][cloudflare r2] as a free tier
+    for starters and doesn't charge for egress traffic. There are too other
+    numerous solutions to list. Nowadays, everyonec is S3 compatible.
 
 !!! note
 
@@ -132,4 +133,6 @@ Once you have all these elements, proceed to the
 [External DNS]: https://github.com/kubernetes-sigs/external-dns#status-of-providers
 [Tailscale:material-open-in-new:]: https://tailscale.com/
 [Minio:material-open-in-new:]: https://github.com/minio/minio
+[Cert-Manager]: https://cert-manager.io/
+[Cloudflare R2]: https://www.cloudflare.com/lp/pg-r2/
 <!-- prettier-ignore-end -->

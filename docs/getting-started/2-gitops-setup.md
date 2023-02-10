@@ -26,7 +26,7 @@ they involve credentials, they are covered after
     CD. This is optional.
 -   Creating a
     [webhook:material-open-in-new:](https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks){:target="\_blank"}
-    for the repository for faster updates.
+    on the repository targeting Argo CD for faster updates.
 
 !!! info
 
@@ -36,7 +36,9 @@ they involve credentials, they are covered after
 
 ## Fork the repository
 
-If you don't plan to make your repository private, fork the public [Autocloud
+### On github.com
+
+If you plan to keep your repository public, fork the public [Autocloud
 repository:material-open-in-new:]{:target="\_blank"} into your own account or
 organization:
 
@@ -48,6 +50,28 @@ instead. Click on the :material-plus::material-menu-down: icon in the top right
 corner and choose _Import repository_:
 
 ![import Autocloud](../img/import_autocloud.png)
+
+### From the command line
+
+This also can be done from the command line:
+
+=== "Shell"
+
+    ```console
+    > gh repo create klasmik/klasmikloud --private
+    > git clone --bare --single-branch https://github.com/antoinemartin/autocloud.git
+    > git --git-dir=autocloud.git push --mirror git@github.com:klasmik/klasmikloud.git
+    > rm -rf autocloud.git
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    PS> gh repo create klasmik/klasmikloud --private
+    PS> git clone --bare --single-branch https://github.com/antoinemartin/autocloud.git
+    PS> git --git-dir=autocloud.git push --mirror git@github.com:klasmik/klasmikloud.git
+    PS> Remove-Item autocloud.git -Recurse -Force
+    ```
 
 ## Clone the repository and create a deployment branch
 
@@ -68,7 +92,7 @@ deployment branch for your development environment (replace
 
 === "PowerShell"
 
-    ```bash
+    ```powershell
     PS> git clone git@github.com:klasmik/klasmikloud.git
     PS> cd klasmikloud
     PS> git checkout -b deploy/devenv

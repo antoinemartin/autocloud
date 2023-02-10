@@ -16,9 +16,13 @@ They live in separate files for several reasons:
 
 -   The secrets are encrypted using sops whereas the properties are kept in
     plain text.
--   The properties are applied **before** committing. The applications and
-    kustomizations contain the actual property values. _Applying_ from a
-    centralized file is just a convenience to ease adaptation (see the
+-   The properties are applied **before** committing. Secrets are opaque so
+    having any value in the files is not that important. To the contrary, having
+    actual values for other properties allows browsing of the repo without the
+    need to always refer to the centralized `values.yaml`. Therefore, the
+    applications and kustomizations contain the actual property values.
+    _Applying_ from a centralized file is just a convenience to ease adaptation
+    and avoid oversights (see the
     [properties documentation](/user-guide/properties)).
 -   The kustomizations contain plain text **fake** secrets. They are
     **replaced** with actual values **in the cluster** while the kustomizations
@@ -55,19 +59,51 @@ the cluster:
 data:
     cluster:
         id: klasmikloud
-        uninode: true
         dnsZone: klasmik.com
         argocd:
             domainPrefix: argocd-devenv
 ```
 
-### Optional: create a deployment key
+`id` is the identifier of the cluster. `dnsZone` is the global domain name used
+by the cluster. `argocd.domainPrefix` allows the composition of the Argo CD UI
+domain name. In our example, it will be `argocd-devenv.klasmik.com`.
 
-To allow Argo CD to access the private repository, you can either use a user SSH
-key or a Personal Access Token. But in our case it's probably better to use a
-deployment key limited to the repository.
+### Secrets encryption key
 
-Create a key with the following command:
+Argo CD, When building kustomizations, need to have access to a decryption key
+to be able to decrypt the `secrets/secrets.yaml` file in order to inject
+secrets. This key is the key that you have created in
+[the previous step](../3-change-encryption-key/) and that is located in
+`~/.config/sops/age/keys.txt` (or `$env:APPDATA\sops\age\keys.txt` on Windows)
+
+Put this key under `data.sops.age_key\.txt` in `secrets/secrets.dec.yaml`:
+
+```yaml
+# secrets/secrets.dec.yaml
+data:
+    #...
+    sops:
+        age_key.txt: |-
+            # created: 2023-01-19T19:41:45Z
+            # public key: age166k86d56ejs2ydvaxv2x3vl3wajny6l52dlkncf2k58vztnlecjs0g5jqq
+            AGE-SECRET-KEY-15RKTPQCCLWM7EHQ8JEP0TQLUWJAECVP7332M3ZP0RL9R7JT7MZ6SY79V8Q
+```
+
+### Repositiory access
+
+!!! info "Optional"
+
+    This is only needed if your repository is private.
+
+To allow Argo CD to access the private repository, you can either use a [deploy
+key:material-open-in-new:]{:target="\_blank"} or a [Personal Access
+Token:material-open-in-new:][github-pat-docs]{:target="\_blank"}. The later is
+only interesting for accessing several repositories with the same credentials
+but is weaker in terms of security. For the initial setup, reading access to the
+autocloud repo is the only thing that we need. So for now, we will move forward
+with a deploy key.
+
+Create a SSH key with the following command:
 
 === "Shell"
 
@@ -88,7 +124,13 @@ Create a key with the following command:
     PS>
     ```
 
-Go to the following URL:
+And then add it to the repo with the github CLI:
+
+```console
+>  gh repo deploy-key add autocloud.pub --title autocloud
+```
+
+You can also do it on github.com. Go to the following URL:
 
 ```bash
 # In our case, https://github.com/klasmik/klasmikloud/settings/keys/new
@@ -129,19 +171,48 @@ Now test the key:
 Now save the private key in the `secrets/secrets.dec.yaml` in the
 `github.ssh_key` key:
 
+<!-- prettier-ignore-start -->
 ```yaml
 data:
     # ...
     github:
         # ...
-        ssh_key:
+        ssh_key: |-
             -----BEGIN OPENSSH PRIVATE KEY-----
-            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-            ... SpbRCCLhgXt42GirPwlUAAAACWF1dG9jbG91ZAECAwQ= -----END OPENSSH
-            PRIVATE KEY-----
+            b3BlbnNza...
+            ... SpbRCCLhgXt42GirPwlUAAAACWF1dG9jbG91ZAECAwQ= 
+            -----END OPENSSH PRIVATE KEY-----
+```
+<!-- prettier-ignore-end -->
+
+### Argo CD Authentication
+
+The Argo CD Autocloud installation comes with a local admin user and with Dex to
+allow SSO from an exiting OIDC source. In its initial configuration the SSO is
+done through github with all users of the specified organization as admins.
+
+#### Local admin password
+
+Choose an admin password (hard to guess, easy to remember) and put it in the
+`secrets/secrets.dec.yaml` file under the `data.argocd.admin_password` key:
+
+```yaml
+# secrets/secrets.dec.yaml
+data:
+    # ...
+    argocd:
+        admin_password: password
 ```
 
-### Optional: Create an OAuth Application for Argo CD Auth
+#### Github OIDC authentication
+
+!!! info "Optional"
+
+    This is only needed if your want to authenticate to Argo CD with a github
+    account.
+
+More details are available in the [GitHub documentation about OAuth
+Apps:material-open-in-new:][github-oauth-apps]{:target="\_blank"}.
 
 Go to
 `https://github.com/organizations/<organization>/settings/applications/new` and
@@ -179,14 +250,31 @@ data:
         oidc_client_secret: d84...
 ```
 
-### Optional: Create a webhook for Argo CD
+Autocloud configures Argo CD to let in users pertaining to a particular
+organization. You need to specify the organization name in the `values.yaml`
+file under the `github` key:
+
+```yaml
+data:
+    # ...
+    github:
+        organization: klasmik
+```
+
+### Argo CD Webhook update
+
+!!! info "Optional"
+
+    This is if you want _near realtime_ deployment and if Argo CD
+    is accessible through internet.
 
 Argo CD checks the git repositories every 3 minutes for updates. To trigger the
 updates as soon as the modifications are pushed, it is convenient to add a
 webhook to the repository. The webhook will notify Argo CD to trigger the
 modification check immediately.
 
-Create a webhook according to the [Argo CD webhook documentation]. Go to
+Create a webhook according to the [Argo CD webhook
+documentation:material-open-in-new:]{:target="\_blank"}. Go to
 
 ```bash
 # In our case, https://github.com/klasmik/klasmikloud/settings/hooks
@@ -208,14 +296,318 @@ data:
         webhook_secret: 3Ab...
 ```
 
+### DNS provider API credentials
+
+Autocloud currently supports two DNS providers: OVH and Cloudflare. Each of them
+is configured in its respective `ovh` and `cloudflare` sections.
+
+In `values.yaml`:
+
+```yaml
+# values.yaml
+data:
+    cloudflare:
+        email: john@doe.me
+        dnsZone: klasmik.com
+    ovh:
+        endpoint: ovh-eu
+        applicationKey: iYrnuWulPIzRIYZP
+        dnsZone: develop.cx
+```
+
+In `secrets.yaml`:
+
+```yaml
+data:
+    cloudflare:
+        apiKey: e...
+    ovh:
+        application_secret: E...
+        consumer_key: l...
+```
+
+For OVH, the API access credentials can be created at the following address:
+[https://www.ovh.com/auth/api/createToken:material-open-in-new:](https://www.ovh.com/auth/api/createToken){:target="\_blank"}
+
+For Cloudflare, you need to retrieve your API token at the following page:
+[https://dash.cloudflare.com/profile/api-tokens:material-open-in-new:](https://dash.cloudflare.com/profile/api-tokens){:target="\_blank"}
+
+### Online presence
+
+#### Cloudflare tunnel
+
+To setup the cloudflare tunnel, the best option is from the command line with
+the help of the `cloudflared` CLI. To install it, follow the instructions in the
+[cloudflared
+documentation:material-open-in-new:][cloudflared-install-page]{:target="\_blank"}
+
+Start with login:
+
+```console
+> cloudflared tunnel login
+Please open the following URL and log in with your Cloudflare account:
+
+https://dash.cloudflare.com/argotunnel?callback=https%3A%2F%2Flogin.cloudflareaccess.org%2F_P_LYLgTz4vuQtxb_BpRhZ3-0KipIrOlyZoX8XxhyFQ%3D
+
+Leave cloudflared running to download the cert automatically.
+2023-02-09T18:27:21Z INF Waiting for login...
+```
+
+Choose you domain name and validate it:
+
+![cloudflare tunnel login](../img/cloudflare_tunnel_login.png)
+
+the login ends in the terminal:
+
+```console
+...
+2023-02-09T18:27:21Z INF Waiting for login...
+You have successfully logged in.
+If you wish to copy your credentials to a server, they have been saved to:
+/root/.cloudflared/cert.pem
+>
+```
+
+Then create the tunnel:
+
+```console
+> cloudflared tunnel create klasmikloud
+Tunnel credentials written to /root/.cloudflared/b3d4c50f-94a7-4d2d-a5a2-b16dbdad6db6.json. cloudflared chose this file based on where your origin certificate was found. Keep this file secret. To revoke these credentials, delete the tunnel.
+
+Created tunnel klasmikloud with id b3d4c50f-94a7-4d2d-a5a2-b16dbdad6db
+>
+```
+
+The id printed goes in the `data.cloudflare.tunnel_id` property of the
+`values.yaml` file:
+
+```yaml
+# values.yaml
+data:
+    # ...
+    cloudflare:
+        email: antoine@openance.com
+        dnsZone: klasmik.com
+        hostName: '*.klasmik.com'
+        tunnel_id: b3d4c50f-94a7-4d2d-a5a2-b16dbdad6db
+```
+
+The contents of the json file mentioned in the command output (here
+`/root/.cloudflared/b3d4c50f-94a7-4d2d-a5a2-b16dbdad6db6.json`) go in the
+`secrets/secrets.yaml` file in the `data.cloudflare.credentials\.json` property:
+
+```yaml
+# secrets/secrets.dec.yaml
+data:
+    cloudflare:
+        credentials.json: |
+            {"AccountTag":"a...","TunnelSecret":"p...","TunnelID":"b3d4c50f-94a7-4d2d-a5a2-b16dbdad6db6"}
+```
+
+you also need to associate your domain name with the tunnel with the following
+command:
+
+```console
+> cloudflared tunnel route dns klasmikloud argocd-devenv.klasmik.com
+2023-02-09T19:00:16Z INF Added CNAME argocd-devenv.klasmik.com which will route to this tunnel tunnelID=b3d4c50f-94a7-4d2d-a5a2-b16dbdad6db6
+>
+```
+
+If you go to the DNS configuration of your domain name, you will see the `CNAME`
+record:
+
+![tunnel CNAME record](../img/cloudflare_dns_cname.png)
+
+!!! note "TLS termination"
+
+    With this configuration, and in particular the fact that the CNAME is
+    _proxied_, the TLS termination of the domain name is handled by cloudflare.
+
+#### Sish
+
+[sish:material-open-in-new:]{:target="\_blank"} enables online presence for the
+cluster by using the ssh protocol. Sish offers several advantages:
+
+-   The client is a standard ssh client.
+-   The server supports SNI. You can have multiple subdomains and domain names
+    on the same server.
+-   As authentication is done through ssh keys, you can leverage existing
+    infrastructure. For instance you can use the github keys API to feed your
+    server with authorized keys.
+
+There is more information in the [sish component page](../components/sish.md).
+
+For the configuration, you will need the following values:
+
+```yaml
+sish:
+    hostname: develop.cx
+    remote: argocd-devenv.develop.cx
+    # This is the public key of the private ed25519 key in ../secrets/helm/sish.yaml
+    host_key: AAAAC3NzaC1lZDI1NTE5AAAAIEAfLUpTj0fn5sJFW6agmLMsvEacMBvXocyzHLW+AOSQ
+```
+
+`hostname` is the address of the sish server. `remote` is the full domain name
+that needs to be redirected locally. `host_key` is the public key of the host.
+
+The only secret is the ssh private key to connect to the server:
+
+```yaml
+sish:
+    ssh_key: |
+        -----BEGIN OPENSSH PRIVATE KEY-----
+        b3B...
+        ...FBg==
+        -----END OPENSSH PRIVATE KEY-----
+```
+
+This key needs to be registered in a github account so that the URL
+`https://github.com/<account>.keys` returns the public key. The name of the
+github account needs to be passed to the deployment of the `sish` helm chart in
+the `auth.github_accounts` key.
+
+### Other properties
+
+At this point the other properties of the `values.yaml` files (`sish`...) can be
+left as is.
+
+## Committing current configuration
+
+At this point you should commit the current configuration without forgetting to
+encrypt the secrets.
+
+=== "Shell"
+
+    ```bash
+    $ sops -e secrets/secrets.dec.yaml > secrets/secrets.yaml
+    $ rm secrets/secrets.dec.yaml
+    $ git add values.yaml secrets/secrets.yaml
+    $ git commit -m "🔧 Platform values and secrets customization"
+    $
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    PS> sops -e secrets\secrets.dec.yaml > secrets\secrets.yaml
+    PS> Remove-Item secrets/secrets.dec.yaml
+    PS> git add values.yaml secrets\secrets.yaml
+    PS> git commit -m "🔧 Platform values and secrets customization"
+    PS>
+    ```
+
 ## Applying properties to kustomizations and applications
+
+Apply the values to the current environment:
+
+=== "Shell"
+
+    ```bash
+    $ kustomize fn run --enable-exec packages
+    $ kustomize fn run --enable-exec apps
+    $ git status
+    On branch deploy/devenv
+    Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git restore <file>..." to discard changes in working directory)
+            modified:   apps/available/apisix.yaml
+            modified:   apps/available/applications-set.yaml
+            modified:   apps/available/argocd.yaml
+            modified:   apps/available/bootstrap.yaml
+            modified:   apps/available/cert-manager.yaml
+            modified:   apps/available/chisel-client.yaml
+            modified:   apps/available/external-dns-cloudflare.yaml
+            modified:   apps/available/external-dns-ovh.yaml
+            modified:   apps/available/ingresses.yaml
+            modified:   apps/available/sish.yaml
+            modified:   packages/argocd/argocd-cm.yaml
+            modified:   packages/argocd/autocloud-cm.yaml
+            modified:   packages/cert-manager/letsencrypt-issuer.yaml
+            modified:   packages/cloudflare-client/deployment.yaml
+            modified:   packages/external-dns-cloudflare/external-dns-configmap.yaml
+            modified:   packages/external-dns-cloudflare/external-dns-secret.yaml
+            modified:   packages/external-dns-ovh/external-dns-configmap.yaml
+            modified:   packages/external-dns-ovh/external-dns-secret.yaml
+            modified:   packages/ingresses/argocd-ingress-cloudflare.yaml
+            modified:   packages/ingresses/argocd-ingress.yaml
+            modified:   packages/sish-client/sish-client.yaml
+
+    no changes added to commit (use "git add" and/or "git commit -a"
+    $ git commit -a -m "🔧 Applied platform values to applications and packages"
+    $
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    PS> kustomize fn run --enable-exec packages
+    PS> kustomize fn run --enable-exec apps
+    PS> git status
+    On branch deploy/devenv
+    Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git restore <file>..." to discard changes in working directory)
+            modified:   apps/available/apisix.yaml
+            modified:   apps/available/applications-set.yaml
+            modified:   apps/available/argocd.yaml
+            modified:   apps/available/bootstrap.yaml
+            modified:   apps/available/cert-manager.yaml
+            modified:   apps/available/chisel-client.yaml
+            modified:   apps/available/external-dns-cloudflare.yaml
+            modified:   apps/available/external-dns-ovh.yaml
+            modified:   apps/available/ingresses.yaml
+            modified:   apps/available/sish.yaml
+            modified:   packages/argocd/argocd-cm.yaml
+            modified:   packages/argocd/autocloud-cm.yaml
+            modified:   packages/cert-manager/letsencrypt-issuer.yaml
+            modified:   packages/cloudflare-client/deployment.yaml
+            modified:   packages/external-dns-cloudflare/external-dns-configmap.yaml
+            modified:   packages/external-dns-cloudflare/external-dns-secret.yaml
+            modified:   packages/external-dns-ovh/external-dns-configmap.yaml
+            modified:   packages/external-dns-ovh/external-dns-secret.yaml
+            modified:   packages/ingresses/argocd-ingress-cloudflare.yaml
+            modified:   packages/ingresses/argocd-ingress.yaml
+            modified:   packages/sish-client/sish-client.yaml
+
+    no changes added to commit (use "git add" and/or "git commit -a"
+    PS> git commit -a -m "🔧 Applied platform values to applications and packages"
+    PS>
+    ```
 
 ## Selecting the applications to deploy at bootstrap
 
+To understand how the cluster is bootstrapped, please read the relevant section
+in the [Architecture page](../architecture.md#bootstrapping-stages).
+
+What we will do for now is just add or remove the symbolic links to applications
+manifests in the `apps/bootstrap` and `apps/default` directories to accommodate
+our setup.
+
+If we are running on a packaged development distribution like the ones provided
+by K3s, Kind or Minikube, we will remove the symbolic link
+`apps/bootstrap/uninode.yaml`, as the base services are already deployed.
+
+!!! info
+
+    The advantage of starting from a _naked_ cluster is that the base services
+    are managed by Argo CD and can be updated with gitops.
+
+At this stage, you can add or remove services from the different directories.
+
+!!! note "Todo"
+
+    Have a more explicit naming scheme, like maybe `01-bootstrap`, `02-admin`, ...
+
+Once you have committed your changes and pushed the branch, proceed to the
+[Cluster deployment:material-arrow-right:](../5-cluster-deployment).
+
 <!-- prettier-ignore-start -->
 
-[OAuth application:material-open-in-new:]: https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app
-[Autocloud repository]: https://github.com/antoinemartin/autocloud.git
-[Argo CD webhook documentation]: https://argo-cd.readthedocs.io/en/stable/operator-manual/webhook/
-[klasmik:material-open-in-new:]: https://github.com/klasmik
+[github-oauth-apps]: https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app
+[github-pat-docs]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+[Argo CD webhook documentation:material-open-in-new:]: https://argo-cd.readthedocs.io/en/stable/operator-manual/webhook/
+[cloudflared-install-page]: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/#1-download-and-install-cloudflared
+[sish:material-open-in-new:]: https://github.com/antoniomika/sish
+[deploy key:material-open-in-new:]: https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys)
+[argocd-user-management]: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/
 <!-- prettier-ignore-end -->

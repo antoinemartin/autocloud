@@ -156,6 +156,24 @@ Test that your environment is correct by decrypting the secrets file:
     there is no risk of committing an unencrypted secrets file as long as you
     keep it named like that.
 
+You can also build the secrets kustomization. It will print out all the
+unencrypted secrets to the terminal:
+
+=== "Shell"
+
+    ```bash
+    $ kustomize build --enable-alpha-plugins --enable-exec secrets
+    ...
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    ...
+    PS> kustomize build --enable-alpha-plugins --enable-exec secrets
+    ...
+    ```
+
 Now that you can manage properly secured credentials, move on to the
 [environment adaptation:material-arrow-right:](../4-environment-adaptation)
 
