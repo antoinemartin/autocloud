@@ -70,9 +70,16 @@ spec:
       serviceAccountName: argocd-application-admin
       automountServiceAccountToken: true
       restartPolicy: OnFailure
+      volumes:
+        - name: ssh-key-volume
+          secret:
+            secretName: github-private-repo-creds-ssh
+            items:
+              - key: sshPrivateKey
+                path: id_ed25519
       containers:
         - name: create-address-pools
-          image: boxboat/kubectl:1.26.0
+          image: antoinemartin/argocd-helmfile:latest
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
@@ -90,4 +97,12 @@ spec:
               sleep $ROLLOUT_INITIAL_DELAY
               ns=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
               kubectl -n "$ns" rollout status deployments,statefulsets,daemonsets --timeout=$ROLLOUT_TIMEOUT
-              kubectl apply -f "https://raw.githubusercontent.com/${autocloud_repo}/${autocloud_targetRevision}/apps/available/bootstrap.yaml"
+
+              git config --global core.sshCommand 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /etc/ssh-key/id_ed25519'
+              git clone "${autocloud_repoURL}" repo
+              cd repo
+              git checkout "${autocloud_targetRevision}"
+              kubectl apply -f "${autocloud_bootstrapApplicationPath}"
+          volumeMounts:
+            - mountPath: /etc/ssh-key
+              name: ssh-key-volume
