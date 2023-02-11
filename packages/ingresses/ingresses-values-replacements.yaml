@@ -29,9 +29,9 @@ replacements:
           kind: Ingress
           name: argocd-cloudflare
         fieldPaths:
-          - spec.rules.0.host.!!regex.^\w+\\.(\.*)$.1
-          - spec.tls.0.hosts.0.!!regex.^\w+\\.(\.*)$.1
-          - spec.tls.0.secretName.!!regex.^\w+\\.(\.*)-tls$.1
+          - spec.rules.0.host.!!regex.^[\w-]+\\.(\.*)$.1
+          - spec.tls.0.hosts.0.!!regex.^[\w-]+\\.(\.*)$.1
+          - spec.tls.0.secretName.!!regex.^[\w-]+\\.(\.*)-tls$.1
   - source:
       name: autocloud-values
       fieldPath: data.cloudflare.tunnel_id
@@ -52,7 +52,7 @@ replacements:
           kind: Ingress
           name: argocd-sish
         fieldPaths:
-          - spec.rules.0.host.!!regex.^\w+\\.(\.*)$.1
-          - spec.tls.0.hosts.0.!!regex.^\w+\\.(\.*)$.1
-          - spec.tls.0.secretName.!!regex.^\w+\\.(\.*)-tls$.1
+          - spec.rules.0.host.!!regex.^[\w-]+\\.(\.*)$.1
+          - spec.tls.0.hosts.0.!!regex.^[\w-]+\\.(\.*)$.1
+          - spec.tls.0.secretName.!!regex.^[\w-]+\\.(\.*)-tls$.1
           - metadata.annotations.external-dns\.alpha\.kubernetes\.io/target
