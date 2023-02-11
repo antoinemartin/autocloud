@@ -44,3 +44,21 @@ replacements:
           name: autocloud
         fieldPaths:
           - data.autocloud_targetRevision
+  - source:
+      name: autocloud-values
+      fieldPath: data.cluster.argocd.domainPrefix
+    targets:
+      - select:
+          kind: ConfigMap
+          name: argocd-cm
+        fieldPaths:
+          - data.url.!!regex.^https://([\w-]+)\\.(\.*)$.1
+  - source:
+      name: autocloud-values
+      fieldPath: data.cluster.dnsZone
+    targets:
+      - select:
+          kind: ConfigMap
+          name: argocd-cm
+        fieldPaths:
+          - data.url.!!regex.^https://([\w-]+)\\.(\.*)$.2
