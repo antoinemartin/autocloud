@@ -1,10 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
   name: apps
   namespace: argocd
+  annotations:
+    autocloud/local-application: "true"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: argocd
