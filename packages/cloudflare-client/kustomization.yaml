@@ -8,5 +8,21 @@ commonLabels:
 resources:
   - deployment.yaml
 
+patchesStrategicMerge:
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: cloudflared
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+  - |-
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: cloudflared
+      annotations:
+        internal.config.kubernetes.io/needsHashSuffix: enabled
+
 transformers:
   - cloudflare-client-secrets-replacements.yaml
