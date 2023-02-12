@@ -583,20 +583,57 @@ What we will do for now is just add or remove the symbolic links to applications
 manifests in the `apps/bootstrap` and `apps/default` directories to accommodate
 our setup.
 
-If we are running on a packaged development distribution like the ones provided
-by K3s, Kind or Minikube, we will remove the symbolic link
-`apps/bootstrap/uninode.yaml`, as the base services are already deployed.
+Taking K3s as an example, it provides out of the box the load balancer, storage
+class, metrics and ingress controller. In consequence, we don't need to deploy
+`uninode` nor `traefik`. We will remove them from bootstrap:
+
+=== "Shell"
+
+    ```bash
+    $ rm apps/bootstrap/{traefik,uninode}.yaml
+    $
+    ```
+
+=== "PowerShell"
+
+    ```powershell
+    PS> @('traefik', 'uninode') | % { remove-item apps/bootstrap/$_.yaml }
+    PS>
+    ```
 
 !!! info
 
     The advantage of starting from a _naked_ cluster is that the base services
     are managed by Argo CD and can be updated with gitops.
 
-At this stage, you can add or remove services from the different directories.
+In K3s, traefik is installed in the `kube-system` namespace while `uninode`
+installs it in the `traefik` namespace. In consequence, we need to adapt the
+domain names of the tunnels redirections:
 
-!!! note "Todo"
-
-    Have a more explicit naming scheme, like maybe `01-bootstrap`, `02-admin`, ...
+```diff
+--- a/packages/cloudflare-client/deployment.yaml
++++ b/packages/cloudflare-client/deployment.yaml
+@@ -10,7 +10,7 @@ data:
+     credentials-file: /credentials/credentials.json
+     ingress:
+     - hostname: "*.klasmik.com"
+-      service: http://traefik.traefik.svc:80
++      service: http://traefik.kube-system.svc:80
+     - service: http_status:404
+ ---
+ apiVersion: v1
+--- a/packages/sish-client/sish-client.yaml
++++ b/packages/sish-client/sish-client.yaml
+@@ -37,7 +37,7 @@ data:
+       ServerAliveInterval 10
+       ServerAliveCountMax 2
+       RemoteCommand sni-proxy=true
+-      RemoteForward argocd-devenv.develop.cx:443 traefik.traefik.svc:443
++      RemoteForward argocd-devenv.develop.cx:443 traefik.kube-system.svc:443
+   known_hosts: |
+     [develop.cx]:2222 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3abW2y3T5dodnI5O1Z/2KlIdH3bwnbGDvCFf13zlh
+ ---
+```
 
 Once you have committed your changes and pushed the branch, proceed to the
 [Cluster deployment:material-arrow-right:](../5-cluster-deployment).

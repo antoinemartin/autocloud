@@ -48,6 +48,23 @@ Then create your own key:
     Public key: age1...
     ```
 
+??? tip "Derive the age key from a ssh key"
+
+    The age key can be derived from a ssh key. This is convenient as a SSH key
+    may be used to access the repository.
+
+    The [ssh-to-age] project provides a command to convert an existing ed25519
+    ssh key into a valid age key:
+
+    ```bash
+    $ go install github.com/Mic92/ssh-to-age/cmd/ssh-to-age@latest
+    $ ssh-to-age -private-key -i ~/.ssh/id_ed25519 >> ~/.config/sops/age/keys.txt
+    $ NEWKEY=$(ssh-to-age -i ~/.ssh/id_ed25519.pub)
+    ```
+
+    Note that at the time of this writing, there is a [PR in sops](https://github.com/mozilla/sops/pull/1134)
+    adding native ssh key support to sops.
+
 Replace the secrets encryption by using the public key of your new key
 (recipient in age parlance) with the following commands:
 
@@ -181,5 +198,6 @@ Now that you can manage properly secured credentials, move on to the
 
 [SOPS documentation:material-open-in-new:]: https://github.com/mozilla/sops
 [SOPS :material-open-in-new:]: https://github.com/mozilla/sops
+[ssh-to-age]: https://github.com/Mic92/ssh-to-age
 
 <!-- prettier-ignore-end -->
