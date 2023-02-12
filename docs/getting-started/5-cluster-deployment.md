@@ -9,7 +9,7 @@ As as example, we will use K3s. K3s is setup with the following command (see the
 > curl -sfL https://get.k3s.io | sh -
 ```
 
-For windows users, The howtos section tells how to
+For windows users, The howtos section tells how to quickly
 [install k3s on Windows](../howtos/k3s-windows-install.md).
 
 ## Pre-requisites
