@@ -1,0 +1,5 @@
+nav:
+  - Introduction: index.md
+  - Argo CD: argo-cd.md
+  - SOPS: sops.md
+  - SISH: sish.md

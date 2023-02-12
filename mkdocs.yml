@@ -1,0 +1,75 @@
+site_name: "Autocloud: GitOps Kubernetes Bootstrapper"
+repo_name: "antoinemartin/autocloud"
+repo_url: "https://github.com/antoinemartin/autocloud"
+edit_uri: "edit/main/docs/"
+docs_dir: "docs"
+# cSpell: disable
+theme:
+  name: material
+  features:
+    - content.action.view
+    - content.action.edit
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - navigation.top
+    - navigation.footer
+    - tabs
+    - toc.follow
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: light blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+extra_css:
+  - css/extra.css
+
+markdown_extensions:
+  - admonition
+  - abbr
+  - def_list
+  - attr_list
+  - footnotes
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+  - search
+  - awesome-pages
+  - include-markdown
+extra:
+  version:
+    provider: mike

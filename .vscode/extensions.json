@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "aabegg.vscode-bcrypt",
+        "adamhartford.vscode-base64",
+        "bibhasdn.random-string-password-generator",
+        "DavidAnson.vscode-markdownlint",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-yaml",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "maattdd.gitless",
+        "mhutchie.git-graph"
+    ]
+}
