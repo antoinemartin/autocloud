@@ -7,15 +7,16 @@ docs_dir: "docs"
 theme:
   name: material
   features:
-    - tabs
     - content.action.view
     - content.action.edit
-    - toc.follow
-    - navigation.top
-    - navigation.footer
     - content.code.annotate
     - content.code.copy
     - content.tabs.link
+    - content.tooltips
+    - navigation.top
+    - navigation.footer
+    - tabs
+    - toc.follow
   palette:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
@@ -39,9 +40,11 @@ extra_css:
   - css/extra.css
 
 markdown_extensions:
+  - admonition
+  - abbr
   - def_list
   - attr_list
-  - admonition
+  - footnotes
   - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true

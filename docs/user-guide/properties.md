@@ -25,7 +25,7 @@ With this, the workflow is the following:
 -   Edit the `values.yaml` and change the properties according to the desired
     configuration. In particular, change the `git.repoURL` and
     `git.targetRevision` properties.
--   Edit the `secrets/secrets.yaml` file accordingly (see the [secrets README]).
+-   Edit the `secrets/secrets.yaml` file accordingly (see [secrets]).
 -   Apply the configuration with the following commands:
 
 ```console
@@ -115,7 +115,7 @@ The properties are applied to a directory with the following command:
 Kustomize will apply the functions present in the `DIR` directory to itself,
 recursively.
 
-### IMPORTANT: Avoiding directories and files
+### IMPORTANT: Ignoring directories and files
 
 `kustomize fn run` tries to interpret all files visited as KRM resources. But
 Helm Charts are not compliant, as well as some other files (patches...). It also
@@ -153,7 +153,7 @@ Your replacement function configuration should start with the following:
 
 ```yaml
 # Selecting transformer kind in krmfnbuiltin
-apiVersion: builtin
+apiVersion: krmfnbuiltin.kaweezle.com/v1alpha1
 kind: ReplacementTransformer
 metadata:
     # be a good KRM citizen, give it an explicit name
@@ -163,6 +163,8 @@ metadata:
         config.kubernetes.io/function: |
             exec:
               path: krmfnbuiltin
+# Source of the replacement
+source: values.yaml
 replacements:
 ```
 
@@ -170,21 +172,24 @@ Then it contains the structured replacements from the properties. Example:
 
 ```yaml
 - source:
-      name: autocloud-values
+      name: autocloud-values # (1)!
       fieldPath: data.github.clientID
   targets:
-      - select:
+      - select: # (2)!
             kind: ConfigMap
             name: argocd-cm
         fieldPaths:
             - data.dex\.config.!!yaml.connectors.[id=github].config.clientID
 ```
 
+1.  At least name is required
+2.  The same source can have multiple targets
+
 In the above, we get the `data.github.clientID` from the `values.yaml` file and
 _inject_ it in the Argo CD config map. If the value is `myid`, the
 `packages/argocd/argocd-cm.yaml` file would be modified:
 
-```yaml
+```yaml hl_lines="8"
 dex.config: |
     connectors:
       # GitHub example
@@ -192,7 +197,7 @@ dex.config: |
         id: github
         name: GitHub
         config:
-          clientID: myid    # <--------- The change is here
+          clientID: myid  # <-- The modifications is here
           clientSecret: $dex.github.clientSecret
 ```
 
@@ -203,8 +208,7 @@ Please go to the [krmfnbuiltin documentation] for details.
 -   **All** replacements are performed each time the `kustomize fn run` command
     is applied. In consequence, keep your `targets` as specific as possible. If
     needed, you can add `annotationSelector` to select the proper resource kind
-    subset (see [applications.yaml](apps/functions/applications.yaml) for
-    instance).
+    subset (see [applications.yaml] for instance).
 -   [krmfnbuiltin] provides an extended `ReplacementTransformer` that can make
     complex replacements like regexp replacements in embedded yaml content
     (`data.someValue.!!yaml.some.property.!!regex.property=(\S+).1`). However,
@@ -215,5 +219,6 @@ Please go to the [krmfnbuiltin documentation] for details.
 [krmfnbuiltin documentation]: https://github.com/kaweezle/krmfnbuiltin#extended-replacement-in-structured-content
 [krmfnbuiltin]: https://github.com/kaweezle/krmfnbuiltin
 [KRM functions]: https://kubectl.docs.kubernetes.io/guides/extending_kustomize/exec_krm_functions/
-[secrets README]: ../secrets/README.md
+[secrets]: ./secrets.md
+[applications.yaml]: https://github.com/antoinemartin/autocloud/blob/main/apps/functions/applications.yaml
 <!-- prettier-ignore-end -->
