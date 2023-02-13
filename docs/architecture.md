@@ -67,8 +67,12 @@ The bootstrapping of the cluster is like a domino:
     _applications_ directory, `apps/default`, containing the second stage of
     base services:
     -   `ingresses` deploy ingresses to access Argo CD from internet.
-    -   `applications-set` deploys cert-manager, external dns and the online
-        presence services (cloudflare, sish).
+    -   `cert-manager` deploys cert-manager.
+    -   `external-dns-ovh` deploys external DNS using OVH API for OVH domains.
+    -   `external-dns-cloudflare` deploys external DNS using Cloudflare API for
+        Cloudflare domains.
+    -   `cloudflare-client` installs the Cloudflare tunnel client.
+    -   `sish-client` installs the sish tunnel client.
 
 <!-- prettier-ignore-start -->
 
