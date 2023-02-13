@@ -21,7 +21,7 @@ spec:
   source:
     path: apps/appstage-01-online
     repoURL: "https://github.com/antoinemartin/autocloud.git"
-    targetRevision: main
+    targetRevision: deploy/citest
   syncPolicy:
     automated:
       allowEmpty: true

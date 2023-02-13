@@ -6,5 +6,5 @@ metadata:
 # used as environment variables.
 data:
   autocloud_repoURL: https://github.com/antoinemartin/autocloud.git
-  autocloud_targetRevision: main
+  autocloud_targetRevision: deploy/citest
   autocloud_bootstrapApplicationPath: apps/available/appstage-00-bootstrap.yaml

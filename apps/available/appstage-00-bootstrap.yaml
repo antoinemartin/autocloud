@@ -15,7 +15,7 @@ spec:
   source:
     path: apps/appstage-00-bootstrap
     repoURL: https://github.com/antoinemartin/autocloud.git
-    targetRevision: main
+    targetRevision: deploy/citest
   syncPolicy:
     automated:
       prune: true

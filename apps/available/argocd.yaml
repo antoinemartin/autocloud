@@ -18,7 +18,7 @@ spec:
   source:
     path: packages/argocd
     repoURL: https://github.com/antoinemartin/autocloud.git
-    targetRevision: main
+    targetRevision: deploy/citest
   syncPolicy:
     automated:
       prune: true

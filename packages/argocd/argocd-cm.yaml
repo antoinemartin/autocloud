@@ -20,7 +20,7 @@ data:
   #       - "Order"
   #     clusters:
   #       - https://kubernetes.default.svc
-  url: https://argocd.mydomain.net
+  url: https://citest.autokube.net
   dex.config: |
     connectors:
       # GitHub example
@@ -33,4 +33,4 @@ data:
           loadAllGroups: true
           teamNameField: slug
           orgs:
-            - name: johndoe
+            - name: kaweezle

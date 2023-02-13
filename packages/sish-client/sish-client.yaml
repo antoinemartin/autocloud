@@ -28,7 +28,7 @@ data:
   config: |
     PubkeyAcceptedKeyTypes +ssh-rsa
     Host sishserver
-      HostName mydomain.link
+      HostName holepunch.in
       Port 2222
       BatchMode yes
       IdentityFile ~/.ssh_keys/id_ed25519
@@ -37,9 +37,9 @@ data:
       ServerAliveInterval 10
       ServerAliveCountMax 2
       RemoteCommand sni-proxy=true
-      RemoteForward argocd.mydomain.link:443 traefik.traefik.svc:443
+      RemoteForward citest.holepunch.in:443 traefik.traefik.svc:443
   known_hosts: |
-    [mydomain.link]:2222 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEAfLUpTj0fn5sJFW6agmLMsvEacMBvXocyzHLW+AOSQ
+    [holepunch.in]:2222 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3abW2y3T5dodnI5O1Z/2KlIdH3bwnbGDvCFf13zlh
 ---
 apiVersion: apps/v1
 kind: Deployment

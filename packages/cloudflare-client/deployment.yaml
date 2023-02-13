@@ -6,10 +6,10 @@ metadata:
     app.kubernetes.io/name: "cloudflared"
 data:
   config.yaml: |
-    tunnel: ca955c21-2606-4a5d-b217-341a3d12755e
+    tunnel: 84857ed2-8b07-461a-a4eb-486409328bce
     credentials-file: /credentials/credentials.json
     ingress:
-    - hostname: "*.mydomain.net"
+    - hostname: "*.autokube.net"
       service: http://traefik.traefik.svc:80
     - service: http_status:404
 ---

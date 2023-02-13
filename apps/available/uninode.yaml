@@ -24,7 +24,7 @@ spec:
   source:
     path: packages/uninode
     repoURL: "https://github.com/antoinemartin/autocloud.git"
-    targetRevision: main
+    targetRevision: deploy/citest
   syncPolicy:
     automated:
       prune: true

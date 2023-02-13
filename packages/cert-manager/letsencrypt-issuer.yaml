@@ -35,7 +35,7 @@ spec:
       - dns01:
           ovh:
             endpoint: ovh-eu
-            applicationKey: iYrnuWulPIzRIYZP
+            applicationKey: 4KyIjUiRpDo4lpqY
             applicationSecretSecretRef:
               name: ovh-api-credentials
               key: application_secret
@@ -44,13 +44,13 @@ spec:
               key: consumer_key
         selector:
           dnsZones:
-            - mydomain.link
+            - holepunch.in
       - dns01:
           cloudflare:
-            email: john@doe.me
+            email: antoine@openance.com
             apiKeySecretRef:
               name: cloudflare-apikey-secret
               key: apiKey
         selector:
           dnsZones:
-            - mydomain.net
+            - autokube.net
