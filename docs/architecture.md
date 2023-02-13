@@ -14,7 +14,7 @@ The following diagram shows the architecture:
 -   [External DNS] and [Cert-Manager] manage the domain name routing and the
     let's encrypt certificates generation and renewal.
 -   When running on a vanilla kubernetes created by [kubeadm], uninode provides
-    the basic services.
+    the basic services (Ingress, Load balancer, storage, metrics...).
 
 ## Bootstrapping stages
 
@@ -51,7 +51,7 @@ flowchart TD
 The bootstrapping of the cluster is like a domino:
 
 1.  First the Argo CD kustomization is applied from outside the cluster.
-2.  In the kustomization, there is a job that waits for the installation of Argo
+2.  In the kustomization, there is a job that waits for the deployment of Argo
     CD to settle. When it's done, it adds the `bootstrap` application.
 3.  The `bootstrap` application points to a directory containing other
     applications. One of them points back to the Argo CD kustomization in the

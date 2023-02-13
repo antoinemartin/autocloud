@@ -18,9 +18,10 @@ setup a GitOps based engineering platform.
 
 ## Features
 
--   GitOps through ArgoCD.
+-   Kubernetes distribution and _Clouder_ independent.
+-   GitOps through [ArgoCD](https://argo-cd.readthedocs.io/).
 -   Auto-managed. Once deployed, the base components are managed through GitOps.
--   No custom CLI. Use only the tools that you already use.
+-   No custom CLI or configuration. Use only the tools that you already use.
 -   You can deploy it on your development laptop, on a managed cluster or on a
     cloud VM.
 -   User management through GitHub or any other OIDC source.
@@ -38,3 +39,9 @@ an Argo CD installation and creates the application allowing to auto-manage the
 installation through a GitHub repository. However, it relies on a CLI that adds
 a tool in your bag and doesn't provide solutions for ingress, authentication,
 ...
+
+[Kubefirst](https://kubefirst.io/) also comes with a CLI. For local development,
+it's tied with K3d, that means to K3s and docker. It's currently only compatible
+with AWS. It also makes some other opinionated choices (Vault, ...). As with
+Autopilot, the bootstrapping is not GitOps. It's handled by the CLI and You
+don't get to review first what is going to happen.
