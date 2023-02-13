@@ -20,7 +20,7 @@ spec:
   source:
     path: apps/default
     repoURL: "https://github.com/antoinemartin/autocloud.git"
-    targetRevision: deploy/citest
+    targetRevision: main
   syncPolicy:
     automated:
       allowEmpty: true
