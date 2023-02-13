@@ -752,8 +752,12 @@ flowchart TD
     <em>applications</em> directory, <code>apps/default</code>, containing the second stage of
     base services:<ul>
 <li><code>ingresses</code> deploy ingresses to access Argo CD from internet.</li>
-<li><code>applications-set</code> deploys cert-manager, external dns and the online
-    presence services (cloudflare, sish).</li>
+<li><code>cert-manager</code> deploys cert-manager.</li>
+<li><code>external-dns-ovh</code> deploys external DNS using OVH API for OVH domains.</li>
+<li><code>external-dns-cloudflare</code> deploys external DNS using Cloudflare API for
+    Cloudflare domains.</li>
+<li><code>cloudflare-client</code> installs the Cloudflare tunnel client.</li>
+<li><code>sish-client</code> installs the sish tunnel client.</li>
 </ul>
 </li>
 </ol>
