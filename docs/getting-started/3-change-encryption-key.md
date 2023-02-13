@@ -1,7 +1,7 @@
 # Change the secrets encryption key
 
 All the platform secrets are located in the `secrets/secrets.yaml` and encrypted
-with [sops :material-open-in-new:]{:target="\_blank"}.
+with [sops ].
 
 On the main branch this file is encrypted by a _sample age key_ located at the
 root of the project (`sample_age_key.txt`) and contains fake secrets. While you
@@ -28,7 +28,7 @@ well-known location:
 !!! note
 
     The following shows a rotation with a new Age key. Note that you can use any
-    other key that sops understands. Check the [sops documentation:material-open-in-new:]{:target="\_blank"}.
+    other key that sops understands. Check the [sops documentation].
     You can also add other type of keys later on. We recommend to continue to
     use age at this stage.
 
@@ -132,7 +132,7 @@ modifications:
 
 From now on, you should forget the old key and make sure that you keep the new
 key **safe**. A good idea is to save it in some kind of secure password manager
-like [gopass:material-open-in-new:](https://www.gopass.pw/){:target="\_blank"}.
+like [gopass](https://www.gopass.pw/).
 
 To remove the old key from the sops well-known location, issue the following
 command:
@@ -196,8 +196,8 @@ Now that you can manage properly secured credentials, move on to the
 
 <!-- prettier-ignore-start -->
 
-[SOPS documentation:material-open-in-new:]: https://github.com/mozilla/sops
-[SOPS :material-open-in-new:]: https://github.com/mozilla/sops
+[SOPS documentation]: https://github.com/mozilla/sops
+[SOPS ]: https://github.com/mozilla/sops
 [ssh-to-age]: https://github.com/Mic92/ssh-to-age
 
 <!-- prettier-ignore-end -->

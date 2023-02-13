@@ -4,3 +4,4 @@ mkdocs==1.4.2
 mkdocs-awesome-pages-plugin==2.8.0
 mkdocs-include-markdown-plugin==4.0.3
 mkdocs-material==9.0.5
+ markdown-link-attr-modifier==0.2.0

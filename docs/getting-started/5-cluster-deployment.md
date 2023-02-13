@@ -3,7 +3,7 @@
 ## Cluster setup
 
 As as example, we will use K3s. K3s is setup with the following command (see the
-[k3s documentation:material-open-in-new:](https://docs.k3s.io/quick-start){:target="\_blank"}):
+[k3s documentation](https://docs.k3s.io/quick-start)):
 
 ```bash
 > curl -sfL https://get.k3s.io | sh -

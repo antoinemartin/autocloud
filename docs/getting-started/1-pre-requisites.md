@@ -2,26 +2,23 @@
 
 ## Software
 
--   [kubectl:material-open-in-new:](https://Kubernetes.io/docs/tasks/tools/){:target="\_blank"}
-    to apply resources to your cluster.
--   [sops:material-open-in-new:](https://github.com/mozilla/sops){:target="\_blank"}
-    for secrets management. [age:material-open-in-new:][age]{:target="\_blank"}
+-   [kubectl](https://Kubernetes.io/docs/tasks/tools/) to apply resources to
+    your cluster.
+-   [sops](https://github.com/mozilla/sops) for secrets management. [age][age]
     is a nice addition if you want to use AGE keys to encrypt secrets
     (recommended).
--   [kustomize:material-open-in-new:](https://kustomize.io/){:target="\_blank"}
-    for aggregating and adapting resources. `kubectl` includes `kustomize`
-    (`kustomize` subcommand and `-k` option) but it only allows running [KRM
-    functions] as docker containers. This creates an impractical dependency on
-    docker. This is why we use the [Exec KRM functions] model. To use it,
-    however, the `kustomize` standalone binary is required.
--   [krmfnbuiltin:material-open-in-new:][krmfnbuiltin]{:target="\_blank"} is a
-    swiss army knife KRM function allowing us to perform structural
-    modifications to the resources of the environment. Think of it as `sed`, but
-    for Kubernetes resources. Also knows how to decrypt sops encrypted KRM
-    resources.
--   [Kubeconform:material-open-in-new:](https://github.com/yannh/kubeconform){:target="\_blank"}
-    performs validation of Kubernetes resources. It is useful to check
-    kustomization output.
+-   [kustomize](https://kustomize.io/) for aggregating and adapting resources.
+    `kubectl` includes `kustomize` (`kustomize` subcommand and `-k` option) but
+    it only allows running [KRM functions] as docker containers. This creates an
+    impractical dependency on docker. This is why we use the [Exec KRM
+    functions] model. To use it, however, the `kustomize` standalone binary is
+    required.
+-   [krmfnbuiltin][krmfnbuiltin] is a swiss army knife KRM function allowing us
+    to perform structural modifications to the resources of the environment.
+    Think of it as `sed`, but for Kubernetes resources. Also knows how to
+    decrypt sops encrypted KRM resources.
+-   [Kubeconform](https://github.com/yannh/kubeconform) performs validation of
+    Kubernetes resources. It is useful to check kustomization output.
 
 !!! todo
 
@@ -35,11 +32,11 @@
 
 Autocloud is hosted on GitHub and currently uses the following features:
 
--   [OAuth Apps:material-open-in-new:](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app){:target="\_blank"}
+-   [OAuth Apps](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
     to provide authentication to the Argo CD Web UI.
--   [Webhook:material-open-in-new:](https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks){:target="\_blank"}
+-   [Webhook](https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks)
     to trigger cluster update immediately.
--   [Deployment keys:material-open-in-new:](https://docs.github.com/en/developers/overview/managing-deploy-keys){:target="\_blank"}
+-   [Deployment keys](https://docs.github.com/en/developers/overview/managing-deploy-keys)
     to allow repository read-only restricted access for Argo CD.
 
 Gitlab provides the same features and can probably be used as well.
@@ -78,29 +75,26 @@ following:
 
 -   A registered domain name. Make sure that your domain name provider has an
     API that is known to [External DNS] and [Cert-Manager].
-    [OVH:material-open-in-new:](https://www.ovhcloud.com/fr/domains/tld/){:target="\_blank"},
-    for instance, offers domain names for 1,99€ (without VAT) on its `.ovh` TLD.
-    [Cloudflare:material-open-in-new:](https://www.cloudflare.com/products/registrar/){:target="\_blank"}
-    promises no markup on their end. With them a `.com` is less that 10$ a year.
+    [OVH](https://www.ovhcloud.com/fr/domains/tld/), for instance, offers domain
+    names for 1,99€ (without VAT) on its `.ovh` TLD.
+    [Cloudflare](https://www.cloudflare.com/products/registrar/) promises no
+    markup on their end. With them a `.com` is less that 10$ a year.
 -   To be able to run Autocloud behind a firewall _as if_ it was running in a
     cloud provider, a tunnelling solution is needed. Cloudflare has a free tier
-    on its
-    [tunnel offering:material-open-in-new:](https://www.cloudflare.com/products/tunnel/){:target="\_blank"}
-    that you can use with a domain that has been registered with them.
-    [Tailscale:material-open-in-new:]{:target="\_blank"} also offers a free
-    tier. [inlets:material-open-in-new:](https://inlets.dev/){:target="\_blank"}
-    and [ngrok:material-open-in-new:](https://ngrok.com/){:target="\_blank"} are
-    not cheap. We provide simple Open Source solutions (sish, chisel) if the
-    case that you can deploy software somewhere in the cloud.
--   S3 compatible storage. While you can use
-    [Minio:material-open-in-new:]{:target="\_blank"}, external storage is useful
+    on its [tunnel offering](https://www.cloudflare.com/products/tunnel/) that
+    you can use with a domain that has been registered with them. [Tailscale]
+    also offers a free tier. [inlets](https://inlets.dev/) and
+    [ngrok](https://ngrok.com/) are not cheap. We provide simple Open Source
+    solutions (sish, chisel) if the case that you can deploy software somewhere
+    in the cloud.
+-   S3 compatible storage. While you can use [Minio], external storage is useful
     for backups and shared storage. [Cloudflare][cloudflare r2] as a free tier
     for starters and doesn't charge for egress traffic. There are too other
     numerous solutions to list. Nowadays, everyonec is S3 compatible.
 
 !!! note
 
-    In this documentation, we will use [Cloudflare:material-open-in-new:](https://www.cloudflare.com/)
+    In this documentation, we will use [Cloudflare](https://www.cloudflare.com/)
     as it provides the three components above. **This is not a recommendation**.
     Furthermore, autocloud provides kustomizations for some of the other
     providers (OVH, for instance).
@@ -131,8 +125,8 @@ Once you have all these elements, proceed to the
 [Rancher Desktop]: https://rancherdesktop.io/
 [age]: https://github.com/FiloSottile/age
 [External DNS]: https://github.com/kubernetes-sigs/external-dns#status-of-providers
-[Tailscale:material-open-in-new:]: https://tailscale.com/
-[Minio:material-open-in-new:]: https://github.com/minio/minio
+[Tailscale]: https://tailscale.com/
+[Minio]: https://github.com/minio/minio
 [Cert-Manager]: https://cert-manager.io/
 [Cloudflare R2]: https://www.cloudflare.com/lp/pg-r2/
 <!-- prettier-ignore-end -->

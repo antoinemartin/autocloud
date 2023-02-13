@@ -96,10 +96,9 @@ data:
     This is only needed if your repository is private.
 
 To allow Argo CD to access the private repository, you can either use a [deploy
-key:material-open-in-new:]{:target="\_blank"} or a [Personal Access
-Token:material-open-in-new:][github-pat-docs]{:target="\_blank"}. The later is
-only interesting for accessing several repositories with the same credentials
-but is weaker in terms of security. For the initial setup, reading access to the
+key] or a [Personal Access Token][github-pat-docs]. The later is only
+interesting for accessing several repositories with the same credentials but is
+weaker in terms of security. For the initial setup, reading access to the
 autocloud repo is the only thing that we need. So for now, we will move forward
 with a deploy key.
 
@@ -212,7 +211,7 @@ data:
     account.
 
 More details are available in the [GitHub documentation about OAuth
-Apps:material-open-in-new:][github-oauth-apps]{:target="\_blank"}.
+Apps][github-oauth-apps].
 
 Go to
 `https://github.com/organizations/<organization>/settings/applications/new` and
@@ -273,8 +272,7 @@ updates as soon as the modifications are pushed, it is convenient to add a
 webhook to the repository. The webhook will notify Argo CD to trigger the
 modification check immediately.
 
-Create a webhook according to the [Argo CD webhook
-documentation:material-open-in-new:]{:target="\_blank"}. Go to
+Create a webhook according to the [Argo CD webhook documentation]. Go to
 
 ```bash
 # In our case, https://github.com/klasmik/klasmikloud/settings/hooks
@@ -327,10 +325,10 @@ data:
 ```
 
 For OVH, the API access credentials can be created at the following address:
-[https://www.ovh.com/auth/api/createToken:material-open-in-new:](https://www.ovh.com/auth/api/createToken){:target="\_blank"}
+[https://www.ovh.com/auth/api/createToken](https://www.ovh.com/auth/api/createToken)
 
 For Cloudflare, you need to retrieve your API token at the following page:
-[https://dash.cloudflare.com/profile/api-tokens:material-open-in-new:](https://dash.cloudflare.com/profile/api-tokens){:target="\_blank"}
+[https://dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens)
 
 ### Online presence
 
@@ -338,8 +336,7 @@ For Cloudflare, you need to retrieve your API token at the following page:
 
 To setup the cloudflare tunnel, the best option is from the command line with
 the help of the `cloudflared` CLI. To install it, follow the instructions in the
-[cloudflared
-documentation:material-open-in-new:][cloudflared-install-page]{:target="\_blank"}
+[cloudflared documentation][cloudflared-install-page]
 
 Start with login:
 
@@ -425,8 +422,8 @@ record:
 
 #### Sish
 
-[sish:material-open-in-new:]{:target="\_blank"} enables online presence for the
-cluster by using the ssh protocol. Sish offers several advantages:
+[sish] enables online presence for the cluster by using the ssh protocol. Sish
+offers several advantages:
 
 -   The client is a standard ssh client.
 -   The server supports SNI. You can have multiple subdomains and domain names
@@ -642,9 +639,9 @@ Once you have committed your changes and pushed the branch, proceed to the
 
 [github-oauth-apps]: https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app
 [github-pat-docs]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-[Argo CD webhook documentation:material-open-in-new:]: https://argo-cd.readthedocs.io/en/stable/operator-manual/webhook/
+[Argo CD webhook documentation]: https://argo-cd.readthedocs.io/en/stable/operator-manual/webhook/
 [cloudflared-install-page]: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/#1-download-and-install-cloudflared
-[sish:material-open-in-new:]: https://github.com/antoniomika/sish
-[deploy key:material-open-in-new:]: https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys)
+[sish]: https://github.com/antoniomika/sish
+[deploy key]: https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys)
 [argocd-user-management]: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/
 <!-- prettier-ignore-end -->
