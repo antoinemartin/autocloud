@@ -1,0 +1,2 @@
+kustomization.yaml
+*-secrets-replacements.yaml

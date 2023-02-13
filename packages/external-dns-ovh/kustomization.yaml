@@ -3,26 +3,19 @@ kind: Kustomization
 metadata:
   name: external-dns-ovh
 namespace: traefik
+nameSuffix: -ovh
 resources:
-  - external-dns-configmap.yaml
-  - external-dns-secret.yaml
-  - external-dns.yaml
+  - ../external-dns
 
-patchesStrategicMerge:
-  - |-
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: external-dns-ovh
-      annotations:
-        internal.config.kubernetes.io/needsHashSuffix: enabled
-  - |-
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: external-dns-ovh
-      annotations:
-        internal.config.kubernetes.io/needsHashSuffix: enabled
+patches:
+  - path: external-dns-configmap.yaml
+    target:
+      kind: ConfigMap
+      name: external-dns
+  - path: external-dns-secret.yaml
+    target:
+      kind: Secret
+      name: external-dns
 
 transformers:
   - external-dns-ovh-secrets-replacements.yaml
