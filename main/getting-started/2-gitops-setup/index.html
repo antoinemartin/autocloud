@@ -755,9 +755,8 @@
 </div>
 <p>Setting up you GitOps environment involves the following tasks:</p>
 <ul>
-<li>Fork (public) or Import (private) the <a href="https://github.com/antoinemartin/autocloud.git" target="_blank">Autocloud
-    repository<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a> on your personal
-    account or organization.</li>
+<li>Fork (public) or Import (private) the <a href="https://github.com/antoinemartin/autocloud.git" rel="noopener" target="_blank">Autocloud repository</a> on your
+    personal account or organization.</li>
 <li>Create a deployment branch that will be tracked by Argo CD.</li>
 </ul>
 <p>There are other tasks, potentially optional, related to te repository, but as
@@ -766,31 +765,29 @@ they involve credentials, they are covered after
 <a href="../4-environment-adaptation">the environment adaptation</a>:</p>
 <ul>
 <li>Create a
-    <a href="https://docs.github.com/en/developers/overview/managing-deploy-keys" target="_blank">deployment key<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
+    <a href="https://docs.github.com/en/developers/overview/managing-deploy-keys" rel="noopener" target="_blank">deployment key</a>
     on the repository if the repository is going to be private.</li>
-<li>Create an <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app" target="_blank">OAuth Application<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a> on
-    your account or organization to allow github based authentication on Argo
-    CD. This is optional.</li>
+<li>Create an <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app" rel="noopener" target="_blank">OAuth Application</a> on your account or organization to allow
+    github based authentication on Argo CD. This is optional.</li>
 <li>Creating a
-    <a href="https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks" target="_blank">webhook<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
+    <a href="https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks" rel="noopener" target="_blank">webhook</a>
     on the repository targeting Argo CD for faster updates.</li>
 </ul>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>In the following, we are going to assume that the destination is an
-organization named <a href="https://github.com/klasmik">klasmik<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a> and that the repository,
+organization named <a href="https://github.com/klasmik" rel="noopener" target="_blank">klasmik</a> and that the repository,
 named <code>klasmikloud</code> is being kept private.</p>
 </div>
 <h2 id="fork-the-repository">Fork the repository<a class="headerlink" href="#fork-the-repository" title="Permanent link">&para;</a></h2>
 <h3 id="on-githubcom">On github.com<a class="headerlink" href="#on-githubcom" title="Permanent link">&para;</a></h3>
-<p>If you plan to keep your repository public, fork the public <a href="https://github.com/antoinemartin/autocloud.git" target="_blank">Autocloud
-repository<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a> into your own account or
-organization:</p>
+<p>If you plan to keep your repository public, fork the public <a href="https://github.com/antoinemartin/autocloud.git" rel="noopener" target="_blank">Autocloud
+repository</a> into your own account or organization:</p>
 <p><img alt="fork Autocloud" src="../../img/fork_autocloud.png" /></p>
 <p>In the case you want to make the repo private, it's better to
-<a href="https://github.com/new/import" target="_blank">import it<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-instead. Click on the <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/></svg></span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5H7Z"/></svg></span> icon in the top right
-corner and choose <em>Import repository</em>:</p>
+<a href="https://github.com/new/import" rel="noopener" target="_blank">import it</a> instead. Click on the
+<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/></svg></span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5H7Z"/></svg></span> icon in the top right corner and choose
+<em>Import repository</em>:</p>
 <p><img alt="import Autocloud" src="../../img/import_autocloud.png" /></p>
 <h3 id="from-the-command-line">From the command line<a class="headerlink" href="#from-the-command-line" title="Permanent link">&para;</a></h3>
 <p>This also can be done from the command line:</p>
@@ -814,7 +811,7 @@ corner and choose <em>Import repository</em>:</p>
 </div>
 <h2 id="clone-the-repository-and-create-a-deployment-branch">Clone the repository and create a deployment branch<a class="headerlink" href="#clone-the-repository-and-create-a-deployment-branch" title="Permanent link">&para;</a></h2>
 <p>Following the
-<a href="https://github.com/open-gitops/documents/blob/main/PRINCIPLES.md" target="_blank">GitOps principles<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>,
+<a href="https://github.com/open-gitops/documents/blob/main/PRINCIPLES.md" rel="noopener" target="_blank">GitOps principles</a>,
 each deployment lives in its own branch. Clone the repository and create a
 deployment branch for your development environment (replace
 <code>klasmik/klasmikloud</code> with your organization and project name):</p>

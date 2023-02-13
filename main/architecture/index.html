@@ -694,17 +694,17 @@
 <p>The following diagram shows the architecture:</p>
 <p><img alt="architecture" src="../img/architecture.png" /></p>
 <ul>
-<li><a href="https://github.com">Github</a> (or <a href="https://gitlab.com">Gitlab</a>) provides the gitops repository as well as the
+<li><a href="https://github.com" rel="noopener" target="_blank">Github</a> (or <a href="https://gitlab.com" rel="noopener" target="_blank">Gitlab</a>) provides the gitops repository as well as the
     authentication through OIDC.</li>
 <li>If the cluster doesn't have a direct access to the internet, which is the
     case if it is running on your development machine behind a firewall, a
-    <a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/">cloudflare tunnel</a> (or <a href="https://github.com/antoniomika/sish">sish</a>) provides online presence.</li>
-<li>The tunnel redirects HTTP/HTTPS traffic to <a href="https://doc.traefik.io/traefik/">traefik</a> (or <a href="https://apisix.apache.org/">apisix</a>) that acts
+    <a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/" rel="noopener" target="_blank">cloudflare tunnel</a> (or <a href="https://github.com/antoniomika/sish" rel="noopener" target="_blank">sish</a>) provides online presence.</li>
+<li>The tunnel redirects HTTP/HTTPS traffic to <a href="https://doc.traefik.io/traefik/" rel="noopener" target="_blank">traefik</a> (or <a href="https://apisix.apache.org/" rel="noopener" target="_blank">apisix</a>) that acts
     as an ingress controller.</li>
-<li><a href="https://github.com/kubernetes-sigs/external-dns#status-of-providers">External DNS</a> and <a href="https://cert-manager.io/">Cert-Manager</a> manage the domain name routing and the
+<li><a href="https://github.com/kubernetes-sigs/external-dns#status-of-providers" rel="noopener" target="_blank">External DNS</a> and <a href="https://cert-manager.io/" rel="noopener" target="_blank">Cert-Manager</a> manage the domain name routing and the
     let's encrypt certificates generation and renewal.</li>
-<li>When running on a vanilla kubernetes created by <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/">kubeadm</a>, uninode provides
-    the basic services.</li>
+<li>When running on a vanilla kubernetes created by <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/" rel="noopener" target="_blank">kubeadm</a>, uninode provides
+    the basic services (Ingress, Load balancer, storage, metrics...).</li>
 </ul>
 <h2 id="bootstrapping-stages">Bootstrapping stages<a class="headerlink" href="#bootstrapping-stages" title="Permanent link">&para;</a></h2>
 <p>The following diagram summarizes the bootstrapping of the cluster:</p>
@@ -736,7 +736,7 @@ flowchart TD
 <p>The bootstrapping of the cluster is like a domino:</p>
 <ol>
 <li>First the Argo CD kustomization is applied from outside the cluster.</li>
-<li>In the kustomization, there is a job that waits for the installation of Argo
+<li>In the kustomization, there is a job that waits for the deployment of Argo
     CD to settle. When it's done, it adds the <code>bootstrap</code> application.</li>
 <li>The <code>bootstrap</code> application points to a directory containing other
     applications. One of them points back to the Argo CD kustomization in the

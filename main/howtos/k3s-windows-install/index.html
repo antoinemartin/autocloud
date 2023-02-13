@@ -762,7 +762,7 @@
 
 <h1 id="install-k3s-on-windows">Install K3s on Windows<a class="headerlink" href="#install-k3s-on-windows" title="Permanent link">&para;</a></h1>
 <p>This how-to uses the alpine root filesystem of the
-<a href="https://github.com/antoinemartin/PowerShell-Wsl-Manager">Wsl-Manager</a> project.</p>
+<a href="https://github.com/antoinemartin/PowerShell-Wsl-Manager" rel="noopener" target="_blank">Wsl-Manager</a> project.</p>
 <h2 id="pre-requisites">Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permanent link">&para;</a></h2>
 <p>You need to have WSL working on your machine. On recent Windows (11+), issue the
 command:</p>
@@ -770,7 +770,7 @@ command:</p>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">...</span>
 </code></pre></div>
 <p>More information is available in the
-<a href="https://learn.microsoft.com/en-us/windows/wsl/install">Microsoft documentation</a>.</p>
+<a href="https://learn.microsoft.com/en-us/windows/wsl/install" rel="noopener" target="_blank">Microsoft documentation</a>.</p>
 <h2 id="create-the-wsl-distribution">Create the WSL distribution<a class="headerlink" href="#create-the-wsl-distribution" title="Permanent link">&para;</a></h2>
 <p>First download the root filesystem and create the WSL distribution:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">PS</span><span class="p">&gt;</span> <span class="p">(</span><span class="no">[System.Net.WebClient]</span><span class="p">::</span><span class="n">new</span><span class="p">()).</span><span class="n">DownloadFile</span><span class="p">(</span><span class="s2">&quot;https://github.com/antoinemartin/PowerShell-Wsl-Manager/releases/latest/download/miniwsl.alpine.rootfs.tar.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;$PWD/alpine.tgz&quot;</span><span class="p">)</span>

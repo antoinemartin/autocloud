@@ -751,26 +751,23 @@
 <h1 id="pre-requisites">Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permanent link">&para;</a></h1>
 <h2 id="software">Software<a class="headerlink" href="#software" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://Kubernetes.io/docs/tasks/tools/" target="_blank">kubectl<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-    to apply resources to your cluster.</li>
-<li><a href="https://github.com/mozilla/sops" target="_blank">sops<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-    for secrets management. <a href="https://github.com/FiloSottile/age" target="_blank">age<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
+<li><a href="https://Kubernetes.io/docs/tasks/tools/" rel="noopener" target="_blank">kubectl</a> to apply resources to
+    your cluster.</li>
+<li><a href="https://github.com/mozilla/sops" rel="noopener" target="_blank">sops</a> for secrets management. <a href="https://github.com/FiloSottile/age" rel="noopener" target="_blank">age</a>
     is a nice addition if you want to use AGE keys to encrypt secrets
     (recommended).</li>
-<li><a href="https://kustomize.io/" target="_blank">kustomize<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-    for aggregating and adapting resources. <code>kubectl</code> includes <code>kustomize</code>
-    (<code>kustomize</code> subcommand and <code>-k</code> option) but it only allows running <a href="https://github.com/kubernetes-sigs/kustomize/blob/master/cmd/config/docs/api-conventions/functions-spec.md">KRM
-    functions</a> as docker containers. This creates an impractical dependency on
-    docker. This is why we use the <a href="https://kubectl.docs.kubernetes.io/guides/extending_kustomize/exec_krm_functions/">Exec KRM functions</a> model. To use it,
-    however, the <code>kustomize</code> standalone binary is required.</li>
-<li><a href="https://github.com/kaweezle/krmfnbuiltin" target="_blank">krmfnbuiltin<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a> is a
-    swiss army knife KRM function allowing us to perform structural
-    modifications to the resources of the environment. Think of it as <code>sed</code>, but
-    for Kubernetes resources. Also knows how to decrypt sops encrypted KRM
-    resources.</li>
-<li><a href="https://github.com/yannh/kubeconform" target="_blank">Kubeconform<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-    performs validation of Kubernetes resources. It is useful to check
-    kustomization output.</li>
+<li><a href="https://kustomize.io/" rel="noopener" target="_blank">kustomize</a> for aggregating and adapting resources.
+    <code>kubectl</code> includes <code>kustomize</code> (<code>kustomize</code> subcommand and <code>-k</code> option) but
+    it only allows running <a href="https://github.com/kubernetes-sigs/kustomize/blob/master/cmd/config/docs/api-conventions/functions-spec.md" rel="noopener" target="_blank">KRM functions</a> as docker containers. This creates an
+    impractical dependency on docker. This is why we use the <a href="https://kubectl.docs.kubernetes.io/guides/extending_kustomize/exec_krm_functions/" rel="noopener" target="_blank">Exec KRM
+    functions</a> model. To use it, however, the <code>kustomize</code> standalone binary is
+    required.</li>
+<li><a href="https://github.com/kaweezle/krmfnbuiltin" rel="noopener" target="_blank">krmfnbuiltin</a> is a swiss army knife KRM function allowing us
+    to perform structural modifications to the resources of the environment.
+    Think of it as <code>sed</code>, but for Kubernetes resources. Also knows how to
+    decrypt sops encrypted KRM resources.</li>
+<li><a href="https://github.com/yannh/kubeconform" rel="noopener" target="_blank">Kubeconform</a> performs validation of
+    Kubernetes resources. It is useful to check kustomization output.</li>
 </ul>
 <div class="admonition todo">
 <p class="admonition-title">Todo</p>
@@ -784,11 +781,11 @@
 <h2 id="online-git-provider-account">Online git provider account<a class="headerlink" href="#online-git-provider-account" title="Permanent link">&para;</a></h2>
 <p>Autocloud is hosted on GitHub and currently uses the following features:</p>
 <ul>
-<li><a href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app" target="_blank">OAuth Apps<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
+<li><a href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app" rel="noopener" target="_blank">OAuth Apps</a>
     to provide authentication to the Argo CD Web UI.</li>
-<li><a href="https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks" target="_blank">Webhook<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
+<li><a href="https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks" rel="noopener" target="_blank">Webhook</a>
     to trigger cluster update immediately.</li>
-<li><a href="https://docs.github.com/en/developers/overview/managing-deploy-keys" target="_blank">Deployment keys<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
+<li><a href="https://docs.github.com/en/developers/overview/managing-deploy-keys" rel="noopener" target="_blank">Deployment keys</a>
     to allow repository read-only restricted access for Argo CD.</li>
 </ul>
 <p>Gitlab provides the same features and can probably be used as well.</p>
@@ -799,20 +796,20 @@ planned.</p>
 </div>
 <h2 id="kubernetes-cluster">Kubernetes cluster<a class="headerlink" href="#kubernetes-cluster" title="Permanent link">&para;</a></h2>
 <p>To deploy autocloud, you need a Kubernetes cluster. Autocloud is originally used
-and tested with a vanilla Kubernetes cluster created with <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">kubeadm</a>, running on
+and tested with a vanilla Kubernetes cluster created with <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/" rel="noopener" target="_blank">kubeadm</a>, running on
 an Alpine based VM or WSL2 distribution. The deployment of such a cluster is
-made easy by using the <a href="https://github.com/kaweezle/iknite">iknite</a> package. On Windows, <a href="https://www.kaweezle.com/">kaweezle</a> makes this
+made easy by using the <a href="https://github.com/kaweezle/iknite" rel="noopener" target="_blank">iknite</a> package. On Windows, <a href="https://www.kaweezle.com/" rel="noopener" target="_blank">kaweezle</a> makes this
 deployment even easier.</p>
-<p>In such <em>mono-node</em> deployment configuration, autocloud provides an <a href="https://github.com/antoinemartin/autocloud/tree/main/packages/uninode">uninode</a>
+<p>In such <em>mono-node</em> deployment configuration, autocloud provides an <a href="https://github.com/antoinemartin/autocloud/tree/main/packages/uninode" rel="noopener" target="_blank">uninode</a>
 kustomization and Argo CD application providing basic configuration (CNI,
 storage, metrics, Load Balancer).</p>
-<p>Most lightweight developer oriented Kubernetes distribution like <a href="https://kind.sigs.k8s.io/">Kind</a>, <a href="https://k3s.io/">K3s</a>,
-<a href="https://microk8s.io/">MicorK8s</a> or <a href="https://rancherdesktop.io/">Rancher Desktop</a> as well as all managed clusters already provide
+<p>Most lightweight developer oriented Kubernetes distribution like <a href="https://kind.sigs.k8s.io/" rel="noopener" target="_blank">Kind</a>, <a href="https://k3s.io/" rel="noopener" target="_blank">K3s</a>,
+<a href="https://microk8s.io/" rel="noopener" target="_blank">MicorK8s</a> or <a href="https://rancherdesktop.io/" rel="noopener" target="_blank">Rancher Desktop</a> as well as all managed clusters already provide
 such services. Fortunately, autocloud provides an easy way to deactivate
-<a href="https://github.com/antoinemartin/autocloud/tree/main/packages/uninode">uninode</a>.</p>
+<a href="https://github.com/antoinemartin/autocloud/tree/main/packages/uninode" rel="noopener" target="_blank">uninode</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In this documentation, we will use <a href="https://k3s.io/">K3s</a>, that seems to be currently
+<p>In this documentation, we will use <a href="https://k3s.io/" rel="noopener" target="_blank">K3s</a>, that seems to be currently
 the most popular solution as an example.</p>
 </div>
 <h2 id="cloud-provider-accounts">Cloud provider account(s)<a class="headerlink" href="#cloud-provider-accounts" title="Permanent link">&para;</a></h2>
@@ -820,30 +817,27 @@ the most popular solution as an example.</p>
 following:</p>
 <ul>
 <li>A registered domain name. Make sure that your domain name provider has an
-    API that is known to <a href="https://github.com/kubernetes-sigs/external-dns#status-of-providers">External DNS</a> and <a href="https://cert-manager.io/">Cert-Manager</a>.
-    <a href="https://www.ovhcloud.com/fr/domains/tld/" target="_blank">OVH<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>,
-    for instance, offers domain names for 1,99€ (without VAT) on its <code>.ovh</code> TLD.
-    <a href="https://www.cloudflare.com/products/registrar/" target="_blank">Cloudflare<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-    promises no markup on their end. With them a <code>.com</code> is less that 10$ a year.</li>
+    API that is known to <a href="https://github.com/kubernetes-sigs/external-dns#status-of-providers" rel="noopener" target="_blank">External DNS</a> and <a href="https://cert-manager.io/" rel="noopener" target="_blank">Cert-Manager</a>.
+    <a href="https://www.ovhcloud.com/fr/domains/tld/" rel="noopener" target="_blank">OVH</a>, for instance, offers domain
+    names for 1,99€ (without VAT) on its <code>.ovh</code> TLD.
+    <a href="https://www.cloudflare.com/products/registrar/" rel="noopener" target="_blank">Cloudflare</a> promises no
+    markup on their end. With them a <code>.com</code> is less that 10$ a year.</li>
 <li>To be able to run Autocloud behind a firewall <em>as if</em> it was running in a
     cloud provider, a tunnelling solution is needed. Cloudflare has a free tier
-    on its
-    <a href="https://www.cloudflare.com/products/tunnel/" target="_blank">tunnel offering<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-    that you can use with a domain that has been registered with them.
-    <a href="https://tailscale.com/" target="_blank">Tailscale<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a> also offers a free
-    tier. <a href="https://inlets.dev/" target="_blank">inlets<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
-    and <a href="https://ngrok.com/" target="_blank">ngrok<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a> are
-    not cheap. We provide simple Open Source solutions (sish, chisel) if the
-    case that you can deploy software somewhere in the cloud.</li>
-<li>S3 compatible storage. While you can use
-    <a href="https://github.com/minio/minio" target="_blank">Minio<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>, external storage is useful
-    for backups and shared storage. <a href="https://www.cloudflare.com/lp/pg-r2/">Cloudflare</a> as a free tier
+    on its <a href="https://www.cloudflare.com/products/tunnel/" rel="noopener" target="_blank">tunnel offering</a> that
+    you can use with a domain that has been registered with them. <a href="https://tailscale.com/" rel="noopener" target="_blank">Tailscale</a>
+    also offers a free tier. <a href="https://inlets.dev/" rel="noopener" target="_blank">inlets</a> and
+    <a href="https://ngrok.com/" rel="noopener" target="_blank">ngrok</a> are not cheap. We provide simple Open Source
+    solutions (sish, chisel) if the case that you can deploy software somewhere
+    in the cloud.</li>
+<li>S3 compatible storage. While you can use <a href="https://github.com/minio/minio" rel="noopener" target="_blank">Minio</a>, external storage is useful
+    for backups and shared storage. <a href="https://www.cloudflare.com/lp/pg-r2/" rel="noopener" target="_blank">Cloudflare</a> as a free tier
     for starters and doesn't charge for egress traffic. There are too other
     numerous solutions to list. Nowadays, everyonec is S3 compatible.</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In this documentation, we will use <a href="https://www.cloudflare.com/">Cloudflare<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>
+<p>In this documentation, we will use <a href="https://www.cloudflare.com/" rel="noopener" target="_blank">Cloudflare</a>
 as it provides the three components above. <strong>This is not a recommendation</strong>.
 Furthermore, autocloud provides kustomizations for some of the other
 providers (OVH, for instance).</p>

@@ -715,9 +715,10 @@ production.</p>
 setup a GitOps based engineering platform.</p>
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
 <ul>
-<li>GitOps through ArgoCD.</li>
+<li>Kubernetes distribution and <em>Clouder</em> independent.</li>
+<li>GitOps through <a href="https://argo-cd.readthedocs.io/" rel="noopener" target="_blank">ArgoCD</a>.</li>
 <li>Auto-managed. Once deployed, the base components are managed through GitOps.</li>
-<li>No custom CLI. Use only the tools that you already use.</li>
+<li>No custom CLI or configuration. Use only the tools that you already use.</li>
 <li>You can deploy it on your development laptop, on a managed cluster or on a
     cloud VM.</li>
 <li>User management through GitHub or any other OIDC source.</li>
@@ -729,11 +730,16 @@ setup a GitOps based engineering platform.</p>
 <li>Your development machine can receive webhooks.</li>
 </ul>
 <h2 id="similar-projects">Similar projects<a class="headerlink" href="#similar-projects" title="Permanent link">&para;</a></h2>
-<p><a href="https://argocd-autopilot.readthedocs.io/en/stable/">Argo CD Autopilot</a> deploys
+<p><a href="https://argocd-autopilot.readthedocs.io/en/stable/" rel="noopener" target="_blank">Argo CD Autopilot</a> deploys
 an Argo CD installation and creates the application allowing to auto-manage the
 installation through a GitHub repository. However, it relies on a CLI that adds
 a tool in your bag and doesn't provide solutions for ingress, authentication,
 ...</p>
+<p><a href="https://kubefirst.io/" rel="noopener" target="_blank">Kubefirst</a> also comes with a CLI. For local development,
+it's tied with K3d, that means to K3s and docker. It's currently only compatible
+with AWS. It also makes some other opinionated choices (Vault, ...). As with
+Autopilot, the bootstrapping is not GitOps. It's handled by the CLI and You
+don't get to review first what is going to happen.</p>
 
 
 

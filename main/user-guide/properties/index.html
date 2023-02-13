@@ -777,8 +777,8 @@
 properties to the different elements of the repository.</p>
 <p>Instead of having Helm charts with templates hard to read and maintain, we keep
 simple kustomizations and provides structural transformations to modify them.</p>
-<p>The structural transformations are performed by <a href="https://kubectl.docs.kubernetes.io/guides/extending_kustomize/exec_krm_functions/">KRM functions</a>, and in
-particular by <a href="https://github.com/kaweezle/krmfnbuiltin">krmfnbuiltin</a> that provides all kustomize builtin transformations
+<p>The structural transformations are performed by <a href="https://kubectl.docs.kubernetes.io/guides/extending_kustomize/exec_krm_functions/" rel="noopener" target="_blank">KRM functions</a>, and in
+particular by <a href="https://github.com/kaweezle/krmfnbuiltin" rel="noopener" target="_blank">krmfnbuiltin</a> that provides all kustomize builtin transformations
 and more.</p>
 <p>The customization works with the following elements:</p>
 <ul>
@@ -830,8 +830,8 @@ and more.</p>
 </code></pre></div>
 <p>It has a non standard kind <code>PlatformValues</code>. This will prevent it to be applied
 by mistake to a cluster. The <code>config.kubernetes.io/function</code> annotation tells
-kustomize to pipe the resources through <a href="https://github.com/kaweezle/krmfnbuiltin">krmfnbuiltin</a>.
-<code>config.kaweezle.com/inject-local</code> tells <a href="https://github.com/kaweezle/krmfnbuiltin">krmfnbuiltin</a> to just <em>inject</em> the
+kustomize to pipe the resources through <a href="https://github.com/kaweezle/krmfnbuiltin" rel="noopener" target="_blank">krmfnbuiltin</a>.
+<code>config.kaweezle.com/inject-local</code> tells <a href="https://github.com/kaweezle/krmfnbuiltin" rel="noopener" target="_blank">krmfnbuiltin</a> to just <em>inject</em> the
 contents of this configuration in the output so that the following
 transformations can reference it. Last, <code>config.kaweezle.com/local-config</code>
 annotation will allow us in the <code>zz_cleanup.yaml</code> transformations to remove the
@@ -936,14 +936,14 @@ others to simply branch and customize the project.</p>
 <a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="hll"><span class="w">          </span><span class="no">clientID: myid  # &lt;-- The modifications is here</span>
 </span><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">          </span><span class="no">clientSecret: $dex.github.clientSecret</span>
 </code></pre></div>
-<p>Please go to the <a href="https://github.com/kaweezle/krmfnbuiltin#extended-replacement-in-structured-content">krmfnbuiltin documentation</a> for details.</p>
+<p>Please go to the <a href="https://github.com/kaweezle/krmfnbuiltin#extended-replacement-in-structured-content" rel="noopener" target="_blank">krmfnbuiltin documentation</a> for details.</p>
 <h3 id="replacement-guidelines">Replacement guidelines<a class="headerlink" href="#replacement-guidelines" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>All</strong> replacements are performed each time the <code>kustomize fn run</code> command
     is applied. In consequence, keep your <code>targets</code> as specific as possible. If
     needed, you can add <code>annotationSelector</code> to select the proper resource kind
-    subset (see <a href="https://github.com/antoinemartin/autocloud/blob/main/apps/functions/applications.yaml">applications.yaml</a> for instance).</li>
-<li><a href="https://github.com/kaweezle/krmfnbuiltin">krmfnbuiltin</a> provides an extended <code>ReplacementTransformer</code> that can make
+    subset (see <a href="https://github.com/antoinemartin/autocloud/blob/main/apps/functions/applications.yaml" rel="noopener" target="_blank">applications.yaml</a> for instance).</li>
+<li><a href="https://github.com/kaweezle/krmfnbuiltin" rel="noopener" target="_blank">krmfnbuiltin</a> provides an extended <code>ReplacementTransformer</code> that can make
     complex replacements like regexp replacements in embedded yaml content
     (<code>data.someValue.!!yaml.some.property.!!regex.property=(\S+).1</code>). However,
     these are hard to understand. It may be better to extract the value in a

@@ -648,7 +648,7 @@
 
 <h1 id="change-the-secrets-encryption-key">Change the secrets encryption key<a class="headerlink" href="#change-the-secrets-encryption-key" title="Permanent link">&para;</a></h1>
 <p>All the platform secrets are located in the <code>secrets/secrets.yaml</code> and encrypted
-with <a href="https://github.com/mozilla/sops" target="_blank">sops <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>.</p>
+with [sops ].</p>
 <p>On the main branch this file is encrypted by a <em>sample age key</em> located at the
 root of the project (<code>sample_age_key.txt</code>) and contains fake secrets. While you
 can use this sample key for testing, it's better to change it <strong>before</strong> doing
@@ -672,7 +672,7 @@ well-known location:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The following shows a rotation with a new Age key. Note that you can use any
-other key that sops understands. Check the <a href="https://github.com/mozilla/sops" target="_blank">sops documentation<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>.
+other key that sops understands. Check the <a href="https://github.com/mozilla/sops" rel="noopener" target="_blank">sops documentation</a>.
 You can also add other type of keys later on. We recommend to continue to
 use age at this stage.</p>
 </div>
@@ -695,13 +695,13 @@ use age at this stage.</p>
 <summary>Derive the age key from a ssh key</summary>
 <p>The age key can be derived from a ssh key. This is convenient as a SSH key
 may be used to access the repository.</p>
-<p>The <a href="https://github.com/Mic92/ssh-to-age">ssh-to-age</a> project provides a command to convert an existing ed25519
+<p>The <a href="https://github.com/Mic92/ssh-to-age" rel="noopener" target="_blank">ssh-to-age</a> project provides a command to convert an existing ed25519
 ssh key into a valid age key:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>go<span class="w"> </span>install<span class="w"> </span>github.com/Mic92/ssh-to-age/cmd/ssh-to-age@latest
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>$<span class="w"> </span>ssh-to-age<span class="w"> </span>-private-key<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_ed25519<span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.config/sops/age/keys.txt
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>$<span class="w"> </span><span class="nv">NEWKEY</span><span class="o">=</span><span class="k">$(</span>ssh-to-age<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_ed25519.pub<span class="k">)</span>
 </code></pre></div>
-<p>Note that at the time of this writing, there is a <a href="https://github.com/mozilla/sops/pull/1134">PR in sops</a>
+<p>Note that at the time of this writing, there is a <a href="https://github.com/mozilla/sops/pull/1134" rel="noopener" target="_blank">PR in sops</a>
 adding native ssh key support to sops.</p>
 </details>
 <p>Replace the secrets encryption by using the public key of your new key
@@ -768,7 +768,7 @@ modifications:</p>
 </div>
 <p>From now on, you should forget the old key and make sure that you keep the new
 key <strong>safe</strong>. A good idea is to save it in some kind of secure password manager
-like <a href="https://www.gopass.pw/" target="_blank">gopass<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7Z"/></svg></span></a>.</p>
+like <a href="https://www.gopass.pw/" rel="noopener" target="_blank">gopass</a>.</p>
 <p>To remove the old key from the sops well-known location, issue the following
 command:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Shell</label><label for="__tabbed_6_2">PowerShell</label></div>
