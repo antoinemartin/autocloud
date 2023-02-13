@@ -10,20 +10,11 @@ source: values.yaml
 replacements:
   - source:
       name: autocloud-values
-      fieldPath: data.cluster.id
-    targets:
-      - select:
-          kind: ConfigMap
-          name: external-dns-cloudflare
-        fieldPaths:
-          - data.EXTERNAL_DNS_ID
-  - source:
-      name: autocloud-values
       fieldPath: data.cloudflare.dnsZone
     targets:
       - select:
           kind: ConfigMap
-          name: external-dns-cloudflare
+          name: external-dns-cloudflare-patch
         fieldPaths:
           - data.EXTERNAL_DNS_DOMAIN_FILTER
   - source:
@@ -32,6 +23,6 @@ replacements:
     targets:
       - select:
           kind: Secret
-          name: external-dns-cloudflare
+          name: external-dns-cloudflare-patch
         fieldPaths:
           - stringData.CF_API_EMAIL

@@ -14,24 +14,15 @@ replacements:
     targets:
       - select:
           kind: Secret
-          name: external-dns-ovh
+          name: external-dns-ovh-patch
         fieldPaths:
           - stringData.OVH_APPLICATION_KEY
-  - source:
-      name: autocloud-values
-      fieldPath: data.cluster.id
-    targets:
-      - select:
-          kind: ConfigMap
-          name: external-dns-ovh
-        fieldPaths:
-          - data.EXTERNAL_DNS_ID
   - source:
       name: autocloud-values
       fieldPath: data.ovh.dnsZone
     targets:
       - select:
           kind: ConfigMap
-          name: external-dns-ovh
+          name: external-dns-ovh-patch
         fieldPaths:
           - data.EXTERNAL_DNS_DOMAIN_FILTER

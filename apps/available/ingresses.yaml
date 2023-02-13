@@ -15,7 +15,7 @@ spec:
   source:
     path: packages/ingresses
     repoURL: https://github.com/antoinemartin/autocloud.git
-    targetRevision: deploy/citest
+    targetRevision: main
     directory:
       exclude: "*-values-replacements.yaml"
   syncPolicy:
