@@ -1,24 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bootstrap
+  name: appstage-01-online
   namespace: argocd
   annotations:
     autocloud/local-application: "true"
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: argocd
-    server: https://kubernetes.default.svc
+    server: "https://kubernetes.default.svc"
+  ignoreDifferences:
+    - group: argoproj.io
+      jsonPointers:
+        - /status
+      kind: Application
   project: default
   source:
-    path: apps/bootstrap
-    repoURL: https://github.com/antoinemartin/autocloud.git
+    path: apps/appstage-01-online
+    repoURL: "https://github.com/antoinemartin/autocloud.git"
     targetRevision: main
   syncPolicy:
     automated:
+      allowEmpty: true
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true

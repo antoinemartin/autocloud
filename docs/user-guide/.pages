@@ -2,3 +2,4 @@ nav:
   - Introduction: index.md
   - Secrets: secrets.md
   - Properties: properties.md
+  - Managing Stages: managing-stages.md

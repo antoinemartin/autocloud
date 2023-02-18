@@ -74,16 +74,16 @@ And then see the applications with the following command:
 
 ```bash
 > kubectl -n argocd get applications
-NAME                SYNC STATUS   HEALTH STATUS
-external-dns-ovh    Synced        Healthy
-sish-client         Synced        Healthy
-ingresses           Synced        Healthy
-cloudflare-client   Synced        Healthy
-apps                Synced        Healthy
-bootstrap           Synced        Healthy
-cert-manager        Synced        Healthy
-argo-cd             Synced        Healthy
->
+NAME                      SYNC STATUS   HEALTH STATUS
+appstage-00-bootstrap     Synced        Healthy
+appstage-01-online        Synced        Healthy
+argo-cd                   Synced        Healthy
+cert-manager              Synced        Healthy
+cloudflare-client         Synced        Healthy
+external-dns-cloudflare   Synced        Healthy
+external-dns-ovh          Synced        Healthy
+ingresses                 Synced        Healthy
+sish-client               Synced        Healthy
 ```
 
 Going to the configured URL (here

@@ -7,4 +7,4 @@ metadata:
 data:
   autocloud_repoURL: https://github.com/antoinemartin/autocloud.git
   autocloud_targetRevision: main
-  autocloud_bootstrapApplicationPath: apps/available/bootstrap.yaml
+  autocloud_bootstrapApplicationPath: apps/available/appstage-00-bootstrap.yaml

@@ -510,7 +510,7 @@ Apply the values to the current environment:
             modified:   apps/available/apisix.yaml
             modified:   apps/available/applications-set.yaml
             modified:   apps/available/argocd.yaml
-            modified:   apps/available/bootstrap.yaml
+            modified:   apps/available/appstage-00-bootstrap.yaml
             modified:   apps/available/cert-manager.yaml
             modified:   apps/available/chisel-client.yaml
             modified:   apps/available/external-dns-cloudflare.yaml
@@ -547,7 +547,7 @@ Apply the values to the current environment:
             modified:   apps/available/apisix.yaml
             modified:   apps/available/applications-set.yaml
             modified:   apps/available/argocd.yaml
-            modified:   apps/available/bootstrap.yaml
+            modified:   apps/available/appstage-00-bootstrap.yaml
             modified:   apps/available/cert-manager.yaml
             modified:   apps/available/chisel-client.yaml
             modified:   apps/available/external-dns-cloudflare.yaml
@@ -574,7 +574,7 @@ Apply the values to the current environment:
 ## Selecting the applications to deploy at bootstrap
 
 To understand how the cluster is bootstrapped, please read the relevant section
-in the [Architecture page](../architecture.md#bootstrapping-stages).
+in the [Architecture page](../architecture.md#cluster-bootstrapping-and-stages).
 
 What we will do for now is just add or remove the symbolic links to applications
 manifests in the `apps/bootstrap` and `apps/default` directories to accommodate
@@ -582,19 +582,20 @@ our setup.
 
 Taking K3s as an example, it provides out of the box the load balancer, storage
 class, metrics and ingress controller. In consequence, we don't need to deploy
-`uninode` nor `traefik`. We will remove them from bootstrap:
+`uninode` nor `traefik`. We will remove them from the bootstrap stage in the
+`apps/appstage-00-bootstrap` directory:
 
 === "Shell"
 
     ```bash
-    $ rm apps/bootstrap/{traefik,uninode}.yaml
+    $ rm apps/appstage-00-bootstrap/{traefik,uninode}.yaml
     $
     ```
 
 === "PowerShell"
 
     ```powershell
-    PS> @('traefik', 'uninode') | % { remove-item apps/bootstrap/$_.yaml }
+    PS> @('traefik', 'uninode') | % { remove-item apps\appstage-00-bootstrap\$_.yaml }
     PS>
     ```
 
