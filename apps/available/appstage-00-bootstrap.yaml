@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bootstrap
+  name: appstage-00-bootstrap
   namespace: argocd
   annotations:
     autocloud/local-application: "true"
@@ -13,7 +13,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps/bootstrap
+    path: apps/appstage-00-bootstrap
     repoURL: https://github.com/antoinemartin/autocloud.git
     targetRevision: main
   syncPolicy:
