@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps
+  name: appstage-01-online
   namespace: argocd
   annotations:
     autocloud/local-application: "true"
@@ -19,7 +19,7 @@ spec:
       kind: Application
   project: default
   source:
-    path: apps/default
+    path: apps/appstage-01-online
     repoURL: "https://github.com/antoinemartin/autocloud.git"
     targetRevision: main
   syncPolicy:
