@@ -502,6 +502,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/managing-stages/" class="md-nav__link">
+        Managing Stages
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -794,16 +808,16 @@ pushed:</p>
 </code></pre></div>
 <p>And then see the applications with the following command:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt;<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span>get<span class="w"> </span>applications
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>NAME<span class="w">                </span>SYNC<span class="w"> </span>STATUS<span class="w">   </span>HEALTH<span class="w"> </span>STATUS
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>external-dns-ovh<span class="w">    </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>sish-client<span class="w">         </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ingresses<span class="w">           </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>cloudflare-client<span class="w">   </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>apps<span class="w">                </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>bootstrap<span class="w">           </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>cert-manager<span class="w">        </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>argo-cd<span class="w">             </span>Synced<span class="w">        </span>Healthy
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>&gt;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>NAME<span class="w">                      </span>SYNC<span class="w"> </span>STATUS<span class="w">   </span>HEALTH<span class="w"> </span>STATUS
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>appstage-00-bootstrap<span class="w">     </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>appstage-01-online<span class="w">        </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>argo-cd<span class="w">                   </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>cert-manager<span class="w">              </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>cloudflare-client<span class="w">         </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>external-dns-cloudflare<span class="w">   </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>external-dns-ovh<span class="w">          </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>ingresses<span class="w">                 </span>Synced<span class="w">        </span>Healthy
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>sish-client<span class="w">               </span>Synced<span class="w">        </span>Healthy
 </code></pre></div>
 <p>Going to the configured URL (here
 <a href="https://argocd-devenv.klasmik.com/" rel="noopener" target="_blank">https://argocd-devenv.klasmik.com/</a>) should

@@ -289,8 +289,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bootstrapping-stages" class="md-nav__link">
-    Bootstrapping stages
+  <a href="#cluster-bootstrapping-and-stages" class="md-nav__link">
+    Cluster bootstrapping and stages
   </a>
   
 </li>
@@ -479,6 +479,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/managing-stages/" class="md-nav__link">
+        Managing Stages
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -652,8 +666,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bootstrapping-stages" class="md-nav__link">
-    Bootstrapping stages
+  <a href="#cluster-bootstrapping-and-stages" class="md-nav__link">
+    Cluster bootstrapping and stages
   </a>
   
 </li>
@@ -706,7 +720,7 @@
 <li>When running on a vanilla kubernetes created by <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/" rel="noopener" target="_blank">kubeadm</a>, uninode provides
     the basic services (Ingress, Load balancer, storage, metrics...).</li>
 </ul>
-<h2 id="bootstrapping-stages">Bootstrapping stages<a class="headerlink" href="#bootstrapping-stages" title="Permanent link">&para;</a></h2>
+<h2 id="cluster-bootstrapping-and-stages">Cluster bootstrapping and stages<a class="headerlink" href="#cluster-bootstrapping-and-stages" title="Permanent link">&para;</a></h2>
 <p>The following diagram summarizes the bootstrapping of the cluster:</p>
 <pre class="mermaid"><code>---
 title: Cluster bootstrap
@@ -715,11 +729,11 @@ flowchart TD
   A[Start] --&gt; AA[Apply Argo CD kustomization];
   AA --&gt; B{{Deploy Argo CD}};
   B --&gt; C&gt;End];
-  C --&gt; |Yes| D(add bootstrap app);
-  D --&gt; E(add traefik app);
-  D --&gt; E2(add argocd app);
+  C --&gt; |Yes| D([+app appstage-00-bootstrap]);
+  D --&gt; E([+app traefik app]);
+  D --&gt; E2([+app argocd app]);
   E2 -.-&gt; B;
-  D --&gt; F[add uninode app];
+  D --&gt; F([+app uninode]);
   E --&gt; dtr{{Deploy traefik}}
   F --&gt; dml{{Deploy MetalLB}}
   F --&gt; dfl{{Deploy Flannel}}
@@ -730,27 +744,41 @@ flowchart TD
   dls --&gt; end2&gt;End];
   dms --&gt; end2&gt;End];
   dtr --&gt; end2&gt;End];
-  end2 --&gt; apps(add apps app)
-  apps --&gt; other(add other apps ...)
+  end2 --&gt; online([+app appstage-01-online])
+  online --&gt; cmapp([+app cert-manager])
+  online --&gt; ednsapp([+app external-dns])
+  online --&gt; ingapp([+app ingresses])
+  online --&gt; cldapp([+app cloudflare-client])
+  cmapp --&gt; dcm{{Deploy Cert Manager}}
+  ednsapp --&gt; dedns{{Deploy External DNS}}
+  ingapp --&gt; ding{{Deploy Ingresses}}
+  cldapp --&gt; dcld{{Deploy Cloudflare client}}
+  dcm --&gt; end3&gt;End];
+  dedns --&gt; end3&gt;End];
+  ding --&gt; end3&gt;End];
+  dcld --&gt; end3&gt;End];
+  end3 --&gt; xxx([+app appstage-02-xxx])
+  xxx --&gt; follow([...])
 </code></pre>
 <p>The bootstrapping of the cluster is like a domino:</p>
 <ol>
 <li>First the Argo CD kustomization is applied from outside the cluster.</li>
 <li>In the kustomization, there is a job that waits for the deployment of Argo
-    CD to settle. When it's done, it adds the <code>bootstrap</code> application.</li>
-<li>The <code>bootstrap</code> application points to a directory containing other
-    applications. One of them points back to the Argo CD kustomization in the
-    repo. Since it has already been deployed, nothing happens. But in the future
-    if Argo CD detects a change in the kustomization in the repo, it will <em>auto
-    apply</em> it to itself.</li>
-<li>The other applications of the <code>apps/bootstrap</code> directory install base
-    services that are required to go further: <code>uninode</code> installs what is needed
-    on a development cluster to use Storage, LoadBalanced services, Network and
-    Auto-scaling. <code>traefik</code> provides the ingress controller.</li>
-<li>After the previous applications have settled, the <code>apps</code> application is
-    applied to start the next stage. This application point to another
-    <em>applications</em> directory, <code>apps/default</code>, containing the second stage of
-    base services:<ul>
+    CD to settle. When it's done, it adds the <code>appstage-00-bootstrap</code>
+    application.</li>
+<li>The <code>appstage-00-bootstrap</code> application points to a directory containing
+    other applications. One of them points back to the Argo CD kustomization in
+    the repo. Since it has already been deployed, nothing happens. But in the
+    future if Argo CD detects a change in the kustomization in the repo, it will
+    <em>auto apply</em> it to itself.</li>
+<li>The other applications of the <code>apps/appstage-00-bootstrap</code> directory install
+    base services that are required to go further: <code>uninode</code> installs what is
+    needed on a development cluster to use Storage, LoadBalanced services,
+    Network and Auto-scaling. <code>traefik</code> provides the ingress controller.</li>
+<li>After the previous applications have settled, the <code>appstage-01-online</code>
+    application is inserted to start the next stage. This application point to
+    another <em>applications</em> directory, <code>apps/appstage-01-online</code>, containing the
+    second stage of base services:<ul>
 <li><code>ingresses</code> deploy ingresses to access Argo CD from internet.</li>
 <li><code>cert-manager</code> deploys cert-manager.</li>
 <li><code>external-dns-ovh</code> deploys external DNS using OVH API for OVH domains.</li>
@@ -761,6 +789,14 @@ flowchart TD
 </ul>
 </li>
 </ol>
+<p>At this point, Argo CD <em>auto manages</em> the cluster and is ready to accept new
+stages.</p>
+<p>A new stage can be created by creating a <code>apps/appstage-02-whatever</code> directory
+and adding applications symbolic links to it. Then, in <code>apps/available</code>, create
+a file named <code>appstage-02-whatever.yml</code> defining the <code>appstage-02-whatever</code>
+pointing to the previous created directory. To finish, add a symbolic link to
+this file in <code>apps/appstage-02-online</code> and commit it. This will bootstrap the
+new stage.</p>
 <!-- prettier-ignore-start -->
 
 <!-- prettier-ignore-end -->
